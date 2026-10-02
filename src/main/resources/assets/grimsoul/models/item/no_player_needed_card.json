@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "grimsoul:item/no_player_needed_card"
+  }
+}

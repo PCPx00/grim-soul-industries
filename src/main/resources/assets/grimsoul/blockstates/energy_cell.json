@@ -1,0 +1,274 @@
+{
+  "variants": {
+    "active=true,facing=north,level=0": {
+      "model": "grimsoul:block/energy_cell_0"
+    },
+    "active=true,facing=north,level=1": {
+      "model": "grimsoul:block/energy_cell_1"
+    },
+    "active=true,facing=north,level=2": {
+      "model": "grimsoul:block/energy_cell_2"
+    },
+    "active=true,facing=north,level=3": {
+      "model": "grimsoul:block/energy_cell_3"
+    },
+    "active=true,facing=north,level=4": {
+      "model": "grimsoul:block/energy_cell_4"
+    },
+    "active=true,facing=north,level=5": {
+      "model": "grimsoul:block/energy_cell_5"
+    },
+    "active=true,facing=north,level=6": {
+      "model": "grimsoul:block/energy_cell_6"
+    },
+    "active=true,facing=north,level=7": {
+      "model": "grimsoul:block/energy_cell_7"
+    },
+    "active=true,facing=north,level=8": {
+      "model": "grimsoul:block/energy_cell_8"
+    },
+    "active=false,facing=north,level=0": {
+      "model": "grimsoul:block/energy_cell_0"
+    },
+    "active=false,facing=north,level=1": {
+      "model": "grimsoul:block/energy_cell_1"
+    },
+    "active=false,facing=north,level=2": {
+      "model": "grimsoul:block/energy_cell_2"
+    },
+    "active=false,facing=north,level=3": {
+      "model": "grimsoul:block/energy_cell_3"
+    },
+    "active=false,facing=north,level=4": {
+      "model": "grimsoul:block/energy_cell_4"
+    },
+    "active=false,facing=north,level=5": {
+      "model": "grimsoul:block/energy_cell_5"
+    },
+    "active=false,facing=north,level=6": {
+      "model": "grimsoul:block/energy_cell_6"
+    },
+    "active=false,facing=north,level=7": {
+      "model": "grimsoul:block/energy_cell_7"
+    },
+    "active=false,facing=north,level=8": {
+      "model": "grimsoul:block/energy_cell_8"
+    },
+    "active=true,facing=east,level=0": {
+      "model": "grimsoul:block/energy_cell_0",
+      "y": 90
+    },
+    "active=true,facing=east,level=1": {
+      "model": "grimsoul:block/energy_cell_1",
+      "y": 90
+    },
+    "active=true,facing=east,level=2": {
+      "model": "grimsoul:block/energy_cell_2",
+      "y": 90
+    },
+    "active=true,facing=east,level=3": {
+      "model": "grimsoul:block/energy_cell_3",
+      "y": 90
+    },
+    "active=true,facing=east,level=4": {
+      "model": "grimsoul:block/energy_cell_4",
+      "y": 90
+    },
+    "active=true,facing=east,level=5": {
+      "model": "grimsoul:block/energy_cell_5",
+      "y": 90
+    },
+    "active=true,facing=east,level=6": {
+      "model": "grimsoul:block/energy_cell_6",
+      "y": 90
+    },
+    "active=true,facing=east,level=7": {
+      "model": "grimsoul:block/energy_cell_7",
+      "y": 90
+    },
+    "active=true,facing=east,level=8": {
+      "model": "grimsoul:block/energy_cell_8",
+      "y": 90
+    },
+    "active=false,facing=east,level=0": {
+      "model": "grimsoul:block/energy_cell_0",
+      "y": 90
+    },
+    "active=false,facing=east,level=1": {
+      "model": "grimsoul:block/energy_cell_1",
+      "y": 90
+    },
+    "active=false,facing=east,level=2": {
+      "model": "grimsoul:block/energy_cell_2",
+      "y": 90
+    },
+    "active=false,facing=east,level=3": {
+      "model": "grimsoul:block/energy_cell_3",
+      "y": 90
+    },
+    "active=false,facing=east,level=4": {
+      "model": "grimsoul:block/energy_cell_4",
+      "y": 90
+    },
+    "active=false,facing=east,level=5": {
+      "model": "grimsoul:block/energy_cell_5",
+      "y": 90
+    },
+    "active=false,facing=east,level=6": {
+      "model": "grimsoul:block/energy_cell_6",
+      "y": 90
+    },
+    "active=false,facing=east,level=7": {
+      "model": "grimsoul:block/energy_cell_7",
+      "y": 90
+    },
+    "active=false,facing=east,level=8": {
+      "model": "grimsoul:block/energy_cell_8",
+      "y": 90
+    },
+    "active=true,facing=south,level=0": {
+      "model": "grimsoul:block/energy_cell_0",
+      "y": 180
+    },
+    "active=true,facing=south,level=1": {
+      "model": "grimsoul:block/energy_cell_1",
+      "y": 180
+    },
+    "active=true,facing=south,level=2": {
+      "model": "grimsoul:block/energy_cell_2",
+      "y": 180
+    },
+    "active=true,facing=south,level=3": {
+      "model": "grimsoul:block/energy_cell_3",
+      "y": 180
+    },
+    "active=true,facing=south,level=4": {
+      "model": "grimsoul:block/energy_cell_4",
+      "y": 180
+    },
+    "active=true,facing=south,level=5": {
+      "model": "grimsoul:block/energy_cell_5",
+      "y": 180
+    },
+    "active=true,facing=south,level=6": {
+      "model": "grimsoul:block/energy_cell_6",
+      "y": 180
+    },
+    "active=true,facing=south,level=7": {
+      "model": "grimsoul:block/energy_cell_7",
+      "y": 180
+    },
+    "active=true,facing=south,level=8": {
+      "model": "grimsoul:block/energy_cell_8",
+      "y": 180
+    },
+    "active=false,facing=south,level=0": {
+      "model": "grimsoul:block/energy_cell_0",
+      "y": 180
+    },
+    "active=false,facing=south,level=1": {
+      "model": "grimsoul:block/energy_cell_1",
+      "y": 180
+    },
+    "active=false,facing=south,level=2": {
+      "model": "grimsoul:block/energy_cell_2",
+      "y": 180
+    },
+    "active=false,facing=south,level=3": {
+      "model": "grimsoul:block/energy_cell_3",
+      "y": 180
+    },
+    "active=false,facing=south,level=4": {
+      "model": "grimsoul:block/energy_cell_4",
+      "y": 180
+    },
+    "active=false,facing=south,level=5": {
+      "model": "grimsoul:block/energy_cell_5",
+      "y": 180
+    },
+    "active=false,facing=south,level=6": {
+      "model": "grimsoul:block/energy_cell_6",
+      "y": 180
+    },
+    "active=false,facing=south,level=7": {
+      "model": "grimsoul:block/energy_cell_7",
+      "y": 180
+    },
+    "active=false,facing=south,level=8": {
+      "model": "grimsoul:block/energy_cell_8",
+      "y": 180
+    },
+    "active=true,facing=west,level=0": {
+      "model": "grimsoul:block/energy_cell_0",
+      "y": 270
+    },
+    "active=true,facing=west,level=1": {
+      "model": "grimsoul:block/energy_cell_1",
+      "y": 270
+    },
+    "active=true,facing=west,level=2": {
+      "model": "grimsoul:block/energy_cell_2",
+      "y": 270
+    },
+    "active=true,facing=west,level=3": {
+      "model": "grimsoul:block/energy_cell_3",
+      "y": 270
+    },
+    "active=true,facing=west,level=4": {
+      "model": "grimsoul:block/energy_cell_4",
+      "y": 270
+    },
+    "active=true,facing=west,level=5": {
+      "model": "grimsoul:block/energy_cell_5",
+      "y": 270
+    },
+    "active=true,facing=west,level=6": {
+      "model": "grimsoul:block/energy_cell_6",
+      "y": 270
+    },
+    "active=true,facing=west,level=7": {
+      "model": "grimsoul:block/energy_cell_7",
+      "y": 270
+    },
+    "active=true,facing=west,level=8": {
+      "model": "grimsoul:block/energy_cell_8",
+      "y": 270
+    },
+    "active=false,facing=west,level=0": {
+      "model": "grimsoul:block/energy_cell_0",
+      "y": 270
+    },
+    "active=false,facing=west,level=1": {
+      "model": "grimsoul:block/energy_cell_1",
+      "y": 270
+    },
+    "active=false,facing=west,level=2": {
+      "model": "grimsoul:block/energy_cell_2",
+      "y": 270
+    },
+    "active=false,facing=west,level=3": {
+      "model": "grimsoul:block/energy_cell_3",
+      "y": 270
+    },
+    "active=false,facing=west,level=4": {
+      "model": "grimsoul:block/energy_cell_4",
+      "y": 270
+    },
+    "active=false,facing=west,level=5": {
+      "model": "grimsoul:block/energy_cell_5",
+      "y": 270
+    },
+    "active=false,facing=west,level=6": {
+      "model": "grimsoul:block/energy_cell_6",
+      "y": 270
+    },
+    "active=false,facing=west,level=7": {
+      "model": "grimsoul:block/energy_cell_7",
+      "y": 270
+    },
+    "active=false,facing=west,level=8": {
+      "model": "grimsoul:block/energy_cell_8",
+      "y": 270
+    }
+  }
+}

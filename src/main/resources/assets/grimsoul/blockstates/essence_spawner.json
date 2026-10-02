@@ -1,0 +1,34 @@
+{
+ "variants": {
+  "active=true,facing=north": {
+   "model": "grimsoul:block/essence_spawner"
+  },
+  "active=false,facing=north": {
+   "model": "grimsoul:block/essence_spawner_off"
+  },
+  "active=true,facing=east": {
+   "model": "grimsoul:block/essence_spawner",
+   "y": 90
+  },
+  "active=false,facing=east": {
+   "model": "grimsoul:block/essence_spawner_off",
+   "y": 90
+  },
+  "active=true,facing=south": {
+   "model": "grimsoul:block/essence_spawner",
+   "y": 180
+  },
+  "active=false,facing=south": {
+   "model": "grimsoul:block/essence_spawner_off",
+   "y": 180
+  },
+  "active=true,facing=west": {
+   "model": "grimsoul:block/essence_spawner",
+   "y": 270
+  },
+  "active=false,facing=west": {
+   "model": "grimsoul:block/essence_spawner_off",
+   "y": 270
+  }
+ }
+}

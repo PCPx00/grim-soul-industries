@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "grimsoul:item/ignore_spawn_conditions_card"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "values": {
+    "minecraft:rotten_flesh": {
+      "fe_per_tick": 20,
+      "burn_time": 200
+    },
+    "minecraft:bone": {
+      "fe_per_tick": 20,
+      "burn_time": 200
+    },
+    "minecraft:string": {
+      "fe_per_tick": 20,
+      "burn_time": 200
+    },
+    "minecraft:feather": {
+      "fe_per_tick": 15,
+      "burn_time": 200
+    },
+    "minecraft:arrow": {
+      "fe_per_tick": 15,
+      "burn_time": 160
+    },
+    "minecraft:leather": {
+      "fe_per_tick": 25,
+      "burn_time": 200
+    },
+    "minecraft:rabbit_hide": {
+      "fe_per_tick": 20,
+      "burn_time": 200
+    },
+    "minecraft:spider_eye": {
+      "fe_per_tick": 30,
+      "burn_time": 200
+    },
+    "minecraft:ink_sac": {
+      "fe_per_tick": 25,
+      "burn_time": 200
+    },
+    "#c:foods/raw_meat": {
+      "fe_per_tick": 20,
+      "burn_time": 200
+    },
+    "minecraft:glow_ink_sac": {
+      "fe_per_tick": 40,
+      "burn_time": 300
+    },
+    "minecraft:slime_ball": {
+      "fe_per_tick": 40,
+      "burn_time": 300
+    },
+    "minecraft:gunpowder": {
+      "fe_per_tick": 50,
+      "burn_time": 300
+    },
+    "minecraft:prismarine_shard": {
+      "fe_per_tick": 40,
+      "burn_time": 300
+    },
+    "minecraft:prismarine_crystals": {
+      "fe_per_tick": 40,
+      "burn_time": 300
+    },
+    "minecraft:ender_pearl": {
+      "fe_per_tick": 120,
+      "burn_time": 400
+    },
+    "minecraft:phantom_membrane": {
+      "fe_per_tick": 100,
+      "burn_time": 400
+    },
+    "minecraft:magma_cream": {
+      "fe_per_tick": 120,
+      "burn_time": 400
+    },
+    "minecraft:rabbit_foot": {
+      "fe_per_tick": 150,
+      "burn_time": 400
+    },
+    "minecraft:turtle_scute": {
+      "fe_per_tick": 150,
+      "burn_time": 400
+    },
+    "minecraft:armadillo_scute": {
+      "fe_per_tick": 100,
+      "burn_time": 400
+    },
+    "minecraft:breeze_rod": {
+      "fe_per_tick": 200,
+      "burn_time": 600
+    },
+    "minecraft:blaze_powder": {
+      "fe_per_tick": 150,
+      "burn_time": 600
+    },
+    "minecraft:blaze_rod": {
+      "fe_per_tick": 400,
+      "burn_time": 1200
+    },
+    "minecraft:ghast_tear": {
+      "fe_per_tick": 500,
+      "burn_time": 1200
+    },
+    "minecraft:shulker_shell": {
+      "fe_per_tick": 600,
+      "burn_time": 1200
+    },
+    "minecraft:dragon_breath": {
+      "fe_per_tick": 800,
+      "burn_time": 1200
+    },
+    "minecraft:trident": {
+      "fe_per_tick": 1000,
+      "burn_time": 1200
+    },
+    "minecraft:totem_of_undying": {
+      "fe_per_tick": 1500,
+      "burn_time": 2400
+    },
+    "minecraft:wither_skeleton_skull": {
+      "fe_per_tick": 2500,
+      "burn_time": 2400
+    },
+    "minecraft:nether_star": {
+      "fe_per_tick": 10000,
+      "burn_time": 6000
+    }
+  }
+}

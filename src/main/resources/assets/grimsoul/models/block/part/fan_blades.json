@@ -1,0 +1,42 @@
+{
+ "parent": "minecraft:block/block",
+ "textures": {
+  "blades": "grimsoul:block/rw_fan_blades",
+  "particle": "grimsoul:block/rw_fan_blades"
+ },
+ "elements": [
+  {
+   "from": [
+    1,
+    1,
+    7.9
+   ],
+   "to": [
+    15,
+    15,
+    8.1
+   ],
+   "faces": {
+    "north": {
+     "texture": "#blades",
+     "uv": [
+      1,
+      1,
+      15,
+      15
+     ]
+    },
+    "south": {
+     "texture": "#blades",
+     "uv": [
+      1,
+      1,
+      15,
+      15
+     ]
+    }
+   }
+  }
+ ],
+ "render_type": "minecraft:cutout"
+}

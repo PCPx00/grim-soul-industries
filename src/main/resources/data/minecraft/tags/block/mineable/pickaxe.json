@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "grimsoul:reaper_block",
+    "grimsoul:mob_fan",
+    "grimsoul:xp_tank",
+    "grimsoul:essence_spawner",
+    "grimsoul:reaper_generator",
+    "grimsoul:simulation_chamber",
+    "grimsoul:output_crate",
+    "grimsoul:energy_cell"
+  ]
+}

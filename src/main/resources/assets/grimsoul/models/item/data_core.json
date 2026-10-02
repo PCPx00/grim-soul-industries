@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "grimsoul:item/data_core"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "grimsoul:tier": 0.19
+      },
+      "model": "grimsoul:item/data_core_tier0"
+    },
+    {
+      "predicate": {
+        "grimsoul:tier": 0.39
+      },
+      "model": "grimsoul:item/data_core_tier1"
+    },
+    {
+      "predicate": {
+        "grimsoul:tier": 0.59
+      },
+      "model": "grimsoul:item/data_core_tier2"
+    },
+    {
+      "predicate": {
+        "grimsoul:tier": 0.79
+      },
+      "model": "grimsoul:item/data_core_tier3"
+    },
+    {
+      "predicate": {
+        "grimsoul:tier": 0.99
+      },
+      "model": "grimsoul:item/data_core_tier4"
+    }
+  ]
+}

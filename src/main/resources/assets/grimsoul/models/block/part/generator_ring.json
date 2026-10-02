@@ -1,0 +1,301 @@
+{
+ "parent": "minecraft:block/block",
+ "textures": {
+  "c": "grimsoul:block/rw_coil",
+  "particle": "grimsoul:block/rw_coil"
+ },
+ "elements": [
+  {
+   "from": [
+    3,
+    7.5,
+    3
+   ],
+   "to": [
+    13,
+    8.5,
+    4
+   ],
+   "faces": {
+    "north": {
+     "texture": "#c",
+     "uv": [
+      3,
+      7.5,
+      13,
+      8.5
+     ]
+    },
+    "south": {
+     "texture": "#c",
+     "uv": [
+      3,
+      7.5,
+      13,
+      8.5
+     ]
+    },
+    "east": {
+     "texture": "#c",
+     "uv": [
+      12,
+      7.5,
+      13,
+      8.5
+     ]
+    },
+    "west": {
+     "texture": "#c",
+     "uv": [
+      3,
+      7.5,
+      4,
+      8.5
+     ]
+    },
+    "up": {
+     "texture": "#c",
+     "uv": [
+      3,
+      3,
+      13,
+      4
+     ]
+    },
+    "down": {
+     "texture": "#c",
+     "uv": [
+      3,
+      12,
+      13,
+      13
+     ]
+    }
+   },
+   "neoforge_data": {
+    "block_light": 15,
+    "sky_light": 15,
+    "ambient_occlusion": false
+   }
+  },
+  {
+   "from": [
+    3,
+    7.5,
+    12
+   ],
+   "to": [
+    13,
+    8.5,
+    13
+   ],
+   "faces": {
+    "north": {
+     "texture": "#c",
+     "uv": [
+      3,
+      7.5,
+      13,
+      8.5
+     ]
+    },
+    "south": {
+     "texture": "#c",
+     "uv": [
+      3,
+      7.5,
+      13,
+      8.5
+     ]
+    },
+    "east": {
+     "texture": "#c",
+     "uv": [
+      3,
+      7.5,
+      4,
+      8.5
+     ]
+    },
+    "west": {
+     "texture": "#c",
+     "uv": [
+      12,
+      7.5,
+      13,
+      8.5
+     ]
+    },
+    "up": {
+     "texture": "#c",
+     "uv": [
+      3,
+      12,
+      13,
+      13
+     ]
+    },
+    "down": {
+     "texture": "#c",
+     "uv": [
+      3,
+      3,
+      13,
+      4
+     ]
+    }
+   },
+   "neoforge_data": {
+    "block_light": 15,
+    "sky_light": 15,
+    "ambient_occlusion": false
+   }
+  },
+  {
+   "from": [
+    3,
+    7.5,
+    4
+   ],
+   "to": [
+    4,
+    8.5,
+    12
+   ],
+   "faces": {
+    "north": {
+     "texture": "#c",
+     "uv": [
+      12,
+      7.5,
+      13,
+      8.5
+     ]
+    },
+    "south": {
+     "texture": "#c",
+     "uv": [
+      3,
+      7.5,
+      4,
+      8.5
+     ]
+    },
+    "east": {
+     "texture": "#c",
+     "uv": [
+      4,
+      7.5,
+      12,
+      8.5
+     ]
+    },
+    "west": {
+     "texture": "#c",
+     "uv": [
+      4,
+      7.5,
+      12,
+      8.5
+     ]
+    },
+    "up": {
+     "texture": "#c",
+     "uv": [
+      3,
+      4,
+      4,
+      12
+     ]
+    },
+    "down": {
+     "texture": "#c",
+     "uv": [
+      3,
+      4,
+      4,
+      12
+     ]
+    }
+   },
+   "neoforge_data": {
+    "block_light": 15,
+    "sky_light": 15,
+    "ambient_occlusion": false
+   }
+  },
+  {
+   "from": [
+    12,
+    7.5,
+    4
+   ],
+   "to": [
+    13,
+    8.5,
+    12
+   ],
+   "faces": {
+    "north": {
+     "texture": "#c",
+     "uv": [
+      3,
+      7.5,
+      4,
+      8.5
+     ]
+    },
+    "south": {
+     "texture": "#c",
+     "uv": [
+      12,
+      7.5,
+      13,
+      8.5
+     ]
+    },
+    "east": {
+     "texture": "#c",
+     "uv": [
+      4,
+      7.5,
+      12,
+      8.5
+     ]
+    },
+    "west": {
+     "texture": "#c",
+     "uv": [
+      4,
+      7.5,
+      12,
+      8.5
+     ]
+    },
+    "up": {
+     "texture": "#c",
+     "uv": [
+      12,
+      4,
+      13,
+      12
+     ]
+    },
+    "down": {
+     "texture": "#c",
+     "uv": [
+      12,
+      4,
+      13,
+      12
+     ]
+    }
+   },
+   "neoforge_data": {
+    "block_light": 15,
+    "sky_light": 15,
+    "ambient_occlusion": false
+   }
+  }
+ ]
+}

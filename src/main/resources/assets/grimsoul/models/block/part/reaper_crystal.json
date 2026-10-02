@@ -1,0 +1,164 @@
+{
+ "parent": "minecraft:block/block",
+ "textures": {
+  "c": "grimsoul:block/rw_crystal",
+  "particle": "grimsoul:block/rw_crystal"
+ },
+ "elements": [
+  {
+   "from": [
+    5,
+    4,
+    5
+   ],
+   "to": [
+    11,
+    12,
+    11
+   ],
+   "faces": {
+    "north": {
+     "texture": "#c",
+     "uv": [
+      5,
+      4,
+      11,
+      12
+     ]
+    },
+    "south": {
+     "texture": "#c",
+     "uv": [
+      5,
+      4,
+      11,
+      12
+     ]
+    },
+    "east": {
+     "texture": "#c",
+     "uv": [
+      5,
+      4,
+      11,
+      12
+     ]
+    },
+    "west": {
+     "texture": "#c",
+     "uv": [
+      5,
+      4,
+      11,
+      12
+     ]
+    },
+    "up": {
+     "texture": "#c",
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ]
+    },
+    "down": {
+     "texture": "#c",
+     "uv": [
+      5,
+      5,
+      11,
+      11
+     ]
+    }
+   },
+   "neoforge_data": {
+    "block_light": 15,
+    "sky_light": 15,
+    "ambient_occlusion": false
+   },
+   "rotation": {
+    "angle": 45,
+    "axis": "y",
+    "origin": [
+     8,
+     8,
+     8
+    ]
+   }
+  },
+  {
+   "from": [
+    6,
+    2,
+    6
+   ],
+   "to": [
+    10,
+    14,
+    10
+   ],
+   "faces": {
+    "north": {
+     "texture": "#c",
+     "uv": [
+      6,
+      2,
+      10,
+      14
+     ]
+    },
+    "south": {
+     "texture": "#c",
+     "uv": [
+      6,
+      2,
+      10,
+      14
+     ]
+    },
+    "east": {
+     "texture": "#c",
+     "uv": [
+      6,
+      2,
+      10,
+      14
+     ]
+    },
+    "west": {
+     "texture": "#c",
+     "uv": [
+      6,
+      2,
+      10,
+      14
+     ]
+    },
+    "up": {
+     "texture": "#c",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    },
+    "down": {
+     "texture": "#c",
+     "uv": [
+      6,
+      6,
+      10,
+      10
+     ]
+    }
+   },
+   "neoforge_data": {
+    "block_light": 15,
+    "sky_light": 15,
+    "ambient_occlusion": false
+   }
+  }
+ ]
+}

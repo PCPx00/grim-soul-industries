@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "NDN",
+    "GCG",
+    "NRN"
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "D": {
+      "item": "minecraft:diamond_block"
+    },
+    "G": {
+      "item": "minecraft:tinted_glass"
+    },
+    "C": {
+      "item": "grimsoul:data_core"
+    },
+    "R": {
+      "item": "grimsoul:reaper_generator"
+    }
+  },
+  "result": {
+    "id": "grimsoul:simulation_chamber",
+    "count": 1
+  }
+}
