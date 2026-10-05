@@ -154,6 +154,10 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
                 graphics.renderTooltip(font, Component.translatable("gui.grimsoul.generator.fuel_slot"), mouseX, mouseY);
                 return;
             }
+            if (index == GeneratorMenu.CHARGE_SLOT) {
+                graphics.renderTooltip(font, Component.translatable("gui.grimsoul.charge_slot"), mouseX, mouseY);
+                return;
+            }
             if (index < GeneratorMenu.PLAYER_START) {
                 graphics.renderTooltip(font, Component.translatable("gui.grimsoul.generator.output_slot"), mouseX, mouseY);
                 return;
@@ -172,6 +176,8 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
             int bg = i < GeneratorMenu.OUTPUT_START ? GuiStyle.FILTER_BG : GuiStyle.SLOT_BG;
             GuiStyle.slot(graphics, x + slot.x, y + slot.y, bg);
         }
+        Slot charge = menu.slots.get(GeneratorMenu.CHARGE_SLOT);
+        GuiStyle.chargeSlotExtras(graphics, x + charge.x, y + charge.y, charge.hasItem(), menu.getData(ReaperGeneratorBlockEntity.DATA_CHARGE));
 
         // Vertical energy bar
         int energy = menu.getSplit(ReaperGeneratorBlockEntity.DATA_ENERGY_LO);
@@ -215,6 +221,8 @@ public class GeneratorScreen extends AbstractContainerScreen<GeneratorMenu> {
                 String.format(Locale.ROOT, "%.1f", burn / 20.0)), 98, 56, GuiStyle.TEXT_DIM, false);
 
         graphics.drawString(font, Component.translatable("gui.grimsoul.generator.output"), GeneratorMenu.OUTPUT_X, 86, GuiStyle.TEXT_ACCENT, false);
+        GuiStyle.centered(graphics, font, Component.translatable("gui.grimsoul.charge").getString(), GeneratorMenu.CHARGE_X + 8,
+                GeneratorMenu.CHARGE_Y - 10, GuiStyle.TEXT_ACCENT);
         graphics.drawString(font, Component.translatable("gui.grimsoul.generator.item_sides"), ITEM_MAP_X, 120, GuiStyle.TEXT_ACCENT, false);
         graphics.drawString(font, Component.translatable("gui.grimsoul.generator.energy_sides"), ENERGY_MAP_X, 120, GuiStyle.TEXT_ACCENT, false);
     }

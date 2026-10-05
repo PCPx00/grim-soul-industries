@@ -8,6 +8,7 @@ import com.xtri6.grimsoul.Config;
 import com.xtri6.grimsoul.Registration;
 import com.xtri6.grimsoul.block.EnergyCellBlock;
 import com.xtri6.grimsoul.block.MachineBlock;
+import com.xtri6.grimsoul.machine.ChargeSlotHandler;
 import com.xtri6.grimsoul.machine.RelativeSide;
 import com.xtri6.grimsoul.menu.CellMenu;
 
@@ -41,9 +42,11 @@ public class EnergyCellBlockEntity extends BlockEntity implements MenuProvider {
 
     public static final int BTN_SIDE = 0;
     public static final int DATA_ENERGY_LO = 0, DATA_ENERGY_HI = 1, DATA_CAPACITY_LO = 2, DATA_CAPACITY_HI = 3,
-            DATA_IN_LO = 4, DATA_IN_HI = 5, DATA_OUT_LO = 6, DATA_OUT_HI = 7, DATA_SIDES = 8, DATA_COUNT = 9;
+            DATA_IN_LO = 4, DATA_IN_HI = 5, DATA_OUT_LO = 6, DATA_OUT_HI = 7, DATA_SIDES = 8, DATA_CHARGE = 9,
+            DATA_COUNT = 10;
 
     private final CellEnergy energy = new CellEnergy(Config.CELL_CAPACITY.get(), Config.CELL_TRANSFER.get());
+    private final ChargeSlotHandler chargeSlot = new ChargeSlotHandler(this::setChanged);
     private final int[] sideModes = new int[SIDES];
 
     // Average FE per tick in and out, measured over one second.
@@ -136,6 +139,7 @@ public class EnergyCellBlockEntity extends BlockEntity implements MenuProvider {
                 case DATA_OUT_LO -> outRate & 0xFFFF;
                 case DATA_OUT_HI -> outRate >>> 16;
                 case DATA_SIDES -> packSides();
+                case DATA_CHARGE -> chargeSlot.chargePermille();
                 default -> 0;
             };
         }
@@ -191,6 +195,12 @@ public class EnergyCellBlockEntity extends BlockEntity implements MenuProvider {
                 be.setChanged();
             }
         }
+        // Charge whatever FE item is in the charge slot.
+        be.chargeSlot.charge(perSide, be.energy.getEnergyStored(), wanted -> {
+            int taken = be.energy.extractEnergy(wanted, false);
+            be.outThisWindow += taken;
+            return taken;
+        });
         if (++be.windowTimer >= RATE_WINDOW) {
             be.windowTimer = 0;
             be.inRate = (int) Math.min(Integer.MAX_VALUE, be.inThisWindow / RATE_WINDOW);
@@ -239,6 +249,10 @@ public class EnergyCellBlockEntity extends BlockEntity implements MenuProvider {
         return dataAccess;
     }
 
+    public ChargeSlotHandler getChargeSlot() {
+        return chargeSlot;
+    }
+
     public int getEnergy() {
         return energy.getEnergyStored();
     }
@@ -261,12 +275,14 @@ public class EnergyCellBlockEntity extends BlockEntity implements MenuProvider {
         super.saveAdditional(tag, registries);
         tag.putInt("Energy", energy.getEnergyStored());
         tag.putInt("Sides", packSides());
+        chargeSlot.save(tag, registries);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         energy.set(tag.getInt("Energy"));
+        chargeSlot.load(tag, registries);
         if (tag.contains("Sides")) {
             int packed = tag.getInt("Sides");
             for (RelativeSide side : RelativeSide.values()) {
@@ -293,6 +309,7 @@ public class EnergyCellBlockEntity extends BlockEntity implements MenuProvider {
     public void removeComponentsFromTag(CompoundTag tag) {
         super.removeComponentsFromTag(tag);
         tag.remove("Energy");
+        tag.remove("Charge");
     }
 
     private class CellEnergy extends EnergyStorage {

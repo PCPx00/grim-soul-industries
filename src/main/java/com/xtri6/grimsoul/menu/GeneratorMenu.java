@@ -3,6 +3,7 @@ package com.xtri6.grimsoul.menu;
 import com.xtri6.grimsoul.Registration;
 import com.xtri6.grimsoul.blockentity.ReaperGeneratorBlockEntity;
 import com.xtri6.grimsoul.generator.GeneratorFuel;
+import com.xtri6.grimsoul.machine.ChargeSlotHandler;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -20,7 +21,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 
 /**
  * Reaper Generator menu. Slots 0-8: fuel. Slots 9-17: pass-through output (take only).
- * Slots 18-53: player inventory and hotbar.
+ * Slot 18: charge slot. Slots 19-54: player inventory and hotbar.
  */
 public class GeneratorMenu extends AbstractContainerMenu {
     public static final int WIDTH = 260;
@@ -29,7 +30,9 @@ public class GeneratorMenu extends AbstractContainerMenu {
     public static final int INV_Y = 192;
     private static final int INV_X = (WIDTH - 162) / 2;
     public static final int OUTPUT_START = ReaperGeneratorBlockEntity.FUEL_SLOTS;
-    public static final int PLAYER_START = OUTPUT_START + ReaperGeneratorBlockEntity.OUTPUT_SLOTS;
+    public static final int CHARGE_SLOT = OUTPUT_START + ReaperGeneratorBlockEntity.OUTPUT_SLOTS;
+    public static final int CHARGE_X = 222, CHARGE_Y = 36;
+    public static final int PLAYER_START = CHARGE_SLOT + 1;
     public static final int PLAYER_END = PLAYER_START + 36;
 
     private final ContainerLevelAccess access;
@@ -38,14 +41,16 @@ public class GeneratorMenu extends AbstractContainerMenu {
 
     public GeneratorMenu(int id, Inventory inv, RegistryFriendlyByteBuf buf) {
         this(id, inv, buf.readBlockPos(), new ItemStackHandler(ReaperGeneratorBlockEntity.FUEL_SLOTS),
-                new ItemStackHandler(ReaperGeneratorBlockEntity.OUTPUT_SLOTS), new SimpleContainerData(ReaperGeneratorBlockEntity.DATA_COUNT));
+                new ItemStackHandler(ReaperGeneratorBlockEntity.OUTPUT_SLOTS), new ChargeSlotHandler(() -> {}),
+                new SimpleContainerData(ReaperGeneratorBlockEntity.DATA_COUNT));
     }
 
     public GeneratorMenu(int id, Inventory inv, ReaperGeneratorBlockEntity be) {
-        this(id, inv, be.getBlockPos(), be.getFuel(), be.getOutput(), be.getDataAccess());
+        this(id, inv, be.getBlockPos(), be.getFuel(), be.getOutput(), be.getChargeSlot(), be.getDataAccess());
     }
 
-    private GeneratorMenu(int id, Inventory inv, BlockPos pos, IItemHandler fuel, IItemHandler output, ContainerData data) {
+    private GeneratorMenu(int id, Inventory inv, BlockPos pos, IItemHandler fuel, IItemHandler output, IItemHandler charge,
+            ContainerData data) {
         super(Registration.GENERATOR_MENU.get(), id);
         this.pos = pos;
         this.data = data;
@@ -69,6 +74,7 @@ public class GeneratorMenu extends AbstractContainerMenu {
                 }
             });
         }
+        addSlot(new ChargeSlot(charge, CHARGE_X, CHARGE_Y));
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 addSlot(new Slot(inv, col + row * 9 + 9, INV_X + col * 18, INV_Y + row * 18));
@@ -107,6 +113,10 @@ public class GeneratorMenu extends AbstractContainerMenu {
         ItemStack original = stack.copy();
         if (index < PLAYER_START) {
             if (!moveItemStackTo(stack, PLAYER_START, PLAYER_END, true)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (ChargeSlotHandler.isChargeable(stack)) {
+            if (!moveItemStackTo(stack, CHARGE_SLOT, CHARGE_SLOT + 1, false)) {
                 return ItemStack.EMPTY;
             }
         } else if (GeneratorFuel.of(stack) == null || !moveItemStackTo(stack, 0, OUTPUT_START, false)) {

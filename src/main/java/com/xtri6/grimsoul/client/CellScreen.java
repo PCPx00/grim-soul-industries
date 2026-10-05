@@ -12,6 +12,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 
 /** Energy Cell GUI: a big charge gauge, in/out rates, and a side map (blue in, orange out, gray off). */
 public class CellScreen extends AbstractContainerScreen<CellMenu> {
@@ -25,8 +26,10 @@ public class CellScreen extends AbstractContainerScreen<CellMenu> {
 
     public CellScreen(CellMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        this.imageWidth = 232;
-        this.imageHeight = 114;
+        this.imageWidth = CellMenu.WIDTH;
+        this.imageHeight = CellMenu.INV_Y + 84;
+        this.inventoryLabelX = GuiStyle.invX(CellMenu.WIDTH);
+        this.inventoryLabelY = CellMenu.INV_Y - 11;
     }
 
     private static int[] layout(RelativeSide side) {
@@ -83,6 +86,11 @@ public class CellScreen extends AbstractContainerScreen<CellMenu> {
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         super.render(graphics, mouseX, mouseY, partialTick);
+        Slot hovered = this.hoveredSlot;
+        if (hovered != null && !hovered.hasItem() && menu.getCarried().isEmpty() && menu.slots.indexOf(hovered) < CellMenu.PLAYER_START) {
+            graphics.renderTooltip(font, Component.translatable("gui.grimsoul.charge_slot"), mouseX, mouseY);
+            return;
+        }
         renderTooltip(graphics, mouseX, mouseY);
     }
 
@@ -104,6 +112,11 @@ public class CellScreen extends AbstractContainerScreen<CellMenu> {
             int ty = y + BAR_Y1 + (BAR_Y2 - BAR_Y1) * i / 8;
             graphics.fill(x + BAR_X2 - 4, ty, x + BAR_X2, ty + 1, 0x80000000);
         }
+        for (Slot slot : menu.slots) {
+            GuiStyle.slot(graphics, x + slot.x, y + slot.y, GuiStyle.SLOT_BG);
+        }
+        Slot charge = menu.slots.get(0);
+        GuiStyle.chargeSlotExtras(graphics, x + charge.x, y + charge.y, charge.hasItem(), menu.getData(EnergyCellBlockEntity.DATA_CHARGE));
     }
 
     @Override
@@ -119,6 +132,13 @@ public class CellScreen extends AbstractContainerScreen<CellMenu> {
         graphics.drawString(font, Component.translatable("gui.grimsoul.cell.out",
                 GuiStyle.compact(menu.getSplit(EnergyCellBlockEntity.DATA_OUT_LO))), 42, 58, GuiStyle.TEXT_OUT, false);
         graphics.drawString(font, Component.translatable("gui.grimsoul.cell.sides"), MAP_X, MAP_Y - 10, GuiStyle.TEXT_ACCENT, false);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.charge"), CellMenu.CHARGE_X, CellMenu.CHARGE_Y - 11, GuiStyle.TEXT_ACCENT, false);
+        int permille = menu.getData(EnergyCellBlockEntity.DATA_CHARGE);
+        if (permille >= 0 && menu.slots.get(0).hasItem()) {
+            graphics.drawString(font, Component.translatable(permille >= 1000 ? "gui.grimsoul.charge.full" : "gui.grimsoul.charge.percent", permille / 10),
+                    CellMenu.CHARGE_X + 22, CellMenu.CHARGE_Y + 4, permille >= 1000 ? GuiStyle.TEXT_OK : GuiStyle.TEXT_ENERGY, false);
+        }
+        graphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, GuiStyle.TEXT_DIM, false);
     }
 
     private class SideButton extends Button {

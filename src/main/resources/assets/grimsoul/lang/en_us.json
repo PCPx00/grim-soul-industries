@@ -203,5 +203,9 @@
   "tier.grimsoul.soulforged": "Soulforged",
   "gui.grimsoul.reaper_magnet.tooltip": "Pull drops and XP in the work area into the block. Turn it off to leave them on the ground (the block keeps killing).",
   "gui.grimsoul.take_xp_short": "Take",
-  "gui.grimsoul.theme.tooltip": "Screen style: Reaper (light gray and purple), Vanilla, or Dark. Click to switch. Applies to every Grim Soul Industries machine."
+  "gui.grimsoul.theme.tooltip": "Screen style: Reaper (light gray and purple), Vanilla, or Dark. Click to switch. Applies to every Grim Soul Industries machine.",
+  "gui.grimsoul.charge": "Charge",
+  "gui.grimsoul.charge_slot": "Charge slot: put in any item that holds FE (tools, batteries, jetpacks, armor) to charge it from this machine's power.",
+  "gui.grimsoul.charge.percent": "%s%%",
+  "gui.grimsoul.charge.full": "Full"
 }

@@ -8,6 +8,7 @@ import com.xtri6.grimsoul.Config;
 import com.xtri6.grimsoul.Registration;
 import com.xtri6.grimsoul.block.MachineBlock;
 import com.xtri6.grimsoul.generator.GeneratorFuel;
+import com.xtri6.grimsoul.machine.ChargeSlotHandler;
 import com.xtri6.grimsoul.machine.ItemSideMode;
 import com.xtri6.grimsoul.machine.MachineControl;
 import com.xtri6.grimsoul.machine.RedstoneMode;
@@ -55,7 +56,7 @@ public class ReaperGeneratorBlockEntity extends BlockEntity implements MenuProvi
     public static final int DATA_ENERGY_LO = 0, DATA_ENERGY_HI = 1, DATA_CAPACITY_LO = 2, DATA_CAPACITY_HI = 3,
             DATA_RATE_LO = 4, DATA_RATE_HI = 5, DATA_BURN = 6, DATA_BURN_TOTAL = 7, DATA_ITEM_SIDES = 8,
             DATA_ENERGY_SIDES = 9, DATA_ENABLED = 10, DATA_REDSTONE = 11, DATA_EJECT = 12, DATA_PASS = 13,
-            DATA_COUNT = 14;
+            DATA_CHARGE = 14, DATA_COUNT = 15;
 
     private final ItemStackHandler fuel = new ItemStackHandler(FUEL_SLOTS) {
         @Override
@@ -75,6 +76,7 @@ public class ReaperGeneratorBlockEntity extends BlockEntity implements MenuProvi
         }
     };
     private final GeneratorEnergy energy = new GeneratorEnergy(Config.GENERATOR_CAPACITY.get());
+    private final ChargeSlotHandler chargeSlot = new ChargeSlotHandler(this::setChanged);
     private final MachineControl control = new MachineControl(RedstoneMode.IGNORE);
 
     private final ItemSideMode[] itemSides = new ItemSideMode[SIDES];
@@ -142,6 +144,7 @@ public class ReaperGeneratorBlockEntity extends BlockEntity implements MenuProvi
                 case DATA_REDSTONE -> control.getRedstoneMode().ordinal();
                 case DATA_EJECT -> autoEject ? 1 : 0;
                 case DATA_PASS -> passThrough ? 1 : 0;
+                case DATA_CHARGE -> chargeSlot.chargePermille();
                 default -> 0;
             };
         }
@@ -199,6 +202,8 @@ public class ReaperGeneratorBlockEntity extends BlockEntity implements MenuProvi
         boolean enabled = be.control.isActive(level, pos);
         boolean burning = enabled && be.burn();
         MachineBlock.setActive(level, pos, state, burning);
+        be.chargeSlot.charge(Config.GENERATOR_MAX_OUTPUT.get(), be.energy.getEnergyStored(),
+                wanted -> be.energy.extractEnergy(wanted, false));
         be.pushEnergy(level, pos, state);
         if (be.autoEject && ++be.ejectTimer >= EJECT_INTERVAL) {
             be.ejectTimer = 0;
@@ -415,12 +420,17 @@ public class ReaperGeneratorBlockEntity extends BlockEntity implements MenuProvi
         return dataAccess;
     }
 
+    public ChargeSlotHandler getChargeSlot() {
+        return chargeSlot;
+    }
+
     public void dropContents(Level level, BlockPos pos) {
         for (ItemStackHandler handler : new ItemStackHandler[] {fuel, output}) {
             for (int i = 0; i < handler.getSlots(); i++) {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i).copy());
             }
         }
+        chargeSlot.drop(level, pos);
     }
 
     @Override
@@ -452,6 +462,7 @@ public class ReaperGeneratorBlockEntity extends BlockEntity implements MenuProvi
         tag.putBoolean("AutoEject", autoEject);
         tag.putBoolean("PassThrough", passThrough);
         control.save(tag);
+        chargeSlot.save(tag, registries);
     }
 
     @Override
@@ -486,6 +497,7 @@ public class ReaperGeneratorBlockEntity extends BlockEntity implements MenuProvi
             passThrough = tag.getBoolean("PassThrough");
         }
         control.load(tag);
+        chargeSlot.load(tag, registries);
     }
 
     /** The FE buffer. Only the generator itself can add power; cables can only take it out. */

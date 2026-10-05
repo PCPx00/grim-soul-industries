@@ -168,6 +168,33 @@ public final class GuiStyle {
         g.pose().popPose();
     }
 
+    // A lightning bolt, row by row: {y, x-from, x-to} inside a 16x16 slot.
+    private static final int[][] BOLT = {
+            {2, 8, 11}, {3, 7, 10}, {4, 7, 9}, {5, 6, 9}, {6, 5, 8}, {7, 5, 11}, {8, 7, 10},
+            {9, 7, 9}, {10, 6, 8}, {11, 6, 7}, {12, 5, 7}, {13, 5, 6}};
+
+    /**
+     * Extras for a charge slot: a faint lightning bolt while it's empty, and a thin charge bar under
+     * it while an item charges ({@code permille} 0-1000, or below 0 for unknown).
+     */
+    public static void chargeSlotExtras(GuiGraphics g, int x, int y, boolean hasItem, int permille) {
+        if (!hasItem) {
+            int color = theme == Theme.DARK ? 0x70E0C23A : 0x909A6E00;
+            for (int[] row : BOLT) {
+                g.fill(x + row[1], y + row[0], x + row[2], y + row[0] + 1, color);
+            }
+            return;
+        }
+        if (permille < 0) {
+            return;
+        }
+        int filled = Math.round(16 * Math.min(1000, permille) / 1000.0F);
+        g.fill(x, y + 18, x + 16, y + 20, BAR_BG);
+        if (filled > 0) {
+            g.fill(x, y + 18, x + filled, y + 20, permille >= 1000 ? 0xFF3FBF4F : 0xFFE0C23A);
+        }
+    }
+
     /** Short number for tight spaces: 950, 12.4K, 3.1M. */
     public static String compact(int value) {
         if (value < 10_000) {

@@ -23,6 +23,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.energy.ComponentEnergyStorage;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
@@ -67,6 +68,11 @@ public class GrimSoul {
                 (be, side) -> be.getEnergyHandler(side));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.REAPER_GENERATOR_ENTITY.get(),
                 (be, side) -> be.getItemHandler(side));
+        // A picked-up Energy Cell is a portable battery: charge slots (ours or other mods') can fill it,
+        // and it keeps that charge when placed. Only single items, so a stack can't share one charge.
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, context) -> stack.getCount() != 1 ? null
+                : new ComponentEnergyStorage(stack, Registration.STORED_ENERGY.get(), Config.CELL_CAPACITY.get(),
+                        Config.CELL_TRANSFER.get(), Config.CELL_TRANSFER.get()), Registration.ENERGY_CELL.get());
     }
 
     /** Generator fuel values: data/<namespace>/data_maps/item/generator_fuel.json. */

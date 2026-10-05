@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1 — Charge slots
+
+- **Reaper Energy Cell** and **Reaper Generator** now have a **charge slot**. Put in any item that holds FE (tools, batteries, jetpacks, armor from other mods) and it charges from the machine's power, with a charge bar and percentage in the GUI.
+- A picked-up **Energy Cell** now works as a **portable battery**: charge slots from Grim Soul Industries or other mods can fill it, and it keeps that charge when placed.
+- The Energy Cell screen now shows your inventory, so you can shift-click items into the charge slot.
+
 ## 1.0.0 — First release
 
 **Tier 1 – Reaping**
