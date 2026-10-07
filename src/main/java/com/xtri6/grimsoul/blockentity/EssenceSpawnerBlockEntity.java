@@ -55,7 +55,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvider {
     public static final UpgradeType[] CARD_SLOTS = {
             UpgradeType.SPEED, UpgradeType.COUNT, UpgradeType.RANGE,
-            UpgradeType.NO_PLAYER_NEEDED, UpgradeType.IGNORE_LIGHT, UpgradeType.IGNORE_SPAWN_CONDITIONS};
+            UpgradeType.NO_PLAYER_NEEDED, UpgradeType.IGNORE_LIGHT, UpgradeType.IGNORE_SPAWN_CONDITIONS, UpgradeType.NO_AI};
     public static final int CARD_COUNT = CARD_SLOTS.length;
     private static final int TRIES_PER_MOB = 4;
 
@@ -64,10 +64,15 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
             STATUS_CAP = 4, STATUS_OFF = 5, STATUS_NO_SPACE = 6, STATUS_NO_POWER = 7;
 
     public static final int BTN_SHOW_AREA = 0, BTN_POWER = 1, BTN_REDSTONE = 2;
+    public static final int BTN_OFFSET_BASE = 3;   // 3..8: offset X-,X+,Y-,Y+,Z-,Z+
+    public static final int BTN_SIZE_BASE = 9;     // 9..14: size X-,X+,Y-,Y+,Z-,Z+
     public static final int DATA_STATUS = 0, DATA_INTERVAL = 1, DATA_PROGRESS = 2, DATA_PER_SPAWN = 3, DATA_RADIUS = 4,
             DATA_NEARBY = 5, DATA_CAP = 6, DATA_SHOW_AREA = 7, DATA_ENABLED = 8, DATA_REDSTONE = 9,
             DATA_ENERGY_LO = 10, DATA_ENERGY_HI = 11, DATA_CAPACITY_LO = 12, DATA_CAPACITY_HI = 13, DATA_COST_LO = 14,
-            DATA_COST_HI = 15, DATA_COUNT = 16;
+            DATA_COST_HI = 15, DATA_OFF_X = 16, DATA_OFF_Y = 17, DATA_OFF_Z = 18, DATA_SIZE_X = 19, DATA_SIZE_Y = 20,
+            DATA_SIZE_Z = 21, DATA_MAX_SIZE = 22, DATA_MAX_OFFSET = 23, DATA_COUNT = 24;
+    /** How far past the spawn area the spawner still counts its own mobs toward the cap. */
+    private static final int CAP_MARGIN = 4;
 
     private final ItemStackHandler lantern = new ItemStackHandler(1) {
         @Override
@@ -92,6 +97,9 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
     private final SpawnerEnergy energy = new SpawnerEnergy(Config.SPAWNER_ENERGY_CAPACITY.get());
 
     private boolean showArea = false;
+    // The spawn area: a box offset from the spawner, sized per axis (odd sizes, so it lines up with blocks).
+    private int offX = 0, offY = 0, offZ = 0;
+    private int sizeX = -1, sizeY = 3, sizeZ = -1; // -1 = not set yet, use the full default width
     private int timer = 0;
     private int status = STATUS_NO_LANTERN;
     private int nearby = 0;
@@ -122,6 +130,14 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
                 case DATA_CAPACITY_HI -> energy.getMaxEnergyStored() >>> 16;
                 case DATA_COST_LO -> spawnCost() & 0xFFFF;
                 case DATA_COST_HI -> spawnCost() >>> 16;
+                case DATA_OFF_X -> offX;
+                case DATA_OFF_Y -> offY;
+                case DATA_OFF_Z -> offZ;
+                case DATA_SIZE_X -> areaSizeX();
+                case DATA_SIZE_Y -> sizeY;
+                case DATA_SIZE_Z -> areaSizeZ();
+                case DATA_MAX_SIZE -> getMaxSize();
+                case DATA_MAX_OFFSET -> getMaxOffset();
                 default -> 0;
             };
         }
@@ -164,10 +180,56 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
         return Config.SPAWNER_BASE_RADIUS.get() + cards.count(UpgradeType.RANGE);
     }
 
-    /** Where mobs appear: around the spawner, from one block below to one block above it. */
+    /** Largest the spawn area can be on any axis: the full width the radius allows. */
+    public int getMaxSize() {
+        return getRadius() * 2 + 1;
+    }
+
+    /** How far the center of the spawn area can be moved from the spawner. */
+    public int getMaxOffset() {
+        return getRadius();
+    }
+
+    private int areaSizeX() {
+        return sizeX < 0 ? getMaxSize() : sizeX;
+    }
+
+    private int areaSizeZ() {
+        return sizeZ < 0 ? getMaxSize() : sizeZ;
+    }
+
+    /**
+     * Where mobs appear. By default a square as wide as the radius allows, from one block below to one
+     * block above the spawner. It can be moved and shrunk (even to a single block) in the GUI.
+     */
     public AABB getSpawnArea() {
-        int r = getRadius();
-        return new AABB(worldPosition).inflate(r, 1, r);
+        return areaBox(worldPosition, offX, offY, offZ, areaSizeX(), sizeY, areaSizeZ());
+    }
+
+    private static AABB areaBox(BlockPos pos, int ox, int oy, int oz, int sx, int sy, int sz) {
+        BlockPos center = pos.offset(ox, oy, oz);
+        return new AABB(center).inflate((sx - 1) / 2.0, (sy - 1) / 2.0, (sz - 1) / 2.0);
+    }
+
+    /** Keeps the area inside what the current Range cards allow. */
+    private void clampArea() {
+        int maxSize = getMaxSize();
+        int maxOffset = getMaxOffset();
+        if (sizeX >= 0) {
+            sizeX = clampSize(sizeX, maxSize);
+        }
+        if (sizeZ >= 0) {
+            sizeZ = clampSize(sizeZ, maxSize);
+        }
+        sizeY = clampSize(sizeY, maxSize);
+        offX = Math.max(-maxOffset, Math.min(maxOffset, offX));
+        offY = Math.max(-maxOffset, Math.min(maxOffset, offY));
+        offZ = Math.max(-maxOffset, Math.min(maxOffset, offZ));
+    }
+
+    private static int clampSize(int size, int max) {
+        int clamped = Math.max(1, Math.min(max, size));
+        return clamped % 2 == 0 ? clamped - 1 : clamped;
     }
 
     public boolean isShowingArea() {
@@ -237,8 +299,9 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
 
     /** Returns true if at least one mob spawned. */
     private boolean trySpawn(ServerLevel level, EntityType<?> type) {
+        clampArea();
         AABB area = getSpawnArea();
-        nearby = level.getEntitiesOfClass(Entity.class, area.inflate(1.0), e -> e.getType() == type && e.isAlive()).size();
+        nearby = level.getEntitiesOfClass(Entity.class, area.inflate(CAP_MARGIN), e -> e.getType() == type && e.isAlive()).size();
         int cap = Config.SPAWNER_ENTITY_CAP.get();
         if (nearby >= cap) {
             status = STATUS_CAP;
@@ -246,17 +309,20 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
         }
         boolean ignoreRules = cards.count(UpgradeType.IGNORE_SPAWN_CONDITIONS) > 0;
         boolean ignoreLight = cards.count(UpgradeType.IGNORE_LIGHT) > 0;
+        boolean noAi = cards.count(UpgradeType.NO_AI) > 0;
         RandomSource random = level.getRandom();
-        int radius = getRadius();
+        int minX = (int) Math.round(area.minX), minY = (int) Math.round(area.minY), minZ = (int) Math.round(area.minZ);
+        int spanX = (int) Math.round(area.getXsize()), spanY = (int) Math.round(area.getYsize()), spanZ = (int) Math.round(area.getZsize());
         int toSpawn = Math.min(getPerSpawn(), cap - nearby);
         int spawned = 0;
 
         for (int i = 0; i < toSpawn; i++) {
             for (int attempt = 0; attempt < TRIES_PER_MOB; attempt++) {
-                double x = worldPosition.getX() + 0.5 + (random.nextDouble() * 2.0 - 1.0) * radius;
-                double y = worldPosition.getY() + random.nextInt(3) - 1;
-                double z = worldPosition.getZ() + 0.5 + (random.nextDouble() * 2.0 - 1.0) * radius;
-                if (spawnOne(level, type, x, y, z, ignoreRules, ignoreLight)) {
+                // A random block inside the area; the mob stands in the middle of it.
+                double x = minX + random.nextInt(spanX) + 0.5;
+                double y = minY + random.nextInt(spanY);
+                double z = minZ + random.nextInt(spanZ) + 0.5;
+                if (spawnOne(level, type, x, y, z, ignoreRules, ignoreLight, noAi)) {
                     spawned++;
                     break;
                 }
@@ -333,7 +399,8 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
         }
     }
 
-    private boolean spawnOne(ServerLevel level, EntityType<?> type, double x, double y, double z, boolean ignoreRules, boolean ignoreLight) {
+    private boolean spawnOne(ServerLevel level, EntityType<?> type, double x, double y, double z, boolean ignoreRules, boolean ignoreLight,
+            boolean noAi) {
         BlockPos at = BlockPos.containing(x, y, z);
         if (!level.noCollision(type.getSpawnAABB(x, y, z))) {
             return false;
@@ -358,6 +425,15 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
                 return false;
             }
             EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(at), MobSpawnType.SPAWNER, null);
+            if (noAi) {
+                // No AI card: the mob stands still and never attacks, so the farm is safe to walk through.
+                mob.setNoAi(true);
+                for (Entity rider : mob.getPassengers()) {
+                    if (rider instanceof Mob riderMob) {
+                        riderMob.setNoAi(true);
+                    }
+                }
+            }
             mob.spawnAnim();
         }
         return level.tryAddFreshEntityWithPassengers(entity);
@@ -368,6 +444,7 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
     // ------------------------------------------------------------------------------------------
 
     private void onSetupChanged() {
+        clampArea();
         if (status == STATUS_CAP || status == STATUS_NO_SPACE) {
             status = STATUS_RUNNING;
         }
@@ -376,6 +453,28 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public void handleButton(int id, Player player) {
+        if (id >= BTN_OFFSET_BASE && id < BTN_OFFSET_BASE + 6) {
+            int axis = (id - BTN_OFFSET_BASE) / 2;
+            int delta = (id - BTN_OFFSET_BASE) % 2 == 0 ? -1 : 1;
+            switch (axis) {
+                case 0 -> offX += delta;
+                case 1 -> offY += delta;
+                default -> offZ += delta;
+            }
+            onAreaChanged();
+            return;
+        }
+        if (id >= BTN_SIZE_BASE && id < BTN_SIZE_BASE + 6) {
+            int axis = (id - BTN_SIZE_BASE) / 2;
+            int delta = (id - BTN_SIZE_BASE) % 2 == 0 ? -2 : 2;
+            switch (axis) {
+                case 0 -> sizeX = areaSizeX() + delta;
+                case 1 -> sizeY += delta;
+                default -> sizeZ = areaSizeZ() + delta;
+            }
+            onAreaChanged();
+            return;
+        }
         switch (id) {
             case BTN_SHOW_AREA -> showArea = !showArea;
             case BTN_POWER -> control.togglePower();
@@ -383,6 +482,15 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
             default -> {
                 return;
             }
+        }
+        setChanged();
+        syncToClient();
+    }
+
+    private void onAreaChanged() {
+        clampArea();
+        if (status == STATUS_CAP || status == STATUS_NO_SPACE) {
+            status = STATUS_RUNNING;
         }
         setChanged();
         syncToClient();
@@ -440,7 +548,7 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
 
     private void writeClientData(CompoundTag tag) {
         tag.putBoolean("ShowArea", showArea);
-        tag.putInt("Radius", getRadius());
+        tag.putIntArray("Area", new int[] {offX, offY, offZ, areaSizeX(), sizeY, areaSizeZ()});
         getCapturedMob().ifPresent(type -> tag.putString("Mob", BuiltInRegistries.ENTITY_TYPE.getKey(type).toString()));
     }
 
@@ -451,6 +559,7 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
         tag.put("Cards", cards.serializeNBT(registries));
         tag.putBoolean("ShowArea", showArea);
         tag.putInt("Energy", energy.getEnergyStored());
+        tag.putIntArray("SpawnArea", new int[] {offX, offY, offZ, sizeX, sizeY, sizeZ});
         control.save(tag);
     }
 
@@ -468,18 +577,28 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
             energy.set(tag.getInt("Energy"));
         }
         control.load(tag);
+        int[] saved = tag.getIntArray("SpawnArea");
+        if (saved.length == 6) {
+            offX = saved[0];
+            offY = saved[1];
+            offZ = saved[2];
+            sizeX = saved[3];
+            sizeY = saved[4];
+            sizeZ = saved[5];
+        }
         // Client sync data
         clientMobId = tag.contains("Mob") ? ResourceLocation.tryParse(tag.getString("Mob")) : null;
-        if (tag.contains("Radius")) {
-            clientRadius = tag.getInt("Radius");
+        int[] area = tag.getIntArray("Area");
+        if (area.length == 6) {
+            clientArea = area;
         }
     }
 
-    /** Client copy of the radius (the client does not see the card slots outside the GUI). */
-    private int clientRadius = 4;
+    /** Client copy of the area (the client does not see the card slots outside the GUI). */
+    private int[] clientArea = {0, 0, 0, 9, 3, 9};
 
     public AABB getClientSpawnArea() {
-        return new AABB(worldPosition).inflate(clientRadius, 1, clientRadius);
+        return areaBox(worldPosition, clientArea[0], clientArea[1], clientArea[2], clientArea[3], clientArea[4], clientArea[5]);
     }
 
     @Override

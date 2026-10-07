@@ -152,6 +152,9 @@ public final class Registration {
     public static final DeferredItem<DataCoreItem> DATA_CORE = ITEMS.register("data_core",
             () -> new DataCoreItem(new Item.Properties()));
 
+    public static final DeferredItem<com.xtri6.grimsoul.item.GuideBookItem> GUIDE_BOOK = ITEMS.register("guide_book",
+            () -> new com.xtri6.grimsoul.item.GuideBookItem(new Item.Properties().stacksTo(1)));
+
     public static final Map<UpgradeType, DeferredItem<UpgradeCardItem>> CARDS = new EnumMap<>(UpgradeType.class);
     static {
         for (UpgradeType type : UpgradeType.values()) {
@@ -215,6 +218,7 @@ public final class Registration {
             .title(Component.translatable("itemGroup.grimsoul"))
             .icon(() -> REAPER_BLOCK_ITEM.get().getDefaultInstance())
             .displayItems((params, output) -> {
+                output.accept(GUIDE_BOOK.get());
                 output.accept(REAPER_BLOCK_ITEM.get());
                 output.accept(MOB_FAN_ITEM.get());
                 output.accept(XP_TANK_ITEM.get());

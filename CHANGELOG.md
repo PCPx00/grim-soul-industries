@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.1.0 — Spawn areas, No AI and the Grim Soul Codex
+
+- **Grim Soul Codex:** a new in-game guide book covering every machine, card and recipe, in order from the basics to Virtualization. Recipes are drawn live from the game, so they always match your pack. Every player gets one the first time they join (can be turned off in the config), and you can craft another from a Book and a Bone.
+- **Reaper Spawner spawn area:** move (offset) and resize the spawn area on each axis, like the Reaper Block's work area. Shrink it to a single block to spawn mobs on one exact spot. Range cards raise the limits, and Show Area draws it in the world.
+- **No AI card:** a new Reaper Spawner card. Spawned mobs have no AI, so they stand still and never attack.
+- The Reaper Spawner screen is taller to fit the new controls and the seventh card slot. Existing spawners keep their cards.
+
 ## 1.0.1 — Charge slots
 
 - **Reaper Energy Cell** and **Reaper Generator** now have a **charge slot**. Put in any item that holds FE (tools, batteries, jetpacks, armor from other mods) and it charges from the machine's power, with a charge bar and percentage in the GUI.

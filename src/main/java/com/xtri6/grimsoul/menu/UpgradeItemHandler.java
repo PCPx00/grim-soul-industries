@@ -123,6 +123,23 @@ public class UpgradeItemHandler extends ItemStackHandler {
         }
     }
 
+    /**
+     * Loads saved cards but keeps this machine's slot count. A machine that gained a card slot in an
+     * update (like the spawner's No AI slot) still loads older saves with fewer slots.
+     */
+    @Override
+    public void deserializeNBT(net.minecraft.core.HolderLookup.Provider provider, net.minecraft.nbt.CompoundTag nbt) {
+        int size = getSlots();
+        super.deserializeNBT(provider, nbt);
+        if (stacks.size() != size) {
+            net.minecraft.core.NonNullList<ItemStack> loaded = stacks;
+            stacks = net.minecraft.core.NonNullList.withSize(size, ItemStack.EMPTY);
+            for (int i = 0; i < Math.min(size, loaded.size()); i++) {
+                stacks.set(i, loaded.get(i));
+            }
+        }
+    }
+
     /** Total number of cards of this type across all slots. */
     public int count(UpgradeType type) {
         int total = 0;

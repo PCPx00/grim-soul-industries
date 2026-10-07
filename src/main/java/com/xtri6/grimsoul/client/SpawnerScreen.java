@@ -32,7 +32,7 @@ public class SpawnerScreen extends AbstractContainerScreen<SpawnerMenu> {
         this.imageWidth = SpawnerMenu.WIDTH;
         this.inventoryLabelX = GuiStyle.invX(SpawnerMenu.WIDTH);
         this.titleLabelX = 12;
-        this.imageHeight = 228;
+        this.imageHeight = SpawnerMenu.INV_Y + 84;
         this.inventoryLabelY = SpawnerMenu.INV_Y - 11;
     }
 
@@ -45,6 +45,17 @@ public class SpawnerScreen extends AbstractContainerScreen<SpawnerMenu> {
         areaButton = button(x + 12, y + 102, 72, EssenceSpawnerBlockEntity.BTN_SHOW_AREA, "spawner_area");
         powerButton = button(x + 89, y + 102, 72, EssenceSpawnerBlockEntity.BTN_POWER, "power");
         redstoneButton = button(x + 166, y + 102, 72, EssenceSpawnerBlockEntity.BTN_REDSTONE, "redstone");
+        // Spawn area: move (offset) and resize it per axis, like the Reaper Block's work area.
+        String[] axes = {"X", "Y", "Z"};
+        for (int axis = 0; axis < 3; axis++) {
+            int rowY = y + AREA_ROW_Y + axis * 16;
+            Tooltip offsetTip = Tooltip.create(Component.translatable("gui.grimsoul.spawner.offset.tooltip", axes[axis]));
+            Tooltip sizeTip = Tooltip.create(Component.translatable("gui.grimsoul.spawner.size.tooltip", axes[axis]));
+            smallButton(x + OFFSET_X, rowY, "-", EssenceSpawnerBlockEntity.BTN_OFFSET_BASE + axis * 2, offsetTip);
+            smallButton(x + OFFSET_X + 40, rowY, "+", EssenceSpawnerBlockEntity.BTN_OFFSET_BASE + axis * 2 + 1, offsetTip);
+            smallButton(x + SIZE_X, rowY, "-", EssenceSpawnerBlockEntity.BTN_SIZE_BASE + axis * 2, sizeTip);
+            smallButton(x + SIZE_X + 40, rowY, "+", EssenceSpawnerBlockEntity.BTN_SIZE_BASE + axis * 2 + 1, sizeTip);
+        }
         updateLabels();
     }
 
@@ -52,6 +63,15 @@ public class SpawnerScreen extends AbstractContainerScreen<SpawnerMenu> {
         return addRenderableWidget(Button.builder(Component.empty(), b -> press(id))
                 .bounds(x, y, width, 14)
                 .tooltip(Tooltip.create(Component.translatable("gui.grimsoul." + key + ".tooltip")))
+                .build());
+    }
+
+    private static final int AREA_TITLE_Y = 138, AREA_HEADER_Y = 150, AREA_ROW_Y = 161, OFFSET_X = 40, SIZE_X = 112;
+
+    private void smallButton(int x, int y, String label, int id, Tooltip tooltip) {
+        addRenderableWidget(Button.builder(Component.literal(label), b -> press(id))
+                .bounds(x, y, 12, 12)
+                .tooltip(tooltip)
                 .build());
     }
 
@@ -177,7 +197,24 @@ public class SpawnerScreen extends AbstractContainerScreen<SpawnerMenu> {
         graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.rate",
                 menu.getData(EssenceSpawnerBlockEntity.DATA_PER_SPAWN), seconds), 12, 80, GuiStyle.TEXT, false);
         graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.nearby",
-                menu.getData(EssenceSpawnerBlockEntity.DATA_NEARBY), menu.getData(EssenceSpawnerBlockEntity.DATA_CAP),
-                menu.getData(EssenceSpawnerBlockEntity.DATA_RADIUS)), 12, 90, GuiStyle.TEXT_DIM, false);
+                menu.getData(EssenceSpawnerBlockEntity.DATA_NEARBY), menu.getData(EssenceSpawnerBlockEntity.DATA_CAP)), 12, 90, GuiStyle.TEXT_DIM, false);
+
+        // Spawn area grid
+        graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.area"), 12, AREA_TITLE_Y, GuiStyle.TEXT_ACCENT, false);
+        GuiStyle.centered(graphics, font, Component.translatable("gui.grimsoul.offset").getString(), OFFSET_X + 26, AREA_HEADER_Y, GuiStyle.TEXT_ACCENT);
+        GuiStyle.centered(graphics, font, Component.translatable("gui.grimsoul.size").getString(), SIZE_X + 26, AREA_HEADER_Y, GuiStyle.TEXT_ACCENT);
+        String[] axes = {"X", "Y", "Z"};
+        for (int axis = 0; axis < 3; axis++) {
+            int rowY = AREA_ROW_Y + axis * 16 + 2;
+            graphics.drawString(font, axes[axis], 26, rowY, GuiStyle.TEXT_DIM, false);
+            GuiStyle.centered(graphics, font, String.valueOf((short) menu.getData(EssenceSpawnerBlockEntity.DATA_OFF_X + axis)), OFFSET_X + 26, rowY, GuiStyle.TEXT);
+            GuiStyle.centered(graphics, font, String.valueOf(menu.getData(EssenceSpawnerBlockEntity.DATA_SIZE_X + axis)), SIZE_X + 26, rowY, GuiStyle.TEXT);
+        }
+        int maxSize = menu.getData(EssenceSpawnerBlockEntity.DATA_MAX_SIZE);
+        int maxOffset = menu.getData(EssenceSpawnerBlockEntity.DATA_MAX_OFFSET);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.limits", maxSize), 176, AREA_ROW_Y + 2, GuiStyle.TEXT_DIM, false);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.limits_offset", maxOffset), 176, AREA_ROW_Y + 18, GuiStyle.TEXT_DIM, false);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.limits_hint"), 176, AREA_ROW_Y + 34, GuiStyle.TEXT_DIM, false);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.limits_hint2"), 176, AREA_ROW_Y + 44, GuiStyle.TEXT_DIM, false);
     }
 }

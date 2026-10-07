@@ -18,14 +18,14 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 /**
- * Essence Spawner menu. Slot 0: Reaper's Lantern. Slots 1-6: one card slot per spawner card.
- * Slots 7-42: player inventory and hotbar.
+ * Essence Spawner menu. Slot 0: Reaper's Lantern. Slots 1-7: one card slot per spawner card.
+ * Slots 8-43: player inventory and hotbar.
  */
 public class SpawnerMenu extends AbstractContainerMenu {
     public static final int WIDTH = 250;
     public static final int LANTERN_X = 12, LANTERN_Y = 22;
     public static final int CARDS_X = 12, CARDS_Y = 56, CARD_SPACING = 22;
-    public static final int INV_Y = 146;
+    public static final int INV_Y = 228;
     private static final int INV_X = (WIDTH - 162) / 2;
     public static final int CARD_START = 1;
     public static final int PLAYER_START = CARD_START + EssenceSpawnerBlockEntity.CARD_COUNT;

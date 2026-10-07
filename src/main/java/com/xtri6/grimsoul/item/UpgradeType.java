@@ -20,6 +20,7 @@ public enum UpgradeType {
     NO_PLAYER_NEEDED("no_player_needed", 1),
     IGNORE_LIGHT("ignore_light", 1),
     IGNORE_SPAWN_CONDITIONS("ignore_spawn_conditions", 1),
+    NO_AI("no_ai", 1),
     // Simulation Chamber card
     EFFICIENCY("efficiency", 20);
 

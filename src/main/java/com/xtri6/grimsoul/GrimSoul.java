@@ -39,6 +39,7 @@ public class GrimSoul {
         modBus.addListener(this::registerDataMaps);
         NeoForge.EVENT_BUS.addListener(this::onEntityInteract);
         NeoForge.EVENT_BUS.addListener(this::onLivingDeath);
+        NeoForge.EVENT_BUS.addListener(this::onPlayerLogin);
         com.xtri6.grimsoul.blockentity.SimDrops.register();
         container.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -104,6 +105,23 @@ public class GrimSoul {
     }
 
     /** A real player's kill adds one data to every Data Core in their inventory bound to that mob. */
+    /** Hands every player a Grim Soul Codex the first time they join (once per player, per world). */
+    private void onPlayerLogin(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) {
+        if (!Config.GIVE_GUIDE_ON_JOIN.get() || !(event.getEntity() instanceof net.minecraft.server.level.ServerPlayer player)) {
+            return;
+        }
+        net.minecraft.nbt.CompoundTag persisted = player.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+        if (persisted.getBoolean("grimsoul_got_codex")) {
+            return;
+        }
+        persisted.putBoolean("grimsoul_got_codex", true);
+        player.getPersistentData().put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG, persisted);
+        net.minecraft.world.item.ItemStack book = new net.minecraft.world.item.ItemStack(Registration.GUIDE_BOOK.get());
+        if (!player.getInventory().add(book)) {
+            player.drop(book, false);
+        }
+    }
+
     private void onLivingDeath(LivingDeathEvent event) {
         if (!(event.getSource().getEntity() instanceof ServerPlayer player) || player instanceof FakePlayer) {
             return;

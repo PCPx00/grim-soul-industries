@@ -1,0 +1,306 @@
+{
+ "title": "Grim Soul Codex",
+ "intro": "Everything about Grim Soul Industries, in the order you'll need it: the basics first, Virtualization last.\n\n§8Turn pages with the arrows, scroll wheel or arrow keys.§r",
+ "categories": [
+  {
+   "title": "Getting Started",
+   "icon": "grimsoul:guide_book",
+   "description": "What this mod does, how the tiers fit together, and the few things every machine has in common.\n\nRead this chapter first.",
+   "entries": [
+    {
+     "title": "Welcome",
+     "icon": "grimsoul:guide_book",
+     "pages": [
+      "Grim Soul Industries is a complete §5mob-farming tech line§r.\n\nIt starts with a laser grinder you can build on day one, and ends with farms that have §5no mobs in them at all§r: machines that roll a mob's real loot table without ever spawning it.\n\nEverything uses one look, one progression path, and plain §5Forge Energy (FE)§r that works with any power mod.",
+      "This book covers every block, item, card and recipe.\n\nThe recipes shown are read live from your game, so if a modpack changes one, the book shows the new version.\n\n§8Tip: lost the book? Craft a new one from a Book and a Bone.§r"
+     ]
+    },
+    {
+     "title": "The Path",
+     "icon": "grimsoul:reaper_block",
+     "pages": [
+      "§lTier I · Reaping§r\nBuild a §5Reaper Block§r to kill mobs with lasers and collect their drops and XP.\n\nCatch mobs in a §5Reaper's Lantern§r, push them with a §5Reaper Fan§r and bank XP in a §5Reaper XP Tank§r.",
+      "§lTier II · Spawning & Power§r\nSpawn any captured mob with the §5Reaper Spawner§r.\n\nBurn its drops for FE in the §5Reaper Generator§r and store power in a §5Reaper Energy Cell§r.",
+      "§lTier III · Virtualization§r\nLevel up a §5Reaper Soul Card§r, then let the §5Virtualization Chamber§r turn power straight into that mob's drops, with no mob in the world and no lag.\n\n§8Each tier unlocks the next, so follow the chapters in order.§r"
+     ]
+    },
+    {
+     "title": "Power (FE)",
+     "icon": "grimsoul:reaper_generator",
+     "pages": [
+      "Tier II and III machines run on §5Forge Energy (FE)§r.\n\nYou can make it yourself with a §5Reaper Generator§r (it burns mob drops), or use any other power mod: Mekanism, Thermal, solar panels, anything that outputs FE.\n\nMove power with any FE cable or pipe, or place machines right next to a generator or Energy Cell.",
+      "Hover over an item to see if it's generator fuel and how much FE it makes.\n\nThe §5Reaper Energy Cell§r stores 10,000,000 FE.\n\n§8Tip: numbers in this book are the defaults; a modpack's config can change them.§r"
+     ]
+    },
+    {
+     "title": "Machine Screens",
+     "icon": "grimsoul:simulation_chamber",
+     "pages": [
+      "Every machine screen shares a few controls:\n\n§5Power§r: switch the machine on or off.\n\n§5RS§r (redstone): ignore redstone, run only with a signal, or run only without one.\n\n§5Side maps§r: the colored squares, laid out like an unfolded block around its front, set what each side does. Click a square to change it.",
+      "The small swatch in the top-right corner switches the screen style between §5Reaper§r (light gray and purple), §5Vanilla§r and §5Dark§r. Your choice is remembered.\n\nHover over almost anything in a screen for an explanation.\n\n§8Tip: empty card slots show a faded picture of the card they take.§r"
+     ]
+    },
+    {
+     "title": "Upgrade Cards",
+     "icon": "grimsoul:speed_card",
+     "pages": [
+      "Machines get better with §5upgrade cards§r.\n\nEach machine has one slot per card type it accepts, and each card type has a §5limit per machine§r (shown on the card's tooltip). For example, up to 30 Speed cards fit in a Reaper Block, but only 1 Player Kill card.\n\nCards stack to 64 in your inventory, so you can carry spares.",
+      "The colored band at the bottom of a card shows where it's used:\n\n§5Gray§r: shared, works in several machines\n§5Purple§r: Reaper Block\n§5Gold§r: Reaper Spawner\n§5Cyan§r: Virtualization Chamber\n\nEach chapter covers the cards for its machines."
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Tier I · Reaping",
+   "icon": "grimsoul:reaper_block",
+   "description": "Your first farm. A Reaper Block fires lasers at every mob in its work area and collects what they drop.\n\nAdd a Fan to push mobs in, a Lantern to move mobs around, and an XP Tank to bank the experience.",
+   "entries": [
+    {
+     "title": "Reaper Block",
+     "icon": "grimsoul:reaper_block",
+     "pages": [
+      {
+       "recipe": "grimsoul:reaper_block",
+       "text": "The heart of every farm."
+      },
+      "Place it, open it, and switch it §5on§r. It starts §5off§r and set to §5hostile mobs only§r so it never zaps you by surprise.\n\nIt fires a purple laser at every mob in its §5work area§r, then pulls the drops and XP into itself.",
+      "§lWork area§r\nWith §5Auto§r on, the area sits right in front of the block (3x3x3) and grows with Range cards, up to 23x13x23.\n\nTurn §5Show area§r on to see it as an outline. The Offset and Size buttons move and resize it by hand (this turns Auto off).",
+      "§lTargets§r\nCycle between §5Hostile§r, §5Friendly§r, §5Players§r and §5All§r. Named mobs and tamed pets are left alone by default.\n\n§lStorage§r\n9 slots, plus 9 per Storage card (up to 54). §5Eject§r pushes items into chests or pipes next to it.",
+      "§lFilter§r\nPut items in the filter slots to §5whitelist§r or §5blacklist§r them. With a Void card, filtered items are deleted instead of kept.\n\n§lMagnet§r\nTurn it off to leave drops on the ground while the block keeps killing.",
+      "§lXP§r\nClick §5Take XP§r to collect it, or put an XP Tank next to the block.\n\n§8Tip: put a Reaper Soul Card in its card slot, and every kill of that mob levels the card up. See Tier III.§r"
+     ]
+    },
+    {
+     "title": "Reaper's Lantern",
+     "icon": "grimsoul:reapers_lantern",
+     "pages": [
+      {
+       "recipe": "grimsoul:reapers_lantern",
+       "text": "Carries a mob's soul."
+      },
+      "§5Right-click a mob§r to trap it inside the lantern.\n\n§5Right-click a block§r to let it out again.\n\nA filled lantern is also what tells the §5Reaper Spawner§r which mob to spawn.\n\nBosses can't be captured."
+     ]
+    },
+    {
+     "title": "Reaper Fan",
+     "icon": "grimsoul:mob_fan",
+     "pages": [
+      {
+       "recipe": "grimsoul:mob_fan",
+       "text": "Pushes mobs where you want them."
+      },
+      "The fan pushes every mob in front of it, 4 blocks by default and 2 more per Range card.\n\nUse it to push spawned mobs into a Reaper Block's work area, off a ledge, or down a corridor.\n\nTurn §5Show area§r on to see exactly what it pushes."
+     ]
+    },
+    {
+     "title": "Reaper XP Tank",
+     "icon": "grimsoul:xp_tank",
+     "pages": [
+      {
+       "recipe": "grimsoul:xp_tank",
+       "text": "Banks your experience."
+      },
+      "Stores experience as §5Liquid Experience§r (20 mB = 1 XP point), up to 1,000,000 XP.\n\nIt pulls in XP orbs within 3 blocks, plus 2 per Range card.",
+      "Next to a Reaper Block, it fills up automatically.\n\nTake XP out in its screen, or pipe the liquid to other mods. Fluid pipes and AE2 both work."
+     ]
+    },
+    {
+     "title": "Shared Cards",
+     "icon": "grimsoul:speed_card",
+     "pages": [
+      {
+       "recipe": "grimsoul:speed_card",
+       "text": "Reaper Block: attacks faster. Reaper Spawner and Virtualization Chamber: work faster. Max 30."
+      },
+      {
+       "recipe": "grimsoul:range_card",
+       "text": "Bigger work area (Reaper Block), push area (Fan), magnet reach (XP Tank) and spawn area (Spawner). Max 10."
+      }
+     ]
+    },
+    {
+     "title": "Reaper Block Cards",
+     "icon": "grimsoul:damage_card",
+     "pages": [
+      {
+       "recipe": "grimsoul:damage_card",
+       "text": "+2 damage per hit for each card. Max 35."
+      },
+      {
+       "recipe": "grimsoul:storage_card",
+       "text": "+9 inventory slots per card, up to 54. Max 5."
+      },
+      {
+       "recipe": "grimsoul:void_card",
+       "text": "Lets the filter delete unwanted items instead of keeping them. Max 1."
+      },
+      {
+       "recipe": "grimsoul:fire_aspect_card",
+       "text": "Sets mobs on fire, 4 seconds per card. Burning mobs drop cooked food. Max 10."
+      },
+      {
+       "recipe": "grimsoul:smite_card",
+       "text": "+2.5 damage per card against undead mobs. Max 10."
+      },
+      {
+       "recipe": "grimsoul:bane_of_arthropods_card",
+       "text": "+2.5 damage per card against spiders, silverfish and other arthropods. Max 10."
+      },
+      {
+       "recipe": "grimsoul:player_kill_card",
+       "text": "Kills count as player kills: mobs drop XP and player-only loot like wither skeleton skulls. Also works in the Virtualization Chamber. Max 1."
+      },
+      {
+       "recipe": "grimsoul:looting_card",
+       "text": "Looting I to X, one level per card. Needs a Player Kill card to work. Max 10."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Tier II · Spawning & Power",
+   "icon": "grimsoul:essence_spawner",
+   "description": "Stop waiting for mobs to wander in. The Reaper Spawner makes any mob you've captured, and the Reaper Generator burns their drops for power.\n\nThis tier needs FE.",
+   "entries": [
+    {
+     "title": "Reaper Spawner",
+     "icon": "grimsoul:essence_spawner",
+     "pages": [
+      {
+       "recipe": "grimsoul:essence_spawner",
+       "text": "Spawns any mob you've captured."
+      },
+      "Put a §5filled Reaper's Lantern§r in its slot and give it power.\n\nIt charges FE while its timer fills, then spawns. Slow setups still work, they just wait.\n\nBy default it spawns 1 mob every 10 seconds, needs a player within 16 blocks, and pauses at 30 of its mobs.",
+      "§lSpawn area§r\nThe §5Spawn area§r controls choose exactly where mobs appear.\n\n§5Offset§r moves the area away from the spawner, and §5Size§r sets how wide, tall and deep it is. Shrink a size to §51§r to spawn mobs on one exact block, or line them up in a single row.",
+      "Turn §5Show area§r on to see the spawn area as a gold outline. Range cards let it grow and move further.\n\nIt costs 2,000 FE per spawn, plus 400 FE for each mob in it.\n\n§8Tip: point the spawn area straight into a Reaper Block's work area for a farm that never stops.§r"
+     ]
+    },
+    {
+     "title": "Spawner Cards",
+     "icon": "grimsoul:count_card",
+     "pages": [
+      {
+       "recipe": "grimsoul:count_card",
+       "text": "+1 mob per spawn, up to 20 at once. Each extra mob adds to the FE cost. Max 19."
+      },
+      {
+       "recipe": "grimsoul:no_player_needed_card",
+       "text": "Runs with no player nearby. Max 1."
+      },
+      {
+       "recipe": "grimsoul:ignore_light_card",
+       "text": "Spawns at any light level. Mobs still need a block to stand on. Max 1."
+      },
+      {
+       "recipe": "grimsoul:ignore_spawn_conditions_card",
+       "text": "Skips every spawn rule (block type, light, biome, height). Only needs room. Max 1."
+      },
+      {
+       "recipe": "grimsoul:no_ai_card",
+       "text": "Spawned mobs have no AI. They stand completely still and never attack, so you can walk through the farm safely. Max 1."
+      }
+     ]
+    },
+    {
+     "title": "Reaper Generator",
+     "icon": "grimsoul:reaper_generator",
+     "pages": [
+      {
+       "recipe": "grimsoul:reaper_generator",
+       "text": "Turns mob drops into power."
+      },
+      "Put §5mob drops§r in its fuel slots: rotten flesh, bones and string at the low end, up to blaze rods, wither skeleton skulls and nether stars.\n\nIt stores 1,000,000 FE and sends up to 10,000 FE/t out of each energy side. It pauses, without wasting fuel, while it's full.",
+      "§lPass-through§r\nWith §5Pass§r on, items piped in that aren't fuel go to the output slots and are pushed onward, so a whole farm's drops can flow through it.\n\n§lSides§r\nThe two side maps set which sides take items in or out, and which sides push FE.",
+      "§lCharge slot§r\nPut any item that holds FE (tools, batteries, jetpacks, powered armor) in the §5Charge§r slot. It charges from the generator's power.\n\n§8Tip: fuel values are data-driven, so modpacks can add their own fuels.§r"
+     ]
+    },
+    {
+     "title": "Reaper Energy Cell",
+     "icon": "grimsoul:energy_cell",
+     "pages": [
+      {
+       "recipe": "grimsoul:energy_cell",
+       "text": "Stores 10,000,000 FE."
+      },
+      "Set each side to §5In§r (blue), §5Out§r (orange) or §5Off§r (gray). Up to 50,000 FE/t moves through each side.\n\nIt §5keeps its charge§r when you break it, so a picked-up cell is a §5portable battery§r: any charge slot, from this mod or another, can fill it.",
+      "§lCharge slot§r\nLike the generator, the cell has a §5Charge§r slot that tops up any FE item from the stored power.\n\nThe gauge on its sides shows how full it is, and a comparator reads its charge too."
+     ]
+    },
+    {
+     "title": "Building a Mob Farm",
+     "icon": "grimsoul:no_ai_card",
+     "pages": [
+      "A simple, safe farm:\n\n§l1.§r Place a §5Reaper Spawner§r with a filled lantern.\n\n§l2.§r Add a §5No AI§r card so the mobs stand still.",
+      "§l3.§r Use the §5Spawn area§r controls to put the area right in front of a §5Reaper Block§r.\n\n§l4.§r Turn on Show area on both and line the outlines up.",
+      "§l5.§r Put a §5Reaper Generator§r next to the spawner with Pass on, and send the Reaper Block's drops into it. The farm powers itself.",
+      "§l6.§r Add Speed and Count cards to the spawner, and Damage cards to the Reaper Block, as you can afford them.\n\n§8Tip: an XP Tank next to the Reaper Block banks all the XP.§r"
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Tier III · Virtualization",
+   "icon": "grimsoul:simulation_chamber",
+   "description": "The endgame. Level a Reaper Soul Card on a mob, then let the Virtualization Chamber turn power straight into that mob's drops.\n\nNo mobs in the world, no lag, and modded drops included.",
+   "entries": [
+    {
+     "title": "Reaper Soul Card",
+     "icon": "grimsoul:data_core",
+     "pages": [
+      {
+       "recipe": "grimsoul:data_core",
+       "text": "Holds a mob's soul data."
+      },
+      "§5Right-click a mob§r with a blank card to bind it to that mob type.\n\nEvery kill of that mob adds §5data§r, whether you make the kill or a §5Reaper Block§r holding the card does. Each successful Virtualization run adds a little more.\n\nBosses can't be bound by default.",
+      "§lSoul tiers§r\nMore data means a higher tier, and a higher tier means a better success chance in the chamber:\n\n§7Hollow§r · 0 data · 10%\n§aWhispering§r · 25 · 40%\n§9Restless§r · 150 · 65%\n§5Wraithbound§r · 600 · 85%\n§6Soulforged§r · 2,500 · 100%"
+     ]
+    },
+    {
+     "title": "Virtualization Chamber",
+     "icon": "grimsoul:simulation_chamber",
+     "pages": [
+      {
+       "recipe": "grimsoul:simulation_chamber",
+       "text": "Farms without mobs."
+      },
+      "Put a bound §5Reaper Soul Card§r in the chamber and give it power. Each run rolls the mob's §5real death drops§r, including drops other mods add, with §5no entity§r spawned.\n\nA run takes 10 seconds by default, or 1 second with full Speed cards.",
+      "§lPower§r\nA run costs 16,000 FE for a mob with 20 health. Tougher mobs cost more. Efficiency cards cut the cost by up to 75%.\n\n§lOutput§r\nDrops land in its 18 output slots and are pushed into any storage next to it: an Output Crate, a chest, a pipe or AE2.",
+      "Add a §5Player Kill§r card for player-only loot like wither skeleton skulls and blaze rods (and XP). A §5Looting§r card raises the drop counts.\n\n§8Tip: a failed run (the tier's success chance) still costs power, so level your card up first.§r"
+     ]
+    },
+    {
+     "title": "Chamber Cards",
+     "icon": "grimsoul:efficiency_card",
+     "pages": [
+      {
+       "recipe": "grimsoul:efficiency_card",
+       "text": "Uses less FE per run. A full set cuts the cost by 75%. Max 20."
+      },
+      "The chamber also takes §5Speed§r (faster runs), §5Looting§r (more drops) and §5Player Kill§r (player-only loot and XP) cards. Their recipes are in the Tier I chapter."
+     ]
+    },
+    {
+     "title": "Reaper Output Crate",
+     "icon": "grimsoul:output_crate",
+     "pages": [
+      {
+       "recipe": "grimsoul:output_crate",
+       "text": "Catches everything."
+      },
+      "54 slots of storage that pipes, hoppers and AE2 can use from any side.\n\nTurn on §5Void Overflow§r and anything that doesn't fit is deleted instead of backing up, so your chambers never stall.\n\nPlace one right next to a chamber and it fills automatically."
+     ]
+    },
+    {
+     "title": "The Endgame Setup",
+     "icon": "grimsoul:data_core",
+     "pages": [
+      "§l1.§r Level a Soul Card to §5Soulforged§r with a Reaper Block farm.\n\n§l2.§r Put it in a §5Virtualization Chamber§r with Speed, Efficiency and Player Kill cards.",
+      "§l3.§r Place an §5Output Crate§r next to it, with Void Overflow on.\n\n§l4.§r Power it from §5Reaper Generators§r burning the chamber's own drops, through an §5Energy Cell§r.",
+      "Build a row of chambers, one for each mob you need, and your whole mob-farming setup fits in one room.\n\n§8That's everything. Happy reaping!§r"
+     ]
+    }
+   ]
+  }
+ ]
+}

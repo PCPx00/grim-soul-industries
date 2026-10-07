@@ -135,6 +135,10 @@ public final class Config {
             .comment("Data a core gains from each successful simulation (0 = cores only level from real kills).")
             .defineInRange("simulation.dataPerRun", 1, 0, 1000);
 
+    public static final ModConfigSpec.BooleanValue GIVE_GUIDE_ON_JOIN = BUILDER
+            .comment("If true, every player gets a Grim Soul Codex (the in-game guide book) the first time they join a world.")
+            .define("guide.giveOnFirstJoin", true);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
     private Config() {}

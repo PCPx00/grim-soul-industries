@@ -3,7 +3,7 @@
 <p align="center">
   <img src="docs/gifs/badge_neoforge.gif" alt="NeoForge 1.21.1" width="24%">
   <img src="docs/gifs/badge_machines.gif" alt="8 machines" width="24%">
-  <img src="docs/gifs/badge_cards.gif" alt="15 cards" width="24%">
+  <img src="docs/gifs/badge_cards.gif" alt="16 cards" width="24%">
   <img src="docs/gifs/badge_tiers.gif" alt="5 soul tiers" width="24%">
 </p>
 
@@ -41,7 +41,7 @@ Grim Soul Industries takes everything great about mob-farming mods and puts it i
 
 | Block | What it does |
 | --- | --- |
-| **Reaper Spawner** | Spawns any captured mob, charging FE up to each spawn. Up to 20 mobs per spawn, ignore light or every spawn rule. |
+| **Reaper Spawner** | Spawns any captured mob, charging FE up to each spawn. Up to 20 mobs per spawn, an adjustable spawn area (down to a single block), and a No AI card for mobs that stand still and never attack. |
 | **Reaper Generator** | Burns mob drops for FE — rotten flesh to nether stars. Per-side item and energy config, pass-through for whole farm outputs, and a **charge slot** for FE items. |
 | **Reaper Energy Cell** | 10M FE storage with per-side In / Out / Off and a **charge slot** for FE items. Keeps its charge when broken, and works as a portable battery. |
 
@@ -53,15 +53,16 @@ Grim Soul Industries takes everything great about mob-farming mods and puts it i
 | **Reaper Virtualization Chamber** | Runs the mob's real death drops (including modded drops) with no entity in the world. Player Kill card for player-only loot like wither skeleton skulls. |
 | **Reaper Output Crate** | 54 slots of storage with void overflow so your chambers never stall. |
 
-<p align="center"><img src="docs/gifs/h_cards.gif" alt="15 Upgrade Cards" width="100%"></p>
+<p align="center"><img src="docs/gifs/h_cards.gif" alt="16 Upgrade Cards" width="100%"></p>
 
-Speed · Range · Damage · Looting · Player Kill · Storage · Void · Fire Aspect · Smite · Bane of Arthropods · Count · No Player Needed · Ignore Light · Ignore Spawn Conditions · Efficiency — each with its own art and a per-machine limit.
+Speed · Range · Damage · Looting · Player Kill · Storage · Void · Fire Aspect · Smite · Bane of Arthropods · Count · No Player Needed · Ignore Light · Ignore Spawn Conditions · No AI · Efficiency — each with its own art and a per-machine limit.
 
 <p align="center"><img src="docs/gallery/04_card_wall.png" width="85%"></p>
 
 <p align="center"><img src="docs/gifs/h_polish.gif" alt="Polish & Features" width="100%"></p>
 
 - Layered 3D machines with their own animations: floating soul crystals, spinning fan blades, soul rings, energy arcs and hologram scans.
+- **Grim Soul Codex:** an in-game guide book with every machine, card and recipe, from the basics to Virtualization.
 - Three GUI styles — **Reaper** (light gray and purple), **Vanilla** and **Dark** — switchable from any machine screen.
 - Works with any FE mod, Pipez, Mekanism cables, AE2, Refined Storage and hoppers.
 - Fully configurable (`config/grimsoul-common.toml`), with data-driven generator fuels (`data/grimsoul/data_maps/item/generator_fuel.json`).
