@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.0 — Apotheosis support, boss Soul Cards and smoother visuals
+
+- **Apotheosis support:** with a **Player Kill** card, hostile mobs killed by the Reaper Block or simulated in the Virtualization Chamber can drop Apotheosis affix weapons, tools and armor. Rarity follows the nearest player's World Tier and luck. The chance is 5% per kill by default and can be changed with `compat.apotheosisGearChance` in the config. Apotheosis is optional.
+- **Boss Soul Cards:** Soul Cards can now be bound to the **Ender Dragon** (click any part of it) and the **Wither**, so you can farm them in the Virtualization Chamber. Simulated dragons give 500 XP with a Player Kill card. The Reaper's Lantern still can't capture either of them.
+- **No AI card fixed:** mobs from a spawner with a No AI card can no longer hurt you in any way (melee, touch damage, arrows, explosions), never target you and make no sound. They stay frozen even after converting (like a zombie drowning).
+- **Reaper Block lasers fixed:** the lasers now show up reliably, with or without shaders (tested with Iris and Complementary). They fire out to the target, pulse along the beam and fade out smoothly.
+- **See-through Reaper Block screen:** the screen is now about 70% transparent, so you can see the work area outline while changing it. Labels have a shadow so they stay readable.
+- **Smoother animations:** spinning, bobbing and glowing parts on every machine now run on the client's own clock, so they no longer stutter when the server lags.
+- **Every upgrade card has its own recipe:** no more clashes (No AI and Bane of Arthropods shared a recipe before). Each recipe uses a frame item that matches the card's machine: iron for shared cards, amethyst for the Reaper Block, gold for the Reaper Spawner and prismarine for the Virtualization Chamber. The Codex shows the new recipes.
+
 ## 1.1.0 — Spawn areas, No AI and the Grim Soul Codex
 
 - **Grim Soul Codex:** a new in-game guide book covering every machine, card and recipe, in order from the basics to Virtualization. Recipes are drawn live from the game, so they always match your pack. Every player gets one the first time they join (can be turned off in the config), and you can craft another from a Book and a Bone.

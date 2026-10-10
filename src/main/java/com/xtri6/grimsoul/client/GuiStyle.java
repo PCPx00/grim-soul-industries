@@ -23,6 +23,22 @@ public final class GuiStyle {
     public static int TEXT, TEXT_ACCENT, TEXT_DIM, TEXT_OK, TEXT_WARN, TEXT_ENERGY, TEXT_IN, TEXT_OUT;
     public static int BAR_BG, BAR_FILL, BAR_FILL_LIGHT;
     private static Theme theme = Theme.REAPER;
+    /** 1 = solid. Screens that should show the world behind them (the Reaper Block) lower it while drawing. */
+    private static float opacity = 1.0F;
+
+    /** Sets how solid panels and slots are drawn (1 = solid, 0.3 = mostly see-through). */
+    public static void setOpacity(float value) {
+        opacity = Math.max(0.0F, Math.min(1.0F, value));
+    }
+
+    /** The color with its alpha scaled by the current opacity. */
+    public static int a(int argb) {
+        if (opacity >= 1.0F) {
+            return argb;
+        }
+        int alpha = Math.round(((argb >>> 24) & 0xFF) * opacity);
+        return (alpha << 24) | (argb & 0xFFFFFF);
+    }
 
     static {
         apply(Theme.REAPER);
@@ -103,45 +119,66 @@ public final class GuiStyle {
 
     /** A framed panel with a purple accent strip along the top (a plain beveled panel in vanilla style). */
     public static void panel(GuiGraphics g, int x1, int y1, int x2, int y2) {
-        if (theme == Theme.VANILLA) {
-            g.fill(x1 + 1, y1, x2 - 1, y2, PANEL_EDGE);
-            g.fill(x1, y1 + 1, x2, y2 - 1, PANEL_EDGE);
-            g.fill(x1 + 1, y1 + 1, x2 - 1, y2 - 1, PANEL_BG);
-            g.fill(x1 + 1, y1 + 1, x2 - 3, y1 + 3, PANEL_METAL_LIGHT);
-            g.fill(x1 + 1, y1 + 1, x1 + 3, y2 - 3, PANEL_METAL_LIGHT);
-            g.fill(x1 + 3, y2 - 3, x2 - 1, y2 - 1, PANEL_SHADOW);
-            g.fill(x2 - 3, y1 + 3, x2 - 1, y2 - 1, PANEL_SHADOW);
+        if (opacity < 1.0F) {
+            // See-through: one flat fill (layers would add up) with a solid outline and accent line.
+            g.fill(x1 + 1, y1 + 1, x2 - 1, y2 - 1, a(PANEL_BG));
+            outline(g, x1, y1, x2, y2, PANEL_EDGE);
+            if (theme != Theme.VANILLA) {
+                g.fill(x1 + 3, y1 + 3, x2 - 3, y1 + 4, ACCENT);
+            }
             return;
         }
-        g.fill(x1, y1, x2, y2, PANEL_EDGE);
-        g.fill(x1 + 1, y1 + 1, x2 - 1, y2 - 1, PANEL_METAL);
-        g.fill(x1 + 1, y1 + 1, x2 - 1, y1 + 2, PANEL_METAL_LIGHT);
-        g.fill(x1 + 1, y2 - 2, x2 - 1, y2 - 1, PANEL_SHADOW);
-        g.fill(x1 + 3, y1 + 3, x2 - 3, y2 - 3, PANEL_BG);
-        g.fill(x1 + 3, y1 + 3, x2 - 3, y1 + 4, ACCENT);
+        if (theme == Theme.VANILLA) {
+            g.fill(x1 + 1, y1, x2 - 1, y2, a(PANEL_EDGE));
+            g.fill(x1, y1 + 1, x2, y2 - 1, a(PANEL_EDGE));
+            g.fill(x1 + 1, y1 + 1, x2 - 1, y2 - 1, a(PANEL_BG));
+            g.fill(x1 + 1, y1 + 1, x2 - 3, y1 + 3, a(PANEL_METAL_LIGHT));
+            g.fill(x1 + 1, y1 + 1, x1 + 3, y2 - 3, a(PANEL_METAL_LIGHT));
+            g.fill(x1 + 3, y2 - 3, x2 - 1, y2 - 1, a(PANEL_SHADOW));
+            g.fill(x2 - 3, y1 + 3, x2 - 1, y2 - 1, a(PANEL_SHADOW));
+            return;
+        }
+        g.fill(x1, y1, x2, y2, a(PANEL_EDGE));
+        g.fill(x1 + 1, y1 + 1, x2 - 1, y2 - 1, a(PANEL_METAL));
+        g.fill(x1 + 1, y1 + 1, x2 - 1, y1 + 2, a(PANEL_METAL_LIGHT));
+        g.fill(x1 + 1, y2 - 2, x2 - 1, y2 - 1, a(PANEL_SHADOW));
+        g.fill(x1 + 3, y1 + 3, x2 - 3, y2 - 3, a(PANEL_BG));
+        g.fill(x1 + 3, y1 + 3, x2 - 3, y1 + 4, a(ACCENT));
         // Corner rivets
-        g.fill(x1 + 1, y1 + 1, x1 + 3, y1 + 3, ACCENT_GLOW);
-        g.fill(x2 - 3, y1 + 1, x2 - 1, y1 + 3, ACCENT_GLOW);
-        g.fill(x1 + 1, y2 - 3, x1 + 3, y2 - 1, ACCENT_GLOW);
-        g.fill(x2 - 3, y2 - 3, x2 - 1, y2 - 1, ACCENT_GLOW);
+        g.fill(x1 + 1, y1 + 1, x1 + 3, y1 + 3, a(ACCENT_GLOW));
+        g.fill(x2 - 3, y1 + 1, x2 - 1, y1 + 3, a(ACCENT_GLOW));
+        g.fill(x1 + 1, y2 - 3, x1 + 3, y2 - 1, a(ACCENT_GLOW));
+        g.fill(x2 - 3, y2 - 3, x2 - 1, y2 - 1, a(ACCENT_GLOW));
     }
 
     /** A recessed item slot: dark top-left edge, light bottom-right edge. */
     public static void slot(GuiGraphics g, int x, int y, int bg) {
-        g.fill(x - 1, y - 1, x + 17, y + 17, SLOT_LIGHT_EDGE);
-        g.fill(x - 1, y - 1, x + 16, y + 16, SLOT_DARK_EDGE);
-        g.fill(x, y, x + 16, y + 16, bg);
+        if (opacity < 1.0F) {
+            g.fill(x, y, x + 16, y + 16, a(bg));
+            outline(g, x - 1, y - 1, x + 17, y + 17, SLOT_DARK_EDGE);
+            return;
+        }
+        g.fill(x - 1, y - 1, x + 17, y + 17, a(SLOT_LIGHT_EDGE));
+        g.fill(x - 1, y - 1, x + 16, y + 16, a(SLOT_DARK_EDGE));
+        g.fill(x, y, x + 16, y + 16, a(bg));
     }
 
     /** A horizontal fill bar with a soft shine along its top. */
     public static void bar(GuiGraphics g, int x1, int y1, int x2, int y2, float fraction) {
-        g.fill(x1 - 1, y1 - 1, x2 + 1, y2 + 1, SLOT_DARK_EDGE);
-        g.fill(x1, y1, x2, y2, BAR_BG);
+        g.fill(x1 - 1, y1 - 1, x2 + 1, y2 + 1, a(SLOT_DARK_EDGE));
+        g.fill(x1, y1, x2, y2, a(BAR_BG));
         int filled = x1 + Math.round((x2 - x1) * Math.max(0.0F, Math.min(1.0F, fraction)));
         if (filled > x1) {
-            g.fill(x1, y1, filled, y2, BAR_FILL);
-            g.fill(x1, y1, filled, y1 + 2, BAR_FILL_LIGHT);
+            g.fill(x1, y1, filled, y2, a(BAR_FILL));
+            g.fill(x1, y1, filled, y1 + 2, a(BAR_FILL_LIGHT));
         }
+    }
+
+    private static void outline(GuiGraphics g, int x1, int y1, int x2, int y2, int color) {
+        g.fill(x1, y1, x2, y1 + 1, color);
+        g.fill(x1, y2 - 1, x2, y2, color);
+        g.fill(x1, y1 + 1, x1 + 1, y2 - 1, color);
+        g.fill(x2 - 1, y1 + 1, x2, y2 - 1, color);
     }
 
     /** Text centered on cx, without a shadow (shadows look muddy on the light themes). */

@@ -2,18 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "PAP",
-    "AXA",
-    "PAP"
+    "PFP",
+    "XYX",
+    "PFP"
   ],
   "key": {
     "P": {
       "item": "minecraft:paper"
     },
-    "A": {
-      "item": "minecraft:amethyst_shard"
+    "F": {
+      "item": "minecraft:gold_ingot"
     },
     "X": {
+      "item": "minecraft:dirt"
+    },
+    "Y": {
       "item": "minecraft:ender_eye"
     }
   },

@@ -36,7 +36,7 @@ public class EssenceSpawnerRenderer implements BlockEntityRenderer<EssenceSpawne
         Entity entity = be.getDisplayEntity(level);
         if (entity != null) {
             boolean active = be.getBlockState().getValue(MachineBlock.ACTIVE);
-            float time = level.getGameTime() + partialTick;
+            float time = AnimClock.time(partialTick);
             float spin = time * (active ? 6.0F : 1.5F);
             float scale = 0.53125F;
             float size = Math.max(entity.getBbWidth(), entity.getBbHeight());
@@ -54,9 +54,9 @@ public class EssenceSpawnerRenderer implements BlockEntityRenderer<EssenceSpawne
         }
         boolean running = be.getBlockState().getValue(MachineBlock.ACTIVE);
         if (running) {
-            float t = level.getGameTime() + partialTick;
+            float t = AnimClock.time(partialTick);
             float charge = (t * 0.015F) % 1.0F;
-            com.mojang.blaze3d.vertex.VertexConsumer glow = buffers.getBuffer(RenderType.lightning());
+            com.mojang.blaze3d.vertex.VertexConsumer glow = Fx.glow(buffers);
             poseStack.pushPose();
             poseStack.translate(0.5F, 0.5F, 0.5F);
             poseStack.mulPose(Axis.YP.rotationDegrees(t * 3.0F));

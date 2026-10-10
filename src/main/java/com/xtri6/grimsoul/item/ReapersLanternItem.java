@@ -49,6 +49,10 @@ public class ReapersLanternItem extends Item {
             return false;
         }
         EntityType<?> type = target.getType();
+        // Never the Ender Dragon or the Wither (or any other boss), so a Reaper Spawner can't make them.
+        if (type == EntityType.ENDER_DRAGON || type == EntityType.WITHER) {
+            return false;
+        }
         return !type.is(Tags.EntityTypes.BOSSES) && !type.is(Registration.CAPTURE_BLACKLIST);
     }
 

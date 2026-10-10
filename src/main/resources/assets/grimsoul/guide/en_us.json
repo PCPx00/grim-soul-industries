@@ -45,7 +45,7 @@
      "icon": "grimsoul:speed_card",
      "pages": [
       "Machines get better with §5upgrade cards§r.\n\nEach machine has one slot per card type it accepts, and each card type has a §5limit per machine§r (shown on the card's tooltip). For example, up to 30 Speed cards fit in a Reaper Block, but only 1 Player Kill card.\n\nCards stack to 64 in your inventory, so you can carry spares.",
-      "The colored band at the bottom of a card shows where it's used:\n\n§5Gray§r: shared, works in several machines\n§5Purple§r: Reaper Block\n§5Gold§r: Reaper Spawner\n§5Cyan§r: Virtualization Chamber\n\nEach chapter covers the cards for its machines."
+      "The colored band at the bottom of a card shows where it's used:\n\n§5Gray§r: shared (iron)\n§5Purple§r: Reaper Block (amethyst)\n§5Gold§r: Reaper Spawner (gold)\n§5Cyan§r: Virtualization Chamber (prismarine)\n\nThe item in brackets is in that card's recipe, above and below the center. Each chapter covers the cards for its machines."
      ]
     }
    ]
@@ -78,7 +78,7 @@
        "recipe": "grimsoul:reapers_lantern",
        "text": "Carries a mob's soul."
       },
-      "§5Right-click a mob§r to trap it inside the lantern.\n\n§5Right-click a block§r to let it out again.\n\nA filled lantern is also what tells the §5Reaper Spawner§r which mob to spawn.\n\nBosses can't be captured."
+      "§5Right-click a mob§r to trap it inside the lantern.\n\n§5Right-click a block§r to let it out again.\n\nA filled lantern is also what tells the §5Reaper Spawner§r which mob to spawn.\n\nBosses (like the Ender Dragon and the Wither) can't be captured."
      ]
     },
     {
@@ -148,7 +148,7 @@
       },
       {
        "recipe": "grimsoul:player_kill_card",
-       "text": "Kills count as player kills: mobs drop XP and player-only loot like wither skeleton skulls. Also works in the Virtualization Chamber. Max 1."
+       "text": "Kills count as player kills: mobs drop XP and player-only loot like wither skeleton skulls. Also works in the Virtualization Chamber. With §5Apotheosis§r installed, hostile mobs can also drop affix gear. Max 1."
       },
       {
        "recipe": "grimsoul:looting_card",
@@ -252,7 +252,7 @@
        "recipe": "grimsoul:data_core",
        "text": "Holds a mob's soul data."
       },
-      "§5Right-click a mob§r with a blank card to bind it to that mob type.\n\nEvery kill of that mob adds §5data§r, whether you make the kill or a §5Reaper Block§r holding the card does. Each successful Virtualization run adds a little more.\n\nBosses can't be bound by default.",
+      "§5Right-click a mob§r with a blank card to bind it to that mob type.\n\nEvery kill of that mob adds §5data§r, whether you make the kill or a §5Reaper Block§r holding the card does. Each successful Virtualization run adds a little more.\n\nThe §5Ender Dragon§r and the §5Wither§r can be bound (click any part of the dragon). Other bosses can't by default.",
       "§lSoul tiers§r\nMore data means a higher tier, and a higher tier means a better success chance in the chamber:\n\n§7Hollow§r · 0 data · 10%\n§aWhispering§r · 25 · 40%\n§9Restless§r · 150 · 65%\n§5Wraithbound§r · 600 · 85%\n§6Soulforged§r · 2,500 · 100%"
      ]
     },

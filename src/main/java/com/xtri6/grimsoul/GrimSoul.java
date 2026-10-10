@@ -40,6 +40,7 @@ public class GrimSoul {
         NeoForge.EVENT_BUS.addListener(this::onEntityInteract);
         NeoForge.EVENT_BUS.addListener(this::onLivingDeath);
         NeoForge.EVENT_BUS.addListener(this::onPlayerLogin);
+        com.xtri6.grimsoul.machine.NoAiMobs.register();
         com.xtri6.grimsoul.blockentity.SimDrops.register();
         container.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
@@ -87,7 +88,12 @@ public class GrimSoul {
      */
     private void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
         ItemStack stack = event.getItemStack();
-        if (stack.getItem() instanceof DataCoreItem core && event.getTarget() instanceof LivingEntity target) {
+        net.minecraft.world.entity.Entity clicked = event.getTarget();
+        // Big multi-part mobs (the Ender Dragon) are clicked through one of their parts.
+        if (clicked instanceof net.neoforged.neoforge.entity.PartEntity<?> part) {
+            clicked = part.getParent();
+        }
+        if (stack.getItem() instanceof DataCoreItem core && clicked instanceof LivingEntity target) {
             InteractionResult result = core.interactLivingEntity(stack, event.getEntity(), target, event.getHand());
             if (result != InteractionResult.PASS) {
                 event.setCancellationResult(result);
@@ -95,7 +101,7 @@ public class GrimSoul {
             }
             return;
         }
-        if (stack.getItem() instanceof ReapersLanternItem lantern && event.getTarget() instanceof LivingEntity target) {
+        if (stack.getItem() instanceof ReapersLanternItem lantern && clicked instanceof LivingEntity target) {
             InteractionResult result = lantern.interactLivingEntity(stack, event.getEntity(), target, event.getHand());
             if (result != InteractionResult.PASS) {
                 event.setCancellationResult(result);

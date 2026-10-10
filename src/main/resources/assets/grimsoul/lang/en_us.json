@@ -16,7 +16,7 @@
   "tooltip.grimsoul.card.range": "Reaper Block: bigger work area. Reaper Fan: bigger push area. Reaper XP Tank: longer magnet reach. Reaper Spawner: wider spawn area.",
   "tooltip.grimsoul.card.damage": "Reaper Block: more damage per hit",
   "tooltip.grimsoul.card.looting": "Reaper Block: Looting I-X (needs a Player Kill card)",
-  "tooltip.grimsoul.card.player_kill": "Reaper Block and Virtualization Chamber: kills count as player kills (XP and player-only drops like wither skeleton skulls)",
+  "tooltip.grimsoul.card.player_kill": "Reaper Block and Virtualization Chamber: kills count as player kills (XP and player-only drops like wither skeleton skulls). With Apotheosis, hostile mobs can also drop affix gear",
   "tooltip.grimsoul.card.storage": "Reaper Block: +9 inventory slots per card",
   "tooltip.grimsoul.card.void": "Reaper Block: lets the filter delete unwanted items",
   "tooltip.grimsoul.lantern.empty": "Right-click a mob to capture it",

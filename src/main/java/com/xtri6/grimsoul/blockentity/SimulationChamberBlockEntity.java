@@ -342,7 +342,15 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
             victim.lastHurtByPlayer = playerKill ? player : null;
             victim.lastHurtByPlayerTime = playerKill ? 100 : 0;
             victim.skipDropExperience();
-            List<ItemStack> drops = SimDrops.capture(victim, () -> SimDrops.dropAllDeathLoot(victim, level, source));
+            List<ItemStack> drops = new java.util.ArrayList<>(
+                    SimDrops.capture(victim, () -> SimDrops.dropAllDeathLoot(victim, level, source)));
+            if (playerKill) {
+                // Apotheosis: a chance at affix gear, like a real player kill would give.
+                ItemStack gear = com.xtri6.grimsoul.compat.ApothCompat.rollPlayerKillGear(level, victim, worldPosition, player);
+                if (!gear.isEmpty()) {
+                    drops.add(gear);
+                }
+            }
             // If the output fills up mid-run, the rest of that run's drops are lost (never spilled into the world).
             for (ItemStack stack : drops) {
                 ItemHandlerHelper.insertItemStacked(output, stack, false);
@@ -354,6 +362,9 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
         player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 
         int xp = playerKill ? entity.getExperienceReward(level, player) : 0;
+        if (playerKill && entity instanceof net.minecraft.world.entity.boss.enderdragon.EnderDragon) {
+            xp = 500; // The dragon drops its XP during its death animation instead: 500 for every kill after the first.
+        }
         if (xp > 0) {
             storedXp = (int) Math.min(Integer.MAX_VALUE, (long) storedXp + xp);
         }

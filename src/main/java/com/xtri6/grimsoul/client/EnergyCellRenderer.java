@@ -24,9 +24,9 @@ public class EnergyCellRenderer implements BlockEntityRenderer<EnergyCellBlockEn
         if (level == null) {
             return;
         }
-        float t = level.getGameTime() + partialTick;
+        float t = AnimClock.time(partialTick);
         int fill = be.getBlockState().getValue(EnergyCellBlock.LEVEL);
-        VertexConsumer glow = buffers.getBuffer(RenderType.lightning());
+        VertexConsumer glow = Fx.glow(buffers);
         if (be.getBlockState().getValue(MachineBlock.ACTIVE)) {
             long seed = (long) t;
             Fx.arc(glow, poseStack.last(), 4.5F / 16, 16.2F / 16, 0.5F, 11.5F / 16, 16.2F / 16, 0.5F, seed, 1.0F, 0.85F, 0.3F, 0.8F);

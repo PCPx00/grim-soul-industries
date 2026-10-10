@@ -24,7 +24,7 @@ public class GeneratorRenderer implements BlockEntityRenderer<ReaperGeneratorBlo
         if (level == null || !be.getBlockState().getValue(MachineBlock.ACTIVE)) {
             return;
         }
-        float t = level.getGameTime() + partialTick;
+        float t = AnimClock.time(partialTick);
         float bob = (float) Math.sin(t * 0.15F) * 0.06F;
         poseStack.pushPose();
         poseStack.translate(0.5F, 1.05F + bob, 0.5F);
@@ -34,7 +34,7 @@ public class GeneratorRenderer implements BlockEntityRenderer<ReaperGeneratorBlo
         Fx.part(poseStack, buffers, Fx.GENERATOR_RING, RenderType.cutout(), Fx.fullBright());
         poseStack.popPose();
 
-        VertexConsumer glow = buffers.getBuffer(RenderType.lightning());
+        VertexConsumer glow = Fx.glow(buffers);
         Fx.ring(glow, poseStack.last(), 0.5F, 1.05F + bob, 0.5F, 0.2F, 0.05F, 20, t * 0.2F, 0.65F, 0.35F, 1.0F, 0.5F, true);
         // Arcs from the coil to a post, changing every few ticks.
         long seed = (long) (t / 3);

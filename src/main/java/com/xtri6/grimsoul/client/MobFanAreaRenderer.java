@@ -35,7 +35,7 @@ public class MobFanAreaRenderer implements BlockEntityRenderer<MobFanBlockEntity
             return;
         }
         boolean active = be.getBlockState().getValue(com.xtri6.grimsoul.block.MachineBlock.ACTIVE);
-        float angle = be.bladeAngle(partialTick, active);
+        float angle = be.bladeAngle(AnimClock.time(partialTick), active);
         poseStack.pushPose();
         Fx.face(poseStack, be.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING));
         poseStack.translate(0.5F, 0.5F, 0.0F);

@@ -426,13 +426,8 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
             }
             EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(at), MobSpawnType.SPAWNER, null);
             if (noAi) {
-                // No AI card: the mob stands still and never attacks, so the farm is safe to walk through.
-                mob.setNoAi(true);
-                for (Entity rider : mob.getPassengers()) {
-                    if (rider instanceof Mob riderMob) {
-                        riderMob.setNoAi(true);
-                    }
-                }
+                // No AI card: the mob stands still, makes no noise and can't hurt anyone.
+                com.xtri6.grimsoul.machine.NoAiMobs.apply(mob);
             }
             mob.spawnAnim();
         }

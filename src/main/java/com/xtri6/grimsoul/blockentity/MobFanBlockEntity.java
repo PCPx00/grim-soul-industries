@@ -47,9 +47,9 @@ public class MobFanBlockEntity extends CardMachineBlockEntity {
     private float bladeAngle = 0.0F;
     private double lastBladeTime = -1.0;
 
-    /** Client: the blades' current angle in degrees, advanced by real time. */
-    public float bladeAngle(float partialTick, boolean running) {
-        double now = (level != null ? level.getGameTime() : 0) + partialTick;
+    /** Client: the blades' current angle in degrees, advanced by the client's smooth animation clock. */
+    public float bladeAngle(float animTime, boolean running) {
+        double now = animTime;
         double dt = lastBladeTime < 0 ? 0 : Math.max(0.0, Math.min(5.0, now - lastBladeTime));
         lastBladeTime = now;
         bladeSpin += ((running ? 1.0F : 0.0F) - bladeSpin) * (float) Math.min(1.0, dt * 0.04);

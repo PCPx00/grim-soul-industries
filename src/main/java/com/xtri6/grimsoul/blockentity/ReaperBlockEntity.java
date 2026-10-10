@@ -98,8 +98,13 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
 
     /** Block event id: the server tells clients which mob a laser just hit (param = entity id). */
     public static final int EVENT_LASER = 1;
-    /** How long a laser beam stays visible, in ticks. */
-    public static final int BEAM_TICKS = 8;
+    /**
+     * How long a laser stays locked on a mob after a hit, in ticks. Longer than the slowest attack
+     * interval, so a mob that keeps getting hit shows one steady beam instead of a flicker.
+     */
+    public static final int BEAM_TICKS = 26;
+    /** Client only: the smooth animation clock (set by the client setup), used to time beams. */
+    public static java.util.function.LongSupplier clientClock = () -> 0L;
     private static final int MAX_BEAMS_PER_CYCLE = 8;
     private static final float SMITE_BANE_DAMAGE_PER_LEVEL = 2.5F;
 
@@ -188,6 +193,8 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
 
     /** Client only: entity id -> game time it was hit, for drawing laser beams. */
     private final Map<Integer, Long> beamTargets = new HashMap<>();
+    /** Client only: entity id -> last time it was hit (keeps the beam on while hits keep coming). */
+    private final Map<Integer, Long> beamRefresh = new HashMap<>();
 
     private final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -311,6 +318,13 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
             mob.hurt(mob instanceof Player ? playerSource : mobSource, damage);
             if (mob.isDeadOrDying()) {
                 creditCore(mob.getType());
+                // Player Kill card + Apotheosis: a chance at affix gear, dropped where the mob died for the magnet.
+                if (!(mob instanceof Player) && mobSource.getEntity() instanceof Player killer) {
+                    ItemStack gear = com.xtri6.grimsoul.compat.ApothCompat.rollPlayerKillGear(level, mob, worldPosition, killer);
+                    if (!gear.isEmpty()) {
+                        mob.spawnAtLocation(gear);
+                    }
+                }
             }
             if (beams < MAX_BEAMS_PER_CYCLE) {
                 level.blockEvent(worldPosition, state.getBlock(), EVENT_LASER, mob.getId());
@@ -337,7 +351,11 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
             return super.triggerEvent(id, param);
         }
         if (level != null && level.isClientSide) {
-            beamTargets.put(param, level.getGameTime());
+            Long previous = beamTargets.get(param);
+            long now = clientClock.getAsLong();
+            // Keep the original shot time while the beam is still on, so it doesn't re-fire every hit.
+            beamTargets.put(param, previous != null && now - previous < BEAM_TICKS ? now - Math.min(now - previous, 4) : now);
+            beamRefresh.put(param, now);
             Entity target = level.getEntity(param);
             if (target != null) {
                 for (int i = 0; i < 4; i++) {
@@ -352,6 +370,11 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
     /** Client side: live beams (entity id -> time of hit). Old entries are dropped by the renderer. */
     public Map<Integer, Long> getBeamTargets() {
         return beamTargets;
+    }
+
+    /** Client side: when each beam's mob was last hit. */
+    public Map<Integer, Long> getBeamRefresh() {
+        return beamRefresh;
     }
 
     private DamageSource createDamageSource(ServerLevel level) {

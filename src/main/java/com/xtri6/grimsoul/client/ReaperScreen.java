@@ -167,6 +167,20 @@ public class ReaperScreen extends AbstractContainerScreen<ReaperMenu> {
         renderTooltip(graphics, mouseX, mouseY);
     }
 
+    /** No blurred or darkened world behind this screen: you can see the work-area outline while you set it up. */
+    @Override
+    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        GuiStyle.setOpacity(SEE_THROUGH);
+        try {
+            renderBg(graphics, partialTick, mouseX, mouseY);
+        } finally {
+            GuiStyle.setOpacity(1.0F);
+        }
+    }
+
+    /** How solid the panels are (0.3 = about 70% see-through). */
+    private static final float SEE_THROUGH = 0.3F;
+
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         int x = leftPos;
@@ -199,14 +213,15 @@ public class ReaperScreen extends AbstractContainerScreen<ReaperMenu> {
 
     @Override
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        graphics.drawString(font, title, titleLabelX, titleLabelY, GuiStyle.TEXT_ACCENT, false);
-        graphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, GuiStyle.TEXT_DIM, false);
+        // The panel is see-through, so labels get a shadow and full brightness to stay readable over the world.
+        graphics.drawString(font, title, titleLabelX, titleLabelY, GuiStyle.TEXT_ACCENT, true);
+        graphics.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, GuiStyle.TEXT, true);
 
         int side = ReaperMenu.SIDE_X;
-        graphics.drawString(font, Component.translatable("gui.grimsoul.upgrades"), side, 7, GuiStyle.TEXT_ACCENT, false);
-        graphics.drawString(font, Component.translatable("gui.grimsoul.filter"), side, ReaperMenu.FILTER_Y - 10, GuiStyle.TEXT_ACCENT, false);
-        graphics.drawString(font, Component.translatable("gui.grimsoul.offset"), 208, AREA_HEADER_Y, GuiStyle.TEXT_ACCENT, false);
-        graphics.drawString(font, Component.translatable("gui.grimsoul.size"), 294, AREA_HEADER_Y, GuiStyle.TEXT_ACCENT, false);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.upgrades"), side, 7, GuiStyle.TEXT_ACCENT, true);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.filter"), side, ReaperMenu.FILTER_Y - 10, GuiStyle.TEXT_ACCENT, true);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.offset"), 208, AREA_HEADER_Y, GuiStyle.TEXT_ACCENT, true);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.size"), 294, AREA_HEADER_Y, GuiStyle.TEXT_ACCENT, true);
 
         String[] axes = {"X", "Y", "Z"};
         int[] offsets = {
@@ -219,14 +234,14 @@ public class ReaperScreen extends AbstractContainerScreen<ReaperMenu> {
                 menu.getData(ReaperBlockEntity.DATA_SIZE_Z)};
         for (int axis = 0; axis < 3; axis++) {
             int rowY = AREA_ROW_Y[axis] + 2;
-            graphics.drawString(font, axes[axis], side, rowY, GuiStyle.TEXT_DIM, false);
-            GuiStyle.centered(graphics, font, String.valueOf((short) offsets[axis]), 231, rowY, GuiStyle.TEXT);
-            GuiStyle.centered(graphics, font, String.valueOf(sizes[axis]), 309, rowY, GuiStyle.TEXT);
+            graphics.drawString(font, axes[axis], side, rowY, GuiStyle.TEXT, true);
+            GuiStyle.centered(graphics, font, Component.literal(String.valueOf((short) offsets[axis])), 231, rowY, GuiStyle.TEXT, true);
+            GuiStyle.centered(graphics, font, Component.literal(String.valueOf(sizes[axis])), 309, rowY, GuiStyle.TEXT, true);
         }
 
-        graphics.drawString(font, Component.translatable("gui.grimsoul.xp", GuiStyle.compact(menu.getStoredXp())), side, INFO_Y, GuiStyle.TEXT, false);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.xp", GuiStyle.compact(menu.getStoredXp())), side, INFO_Y, GuiStyle.TEXT, true);
         graphics.drawString(font, Component.translatable("gui.grimsoul.limits",
-                menu.getData(ReaperBlockEntity.DATA_MAX_SIZE), menu.getData(ReaperBlockEntity.DATA_MAX_OFFSET)), side, INFO_Y + 10, GuiStyle.TEXT_DIM, false);
-        graphics.drawString(font, Component.translatable("gui.grimsoul.slots", menu.getActiveSlots(), ReaperBlockEntity.MAX_SLOTS), side, INFO_Y + 20, GuiStyle.TEXT_DIM, false);
+                menu.getData(ReaperBlockEntity.DATA_MAX_SIZE), menu.getData(ReaperBlockEntity.DATA_MAX_OFFSET)), side, INFO_Y + 10, GuiStyle.TEXT, true);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.slots", menu.getActiveSlots(), ReaperBlockEntity.MAX_SLOTS), side, INFO_Y + 20, GuiStyle.TEXT, true);
     }
 }

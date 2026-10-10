@@ -37,8 +37,8 @@ public class XpTankRenderer implements BlockEntityRenderer<XpTankBlockEntity> {
     public void render(XpTankBlockEntity be, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int packedOverlay) {
         if (be.getLevel() != null && be.getBlockState().getValue(com.xtri6.grimsoul.block.MachineBlock.ACTIVE)) {
             // Green XP motes orbit the tank while the magnet pulls.
-            float t = be.getLevel().getGameTime() + partialTick;
-            com.mojang.blaze3d.vertex.VertexConsumer glow = buffers.getBuffer(RenderType.lightning());
+            float t = AnimClock.time(partialTick);
+            com.mojang.blaze3d.vertex.VertexConsumer glow = Fx.glow(buffers);
             for (int i = 0; i < 6; i++) {
                 double a = t * 0.06 + i * Math.PI / 3;
                 float x = 0.5F + (float) Math.cos(a) * 0.62F;

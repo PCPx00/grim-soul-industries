@@ -139,6 +139,12 @@ public final class Config {
             .comment("If true, every player gets a Grim Soul Codex (the in-game guide book) the first time they join a world.")
             .define("guide.giveOnFirstJoin", true);
 
+    public static final ModConfigSpec.DoubleValue APOTH_GEAR_CHANCE = BUILDER
+            .comment("Apotheosis only: chance (0-1) that a hostile mob killed with a Player Kill card (Reaper Block or",
+                    "Virtualization Chamber) also drops a random Apotheosis affix weapon, tool or armor piece.",
+                    "Its rarity follows the nearest player's World Tier and luck. 0 turns this off.")
+            .defineInRange("compat.apotheosisGearChance", 0.05, 0.0, 1.0);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
     private Config() {}

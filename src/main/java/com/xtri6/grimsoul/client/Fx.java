@@ -42,6 +42,54 @@ public final class Fx {
                 model, 1.0F, 1.0F, 1.0F, light, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, type);
     }
 
+    private static final net.minecraft.resources.ResourceLocation WHITE =
+            net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(com.xtri6.grimsoul.GrimSoul.MODID, "textures/misc/glow.png");
+
+    /**
+     * A buffer for glowing colored shapes (rings, halos, arcs). It draws through the entity
+     * translucent-emissive pipeline with a plain white texture, which shader packs (Iris, Oculus)
+     * render properly; the vanilla "lightning" pipeline is skipped by many of them.
+     */
+    public static VertexConsumer glow(MultiBufferSource buffers) {
+        return new GlowConsumer(buffers.getBuffer(RenderType.entityTranslucentEmissive(WHITE)));
+    }
+
+    /** Takes position + color calls and fills in the texture, overlay, light and normal the entity format needs. */
+    private record GlowConsumer(VertexConsumer delegate) implements VertexConsumer {
+        @Override
+        public VertexConsumer addVertex(float x, float y, float z) {
+            delegate.addVertex(x, y, z);
+            return this;
+        }
+
+        @Override
+        public VertexConsumer setColor(int r, int g, int b, int a) {
+            delegate.setColor(r, g, b, a).setUv(0.5F, 0.5F).setOverlay(OverlayTexture.NO_OVERLAY)
+                    .setLight(LightTexture.FULL_BRIGHT).setNormal(0.0F, 1.0F, 0.0F);
+            return this;
+        }
+
+        @Override
+        public VertexConsumer setUv(float u, float v) {
+            return this;
+        }
+
+        @Override
+        public VertexConsumer setUv1(int u, int v) {
+            return this;
+        }
+
+        @Override
+        public VertexConsumer setUv2(int u, int v) {
+            return this;
+        }
+
+        @Override
+        public VertexConsumer setNormal(float x, float y, float z) {
+            return this;
+        }
+    }
+
     public static int fullBright() {
         return LightTexture.FULL_BRIGHT;
     }

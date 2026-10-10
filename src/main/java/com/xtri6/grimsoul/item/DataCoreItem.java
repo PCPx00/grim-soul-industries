@@ -99,6 +99,11 @@ public class DataCoreItem extends Item {
         if (type.is(Registration.SIMULATION_BLACKLIST)) {
             return false;
         }
+        // The Ender Dragon and the Wither can always be bound, so they can be virtualized. Other
+        // bosses follow the config (modded bosses can be heavy or have special death logic).
+        if (type == EntityType.ENDER_DRAGON || type == EntityType.WITHER) {
+            return true;
+        }
         return Config.CORE_ALLOW_BOSSES.get() || !type.is(Tags.EntityTypes.BOSSES);
     }
 
@@ -109,7 +114,7 @@ public class DataCoreItem extends Item {
         if (getMob(stack).isPresent()) {
             return InteractionResult.PASS;
         }
-        if (!(target instanceof Mob) || !canBind(target.getType())) {
+        if (!(target instanceof Mob) || !target.isAlive() || !canBind(target.getType())) {
             if (!player.level().isClientSide) {
                 player.displayClientMessage(Component.translatable("message.grimsoul.data_core.cannot_bind").withStyle(ChatFormatting.RED), true);
             }

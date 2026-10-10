@@ -31,7 +31,7 @@ public class SimulationChamberRenderer implements BlockEntityRenderer<Simulation
         Entity entity = be.getDisplayEntity(level);
         if (entity != null) {
             boolean active = be.getBlockState().getValue(MachineBlock.ACTIVE);
-            float time = level.getGameTime() + partialTick;
+            float time = AnimClock.time(partialTick);
             float spin = time * (active ? 6.0F : 1.5F);
             float scale = 0.53125F;
             float size = Math.max(entity.getBbWidth(), entity.getBbHeight());
@@ -48,8 +48,8 @@ public class SimulationChamberRenderer implements BlockEntityRenderer<Simulation
             poseStack.popPose();
         }
         if (be.getBlockState().getValue(MachineBlock.ACTIVE)) {
-            float t = level.getGameTime() + partialTick;
-            com.mojang.blaze3d.vertex.VertexConsumer glow = buffers.getBuffer(RenderType.lightning());
+            float t = AnimClock.time(partialTick);
+            com.mojang.blaze3d.vertex.VertexConsumer glow = Fx.glow(buffers);
             // A scan plane sweeps up and down through the hologram.
             float y = 0.22F + (0.5F + 0.5F * (float) Math.sin(t * 0.09F)) * 0.56F;
             float lo = 2.5F / 16.0F, hi = 13.5F / 16.0F;

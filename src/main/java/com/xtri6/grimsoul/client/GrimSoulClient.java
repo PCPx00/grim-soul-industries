@@ -40,6 +40,8 @@ public class GrimSoulClient {
         modBus.addListener(GrimSoulClient::clientSetup);
         modBus.addListener(Fx::registerModels);
         NeoForge.EVENT_BUS.addListener(GrimSoulClient::addFuelTooltip);
+        AnimClock.init();
+        com.xtri6.grimsoul.blockentity.ReaperBlockEntity.clientClock = AnimClock::ticks;
         com.xtri6.grimsoul.item.GuideBookItem.openScreen =
                 () -> net.minecraft.client.Minecraft.getInstance().setScreen(new com.xtri6.grimsoul.client.guide.GuideScreen());
         modBus.addListener(net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent.class,
