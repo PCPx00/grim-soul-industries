@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 — Apotheosis support, boss Soul Cards and smoother visuals
+## 2.0.0 — Apotheosis support, boss Soul Cards and smoother visuals
 
 - **Apotheosis support:** with a **Player Kill** card, hostile mobs killed by the Reaper Block or simulated in the Virtualization Chamber can drop Apotheosis affix weapons, tools and armor. Rarity follows the nearest player's World Tier and luck. The chance is 5% per kill by default and can be changed with `compat.apotheosisGearChance` in the config. Apotheosis is optional.
 - **Boss Soul Cards:** Soul Cards can now be bound to the **Ender Dragon** (click any part of it) and the **Wither**, so you can farm them in the Virtualization Chamber. Simulated dragons give 500 XP with a Player Kill card. The Reaper's Lantern still can't capture either of them.
