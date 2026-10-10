@@ -123,13 +123,13 @@ public final class Registration {
     public static final DeferredBlock<MobFanBlock> MOB_FAN = BLOCKS.register("mob_fan", () -> new MobFanBlock(machineProps().noOcclusion()));
     public static final DeferredBlock<XpTankBlock> XP_TANK = BLOCKS.register("xp_tank", () -> new XpTankBlock(machineProps().noOcclusion()));
     public static final DeferredBlock<EssenceSpawnerBlock> ESSENCE_SPAWNER = BLOCKS.register("essence_spawner",
-            () -> new EssenceSpawnerBlock(machineProps().noOcclusion().lightLevel(state -> state.getValue(MachineBlock.ACTIVE) ? 7 : 0)));
+            () -> new EssenceSpawnerBlock(machineProps().noOcclusion()));
 
     public static final DeferredBlock<ReaperGeneratorBlock> REAPER_GENERATOR = BLOCKS.register("reaper_generator",
-            () -> new ReaperGeneratorBlock(machineProps().lightLevel(state -> state.getValue(MachineBlock.ACTIVE) ? 9 : 0)));
+            () -> new ReaperGeneratorBlock(machineProps()));
 
     public static final DeferredBlock<SimulationChamberBlock> SIMULATION_CHAMBER = BLOCKS.register("simulation_chamber",
-            () -> new SimulationChamberBlock(machineProps().noOcclusion().lightLevel(state -> state.getValue(MachineBlock.ACTIVE) ? 10 : 3)));
+            () -> new SimulationChamberBlock(machineProps().noOcclusion()));
     public static final DeferredBlock<OutputCrateBlock> OUTPUT_CRATE = BLOCKS.register("output_crate",
             () -> new OutputCrateBlock(machineProps()));
 

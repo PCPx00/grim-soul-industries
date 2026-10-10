@@ -8,6 +8,7 @@
 - **Reaper Block lasers fixed:** the lasers now show up reliably, with or without shaders (tested with Iris and Complementary). They fire out to the target, pulse along the beam and fade out smoothly.
 - **See-through Reaper Block screen:** the screen is now about 70% transparent, so you can see the work area outline while changing it. Labels have a shadow so they stay readable.
 - **Smoother animations:** spinning, bobbing and glowing parts on every machine now run on the client's own clock, so they no longer stutter when the server lags.
+- **Machines no longer give off light:** the Reaper Spawner, Reaper Generator and Virtualization Chamber used to light up the area around them, which stopped mobs from spawning nearby. They still glow visually, but no longer light up blocks.
 - **Every upgrade card has its own recipe:** no more clashes (No AI and Bane of Arthropods shared a recipe before). Each recipe uses a frame item that matches the card's machine: iron for shared cards, amethyst for the Reaper Block, gold for the Reaper Spawner and prismarine for the Virtualization Chamber. The Codex shows the new recipes.
 
 ## 1.1.0 — Spawn areas, No AI and the Grim Soul Codex
