@@ -1,28 +1,52 @@
 {
   "variants": {
-    "active=true,facing=north": {
-      "model": "grimsoul:block/soul_forge"
-    },
-    "active=true,facing=east": {
-      "model": "grimsoul:block/soul_forge"
-    },
-    "active=true,facing=south": {
-      "model": "grimsoul:block/soul_forge"
-    },
-    "active=true,facing=west": {
-      "model": "grimsoul:block/soul_forge"
-    },
-    "active=false,facing=north": {
+    "active=false,facing=north,formed=false": {
       "model": "grimsoul:block/soul_forge_off"
     },
-    "active=false,facing=east": {
+    "active=false,facing=north,formed=true": {
+      "model": "grimsoul:block/soul_forge_awake"
+    },
+    "active=true,facing=north,formed=false": {
       "model": "grimsoul:block/soul_forge_off"
     },
-    "active=false,facing=south": {
+    "active=true,facing=north,formed=true": {
+      "model": "grimsoul:block/soul_forge"
+    },
+    "active=false,facing=east,formed=false": {
       "model": "grimsoul:block/soul_forge_off"
     },
-    "active=false,facing=west": {
+    "active=false,facing=east,formed=true": {
+      "model": "grimsoul:block/soul_forge_awake"
+    },
+    "active=true,facing=east,formed=false": {
       "model": "grimsoul:block/soul_forge_off"
+    },
+    "active=true,facing=east,formed=true": {
+      "model": "grimsoul:block/soul_forge"
+    },
+    "active=false,facing=south,formed=false": {
+      "model": "grimsoul:block/soul_forge_off"
+    },
+    "active=false,facing=south,formed=true": {
+      "model": "grimsoul:block/soul_forge_awake"
+    },
+    "active=true,facing=south,formed=false": {
+      "model": "grimsoul:block/soul_forge_off"
+    },
+    "active=true,facing=south,formed=true": {
+      "model": "grimsoul:block/soul_forge"
+    },
+    "active=false,facing=west,formed=false": {
+      "model": "grimsoul:block/soul_forge_off"
+    },
+    "active=false,facing=west,formed=true": {
+      "model": "grimsoul:block/soul_forge_awake"
+    },
+    "active=true,facing=west,formed=false": {
+      "model": "grimsoul:block/soul_forge_off"
+    },
+    "active=true,facing=west,formed=true": {
+      "model": "grimsoul:block/soul_forge"
     }
   }
 }

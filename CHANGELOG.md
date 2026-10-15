@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.2 — The Soul Forge wakes up
+
+- **Alive when assembled:** a completed ring wakes the forge. Its eye opens and blinks, and the casings grow veins that crawl across the ring.
+- **Furious while forging:** the eye turns bright and its pupil widens, and soul fire rises faster.
+- **Ambient effects:** soul motes rise off the ring, with a heartbeat now and then. Both are stronger while forging.
+
 ## 2.1.1 — Soul Forge rework
 
 - **Soul Forge is a flat 3x3 ring:** the forge in the middle with 8 Soul Forge Casing around it (it was a 3x3x3 cube).

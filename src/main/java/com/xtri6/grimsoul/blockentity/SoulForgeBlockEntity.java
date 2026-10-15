@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.xtri6.grimsoul.Config;
 import com.xtri6.grimsoul.Registration;
 import com.xtri6.grimsoul.block.MachineBlock;
+import com.xtri6.grimsoul.block.SoulForgeBlock;
 import com.xtri6.grimsoul.block.SoulForgeCasingBlock;
 import com.xtri6.grimsoul.menu.SoulForgeMenu;
 
@@ -139,7 +140,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
             be.progress = 0;
             be.maxProgress = 0;
         }
-        MachineBlock.setActive(level, pos, state, crafting);
+        // Read the state again: checkStructure may have just changed the FORMED property.
+        MachineBlock.setActive(level, pos, level.getBlockState(pos), crafting);
     }
 
     /**
@@ -164,6 +166,10 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
             formed = nowFormed;
             setChanged();
             announce(level, pos);
+        }
+        BlockState self = level.getBlockState(pos);
+        if (self.hasProperty(SoulForgeBlock.FORMED) && self.getValue(SoulForgeBlock.FORMED) != formed) {
+            level.setBlock(pos, self.setValue(SoulForgeBlock.FORMED, formed), Block.UPDATE_ALL);
         }
         syncCasings(level, pos, formed);
     }
