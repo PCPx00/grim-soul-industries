@@ -100,6 +100,10 @@ public class SimulationScreen extends AbstractContainerScreen<SimulationMenu> {
                     mouseX, mouseY);
             return;
         }
+        if (mx >= 12 && mx < 106 && my >= 90 && my < 102) {
+            graphics.renderComponentTooltip(font, rateTooltip(), mouseX, mouseY);
+            return;
+        }
         Slot hovered = this.hoveredSlot;
         if (hovered != null && !hovered.hasItem() && menu.getCarried().isEmpty()) {
             int index = menu.slots.indexOf(hovered);
@@ -115,6 +119,22 @@ public class SimulationScreen extends AbstractContainerScreen<SimulationMenu> {
             }
         }
         renderTooltip(graphics, mouseX, mouseY);
+    }
+
+    /** Live estimate from the synced interval, success chance and run cost. */
+    private List<Component> rateTooltip() {
+        if (!DataCoreItem.getMob(menu.slots.get(0).getItem()).isPresent()) {
+            return List.of(Component.translatable("gui.grimsoul.sim.rate.none"));
+        }
+        int interval = Math.max(1, menu.getData(SimulationChamberBlockEntity.DATA_INTERVAL));
+        double runsPerMinute = 1200.0 / interval;
+        double killsPerMinute = runsPerMinute * menu.getData(SimulationChamberBlockEntity.DATA_CHANCE) / 100.0;
+        double fePerMinute = runsPerMinute * menu.getSplit(SimulationChamberBlockEntity.DATA_COST_LO);
+        return List.of(
+                Component.translatable("gui.grimsoul.sim.rate.title"),
+                Component.translatable("gui.grimsoul.sim.rate.runs", String.format(Locale.ROOT, "%.1f", runsPerMinute)),
+                Component.translatable("gui.grimsoul.sim.rate.kills", String.format(Locale.ROOT, "%.1f", killsPerMinute)),
+                Component.translatable("gui.grimsoul.sim.rate.fe", GuiStyle.compact((int) Math.min(Integer.MAX_VALUE, Math.round(fePerMinute)))));
     }
 
     @Override

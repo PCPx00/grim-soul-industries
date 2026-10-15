@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.11 — Chamber rate readout
+
+- **Live rate on the Virtualization Chamber:** hover the "FE/run" line to see estimated runs per minute, successful runs per minute and FE per minute, based on the current Speed cards, success chance and run cost.
+
 ## 2.1.10 — Balance: Reaper vs Virtualization Chamber
 
 - **Reaper Block slowed:** base attack interval 20 → 30 ticks, fastest 4 → 12 ticks. Damage per card is unchanged.
