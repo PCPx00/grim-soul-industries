@@ -205,7 +205,7 @@
   "gui.grimsoul.reaper.rate_line": "Attacks %s per minute",
   "gui.grimsoul.spawner.rate.tip": "Spawn attempts per minute: %s",
   "gui.grimsoul.spawner.rate.mobs": "Mobs per minute: %s",
-  "gui.grimsoul.spawner.mobs_per_min": "Mobs per minute: %s",
+  "gui.grimsoul.spawner.mobs_per_min": "Mobs/min: %s",
   "gui.grimsoul.sim.energy_use": "Uses %s FE per run, spread across the run. Power it with a Reaper Generator, a cable, or any FE mod.",
   "gui.grimsoul.output": "Output",
   "gui.grimsoul.sim_eject.tooltip": "Push drops into any storage touching the chamber: an Output Crate, chest, pipe or AE2 interface.",

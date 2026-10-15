@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.17 — Layout fixes
+
+- **Spawner:** the "Mobs/min" line moved up beside the spawn rate, so it no longer sits on the power and redstone buttons.
+- **Virtualization Chamber:** the "FE" and "Run" labels moved left, clear of the progress bar.
+
 ## 2.1.16 — Dossier fix
 
 - **Loot Dossier shows loot:** the dossier read the bound mob from a copy of the core that the client never receives, so it always said "Bind a Soul Card". It now reads the core from the synced menu slot.
