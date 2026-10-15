@@ -107,5 +107,6 @@ public class GrimSoulClient {
         event.registerBlockEntityRenderer(Registration.SIMULATION_CHAMBER_ENTITY.get(), SimulationChamberRenderer::new);
         event.registerBlockEntityRenderer(Registration.REAPER_GENERATOR_ENTITY.get(), GeneratorRenderer::new);
         event.registerBlockEntityRenderer(Registration.ENERGY_CELL_ENTITY.get(), EnergyCellRenderer::new);
+        event.registerBlockEntityRenderer(Registration.SOUL_FORGE_ENTITY.get(), SoulForgeRenderer::new);
     }
 }

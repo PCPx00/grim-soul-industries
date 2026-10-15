@@ -333,12 +333,12 @@
           "pages": [
             {
               "recipe": "grimsoul:soul_forge",
-              "text": "The Soul Forge is a multiblock. Build a 3x3x3 cube:\n\n§l1.§r Make a 3x3x3 cube, three layers high.\n§l2.§r Put the Soul Forge in the bottom middle.\n§l3.§r Fill the other 25 spots with Soul Forge Casing. Leave the spot right above the Soul Forge empty.\n§l4.§r Power it from a Reaper Generator or any FE cable.\n§l5.§r Right-click it to open the GUI.\n\nWhen the cube is complete, the casings join into one machine, with a sound, particles and a message. Break any casing and it comes apart again. Hover the top line of the GUI to see these steps."
+              "text": "The Soul Forge is a multiblock. Build a 3x3x3 cube:\n\n§l1.§r Make a 3x3x3 cube, three layers high.\n§l2.§r Put the Soul Forge in the bottom middle.\n§l3.§r Fill the other 24 spots with Soul Forge Casing. Leave the two spots right above the Soul Forge empty, as a shaft to reach it.\n§l4.§r Power it from a Reaper Generator or any FE cable.\n§l5.§r Right-click it to open the GUI.\n\nWhen the cube is complete, the casings join into one machine, with a sound, particles and a message. Break any casing and it comes apart again. Hover the top line of the GUI to see these steps."
             },
             "Work slot: an item to forge. Soul Steel slot: one Soul Steel per craft. The result appears on the right.\n\n§5Soulforged Data Core§r of a mob with a spawn egg: makes that spawn egg (10 seconds).\n\n§5Soulforged Data Core§r of a boss: makes a Boss Core card (60 seconds, the most power).\n\nAny single item: makes a soulbound copy, kept in your inventory when you die (5 seconds).",
             {
               "recipe": "grimsoul:soul_forge_casing",
-              "text": "Soul Forge Casing. Each craft makes 4. A cube needs 25 of them, so 7 crafts make enough for one forge."
+              "text": "Soul Forge Casing. Each craft makes 4. A cube needs 24 of them, so 6 crafts make enough for one forge."
             }
           ]
         },

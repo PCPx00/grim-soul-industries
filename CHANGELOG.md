@@ -1,8 +1,17 @@
 # Changelog
 
+## 2.1.5 — The Soul Forge core
+
+- **Floating skull:** an assembled Soul Forge has a skull floating in its shaft, bobbing and turning slowly.
+- **Totems and chains:** two totems and two chains circle the skull, animated. They move faster while the forge is working.
+
+## 2.1.4 — Soul Forge can be reached
+
+- **Fixed:** the spots above the Soul Forge were fully enclosed, so you could not right-click it. Leave the two spots directly above the forge empty as a shaft, and the forge is reachable from above. The cube needs 24 casings now.
+
 ## 2.1.3 — Soul Forge is a 3x3x3 cube
 
-- **3D multiblock:** the Soul Forge is now a 3x3x3 cube, not a flat ring. The forge sits in the bottom middle and 25 Soul Forge Casing fill the other spots. The spot right above the forge stays empty, so you can still reach it. A cube needs 7 Soul Forge Casing crafts (4 per craft).
+- **3D multiblock:** the Soul Forge is now a 3x3x3 cube, not a flat ring. The forge sits in the bottom middle and 24 Soul Forge Casing fill the other spots. The two spots right above the forge stay empty as a shaft, so you can reach it. A cube needs 6 Soul Forge Casing crafts (4 per craft).
 - **Assembly, alive look and GUI** work the same across the whole cube.
 
 ## 2.1.2 — The Soul Forge wakes up

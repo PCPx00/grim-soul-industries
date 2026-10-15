@@ -35,8 +35,8 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 
 /**
  * Soul Forge controller. It only works when the multiblock is built: a 3x3x3 cube with the forge at the bottom
- * centre. Soul Forge Casing fills every other spot except the one directly above the forge, which stays empty
- * so the forge can still be reached. When the cube is complete the casings join up into one machine, with a
+ * centre. Soul Forge Casing fills every other spot except the two directly above the forge, which stay empty as
+ * a shaft so the forge can still be reached from above. When the cube is complete the casings join up into one machine, with a
  * sound, particles and a message for nearby players.
  */
 public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
@@ -45,7 +45,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
             STATUS_NO_POWER = 4, STATUS_OUTPUT_FULL = 5, STATUS_NO_RECIPE = 6, STATUS_IDLE = 7;
     public static final int DATA_FORMED = 0, DATA_MISSING = 1, DATA_PROGRESS = 2, DATA_MAX = 3, DATA_STATUS = 4,
             DATA_ENERGY_LO = 5, DATA_ENERGY_HI = 6, DATA_COUNT = 7;
-    /** Every spot in the 3x3x3 cube except the forge: 25 casings and the empty spot above the forge. */
+    /** Every spot in the 3x3x3 cube except the forge: 24 casings and the two empty spots above the forge. */
     public static final int CUBE_SPOTS = 26;
     /** How close a player must be to hear the assembly message. */
     private static final double MESSAGE_RANGE_SQR = 24.0 * 24.0;
@@ -146,7 +146,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     /**
-     * Looks at the 3x3x3 cube around the controller. Every spot must hold Soul Forge Casing, except the spot
+     * Looks at the 3x3x3 cube around the controller. Every spot must hold Soul Forge Casing, except the two spots
      * directly above the forge, which must be empty. When the cube completes or breaks, the casings join or
      * split and the players nearby are told.
      */
@@ -184,9 +184,9 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
         return dx == 0 && dy == 0 && dz == 0;
     }
 
-    /** The spot directly above the forge: kept empty so the GUI can be reached from above. */
+    /** The two spots directly above the forge: kept empty as a shaft, so the forge can be reached from above. */
     private static boolean isAccessSpot(int dx, int dy, int dz) {
-        return dx == 0 && dy == 1 && dz == 0;
+        return dx == 0 && dz == 0 && dy >= 1;
     }
 
     /** Sets every casing spot's FORMED state to match, so casings placed later join up too. */
@@ -263,6 +263,16 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
             items.getStackInSlot(SLOT_OUTPUT).grow(result.getCount());
         }
         setChanged();
+    }
+
+    /** True while the 3x3x3 cube is assembled. */
+    public boolean isFormed() {
+        return formed;
+    }
+
+    /** True while the forge is making something. */
+    public boolean isForging() {
+        return status == STATUS_CRAFTING;
     }
 
     public IItemHandler getItems() {
