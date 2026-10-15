@@ -2,6 +2,7 @@ package com.xtri6.grimsoul.blockentity;
 
 import javax.annotation.Nullable;
 
+import com.xtri6.grimsoul.Config;
 import com.xtri6.grimsoul.Registration;
 import com.xtri6.grimsoul.block.MachineBlock;
 import com.xtri6.grimsoul.menu.SoulForgeMenu;
@@ -35,7 +36,6 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
             STATUS_NO_POWER = 4, STATUS_OUTPUT_FULL = 5, STATUS_NO_RECIPE = 6, STATUS_IDLE = 7;
     public static final int DATA_FORMED = 0, DATA_MISSING = 1, DATA_PROGRESS = 2, DATA_MAX = 3, DATA_STATUS = 4,
             DATA_ENERGY_LO = 5, DATA_ENERGY_HI = 6, DATA_COUNT = 7;
-    public static final int ENERGY_CAPACITY = 200_000;
     private static final int ENERGY_INPUT = 10_000;
     private static final int CHECK_INTERVAL = 20;
 
@@ -61,7 +61,6 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     private int progress;
     private int maxProgress;
     private int status = STATUS_IDLE;
-    private int checkTimer;
 
     private final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -93,10 +92,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SoulForgeBlockEntity be) {
-        if (be.checkTimer-- <= 0) {
-            be.checkTimer = CHECK_INTERVAL;
-            be.checkStructure(level, pos);
-        }
+        // Check every tick: 27 block lookups, so a broken casing stops a craft at once.
+        be.checkStructure(level, pos);
         ItemStack work = be.items.getStackInSlot(SLOT_WORK);
         ItemStack steel = be.items.getStackInSlot(SLOT_STEEL);
         SoulForgeRecipe recipe = null;
@@ -225,7 +222,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     /** Power in from generators or cables; nothing comes back out. */
     private static class ForgeEnergy extends EnergyStorage {
         ForgeEnergy() {
-            super(ENERGY_CAPACITY, ENERGY_INPUT, 0);
+            super(Config.FORGE_ENERGY_CAPACITY.get(), ENERGY_INPUT, 0);
         }
 
         void setStored(int value) {

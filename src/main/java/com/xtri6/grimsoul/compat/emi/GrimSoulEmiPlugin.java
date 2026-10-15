@@ -23,8 +23,21 @@ public class GrimSoulEmiPlugin implements EmiPlugin {
             ResourceLocation.fromNamespaceAndPath(GrimSoul.MODID, "generator_fuel"),
             EmiStack.of(Registration.REAPER_GENERATOR.get()));
 
+    public static final EmiRecipeCategory FORGE = new EmiRecipeCategory(
+            ResourceLocation.fromNamespaceAndPath(GrimSoul.MODID, "soul_forge"),
+            EmiStack.of(Registration.SOUL_FORGE_ITEM.get()));
+
     @Override
     public void register(EmiRegistry registry) {
+        registry.addCategory(FORGE);
+        registry.addWorkstation(FORGE, EmiStack.of(Registration.SOUL_FORGE_ITEM.get()));
+        registry.addDeferredRecipes(consumer -> {
+            int index = 0;
+            for (var example : com.xtri6.grimsoul.blockentity.SoulForgeRecipe.examples()) {
+                consumer.accept(new com.xtri6.grimsoul.compat.emi.SoulForgeEmiRecipe(
+                        ResourceLocation.fromNamespaceAndPath(GrimSoul.MODID, "soul_forge/" + index++), example));
+            }
+        });
         registry.addCategory(FUEL);
         registry.addWorkstation(FUEL, EmiStack.of(Registration.REAPER_GENERATOR.get()));
         // Fuel values come from datapack data, which only exists once the game has loaded it.

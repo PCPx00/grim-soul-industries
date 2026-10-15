@@ -25,6 +25,8 @@ import net.minecraft.world.item.ItemStack;
 @JeiPlugin
 public class GrimSoulJeiPlugin implements IModPlugin {
     public static final RecipeType<FuelEntry> FUEL = RecipeType.create(GrimSoul.MODID, "generator_fuel", FuelEntry.class);
+    public static final RecipeType<com.xtri6.grimsoul.blockentity.SoulForgeRecipe.Example> FORGE =
+            RecipeType.create(GrimSoul.MODID, "soul_forge", com.xtri6.grimsoul.blockentity.SoulForgeRecipe.Example.class);
 
     /** One burnable item and its fuel value. */
     public record FuelEntry(ItemStack stack, GeneratorFuel fuel) {
@@ -37,7 +39,8 @@ public class GrimSoulJeiPlugin implements IModPlugin {
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(new FuelCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new FuelCategory(registration.getJeiHelpers().getGuiHelper()),
+                new SoulForgeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -51,11 +54,13 @@ public class GrimSoulJeiPlugin implements IModPlugin {
         });
         entries.sort((a, b) -> Long.compare(b.fuel().totalFe(), a.fuel().totalFe()));
         registration.addRecipes(FUEL, entries);
+        registration.addRecipes(FORGE, com.xtri6.grimsoul.blockentity.SoulForgeRecipe.examples());
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(Registration.REAPER_GENERATOR.get(), FUEL);
+        registration.addRecipeCatalyst(Registration.SOUL_FORGE.get(), FORGE);
     }
 
 }

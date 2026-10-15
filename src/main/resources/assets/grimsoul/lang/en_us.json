@@ -255,5 +255,8 @@
   "gui.grimsoul.soul_forge.status.no_power": "Waiting for power",
   "gui.grimsoul.soul_forge.status.output_full": "Output is full",
   "gui.grimsoul.soul_forge.status.no_recipe": "This item can't be forged",
-  "gui.grimsoul.soul_forge.status.idle": "Idle"
+  "gui.grimsoul.soul_forge.status.idle": "Idle",
+  "jei.grimsoul.soul_forge": "Soul Forge",
+  "jei.grimsoul.forge_time": "%s s, %s FE total",
+  "jei.grimsoul.forge_any": "Any single item"
 }

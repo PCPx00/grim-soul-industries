@@ -145,6 +145,29 @@ public final class Config {
                     "Its rarity follows the nearest player's World Tier and luck. 0 turns this off.")
             .defineInRange("compat.apotheosisGearChance", 0.05, 0.0, 1.0);
 
+    // ---- Soul Forge ----
+    public static final ModConfigSpec.IntValue FORGE_ENERGY_CAPACITY = BUILDER
+            .comment("FE the Soul Forge can store.")
+            .defineInRange("soulForge.energyCapacity", 200_000, 1000, Integer.MAX_VALUE);
+    public static final ModConfigSpec.IntValue FORGE_EGG_TIME = BUILDER
+            .comment("Ticks for a spawn egg craft (20 ticks = 1 second).")
+            .defineInRange("soulForge.eggTime", 200, 1, 72000);
+    public static final ModConfigSpec.IntValue FORGE_EGG_ENERGY = BUILDER
+            .comment("Total FE for a spawn egg craft, spread evenly over its time.")
+            .defineInRange("soulForge.eggEnergy", 60_000, 0, Integer.MAX_VALUE);
+    public static final ModConfigSpec.IntValue FORGE_BOSS_TIME = BUILDER
+            .comment("Ticks for a Boss Core craft.")
+            .defineInRange("soulForge.bossTime", 1200, 1, 72000);
+    public static final ModConfigSpec.IntValue FORGE_BOSS_ENERGY = BUILDER
+            .comment("Total FE for a Boss Core craft.")
+            .defineInRange("soulForge.bossEnergy", 300_000, 0, Integer.MAX_VALUE);
+    public static final ModConfigSpec.IntValue FORGE_SOULBOUND_TIME = BUILDER
+            .comment("Ticks for a soulbound item craft.")
+            .defineInRange("soulForge.soulboundTime", 100, 1, 72000);
+    public static final ModConfigSpec.IntValue FORGE_SOULBOUND_ENERGY = BUILDER
+            .comment("Total FE for a soulbound item craft.")
+            .defineInRange("soulForge.soulboundEnergy", 20_000, 0, Integer.MAX_VALUE);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
     private Config() {}

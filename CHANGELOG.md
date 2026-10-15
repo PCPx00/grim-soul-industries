@@ -9,6 +9,8 @@
   - a Soulforged Data Core of a mob with a spawn egg makes that spawn egg;
   - a Soulforged Data Core of a boss makes a **Boss Core card**;
   - any single item makes a **soulbound** copy, kept in your inventory when you die.
+- **Soul Forge in JEI and EMI:** the forge's spawn egg, Boss Core and soulbound crafts have their own pages, with their time and power cost.
+- **Soul Forge settings:** the forge's power capacity and each craft's time and power cost are in the config (`soulForge.*` in `grimsoul-common.toml`).
 - **Boss Core card:** a fifth Virtualization Chamber card. It halves the power cost of running a boss (Wither, Ender Dragon, c:bosses). Max 1.
 - **JEI, EMI and Jade support (optional):** the Reaper Generator's fuel values show in JEI and EMI, and Jade shows each machine's status (power, XP, mob, energy).
 - **Smite and Bane of Arthropods cards removed:** they weren't needed. Any of these cards you had are gone when you load 2.1.0.

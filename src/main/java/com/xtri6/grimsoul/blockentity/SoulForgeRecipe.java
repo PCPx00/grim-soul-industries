@@ -3,6 +3,7 @@ package com.xtri6.grimsoul.blockentity;
 import javax.annotation.Nullable;
 
 import com.mojang.serialization.Codec;
+import com.xtri6.grimsoul.Config;
 import com.xtri6.grimsoul.Registration;
 import com.xtri6.grimsoul.item.DataCoreItem;
 import com.xtri6.grimsoul.item.SettingsCardItem;
@@ -24,11 +25,52 @@ public record SoulForgeRecipe(Kind kind, int time, int totalEnergy) {
     public enum Kind { SPAWN_EGG, BOSS_CORE, SOULBOUND }
 
     /** Spawn egg of a Soulforged core's mob (mobs that have an egg). */
-    public static final SoulForgeRecipe EGG = new SoulForgeRecipe(Kind.SPAWN_EGG, 200, 60_000);
+    public static SoulForgeRecipe egg() {
+        return new SoulForgeRecipe(Kind.SPAWN_EGG, Config.FORGE_EGG_TIME.get(), Config.FORGE_EGG_ENERGY.get());
+    }
+
     /** Boss Core card from a Soulforged boss core. */
-    public static final SoulForgeRecipe BOSS = new SoulForgeRecipe(Kind.BOSS_CORE, 1200, 300_000);
+    public static SoulForgeRecipe boss() {
+        return new SoulForgeRecipe(Kind.BOSS_CORE, Config.FORGE_BOSS_TIME.get(), Config.FORGE_BOSS_ENERGY.get());
+    }
+
     /** Soulbound copy of a single item. */
-    public static final SoulForgeRecipe SOULBOUND = new SoulForgeRecipe(Kind.SOULBOUND, 100, 20_000);
+    public static SoulForgeRecipe soulbound() {
+        return new SoulForgeRecipe(Kind.SOULBOUND, Config.FORGE_SOULBOUND_TIME.get(), Config.FORGE_SOULBOUND_ENERGY.get());
+    }
+
+    /** One example input and what it makes, for the JEI and EMI pages. Input is the work-slot item. */
+    public record Example(ItemStack input, ItemStack output, SoulForgeRecipe recipe) {
+    }
+
+    /** Example crafts for the recipe viewers: an egg for every spawn egg, the boss cards and one soulbound item. */
+    public static java.util.List<Example> examples() {
+        java.util.List<Example> list = new java.util.ArrayList<>();
+        for (var holder : net.minecraft.core.registries.BuiltInRegistries.ITEM.holders().toList()) {
+            if (holder.value() instanceof SpawnEggItem egg) {
+                EntityType<?> mob = egg.getType(new ItemStack(egg));
+                ItemStack core = new ItemStack(Registration.DATA_CORE.get());
+                core.set(Registration.DATA_CORE_MOB.get(), net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(mob));
+                core.set(Registration.DATA_CORE_DATA.get(), DataCoreItem.threshold(DataCoreItem.MAX_TIER));
+                list.add(new Example(core, new ItemStack(egg), egg()));
+            }
+        }
+        for (EntityType<?> boss : java.util.List.of(EntityType.WITHER, EntityType.ENDER_DRAGON)) {
+            ItemStack core = new ItemStack(Registration.DATA_CORE.get());
+            core.set(Registration.DATA_CORE_MOB.get(), net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(boss));
+            core.set(Registration.DATA_CORE_DATA.get(), DataCoreItem.threshold(DataCoreItem.MAX_TIER));
+            list.add(new Example(core, new ItemStack(Registration.CARDS.get(UpgradeType.BOSS_CORE).get()), boss()));
+        }
+        list.add(new Example(new ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD),
+                soulboundCopy(new ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD)), soulbound()));
+        return list;
+    }
+
+    private static ItemStack soulboundCopy(ItemStack work) {
+        ItemStack copy = work.copyWithCount(1);
+        copy.set(Registration.SOULBOUND.get(), Unit.INSTANCE);
+        return copy;
+    }
 
     public int perTick() {
         return Math.max(1, totalEnergy / time);
@@ -49,13 +91,13 @@ public record SoulForgeRecipe(Kind kind, int time, int totalEnergy) {
                 return null;
             }
             if (DataCoreItem.isBoss(mob)) {
-                return BOSS;
+                return boss();
             }
-            return SpawnEggItem.byId(mob) == null ? null : EGG;
+            return SpawnEggItem.byId(mob) == null ? null : egg();
         }
         boolean cannotBind = work.getCount() != 1 || work.getItem() instanceof UpgradeCardItem
                 || work.getItem() instanceof SettingsCardItem || work.has(Registration.SOULBOUND.get());
-        return cannotBind ? null : SOULBOUND;
+        return cannotBind ? null : soulbound();
     }
 
     /** What this craft produces from the work item. Only call it when {@link #find} returned this recipe. */
@@ -63,11 +105,7 @@ public record SoulForgeRecipe(Kind kind, int time, int totalEnergy) {
         return switch (kind) {
             case SPAWN_EGG -> new ItemStack(SpawnEggItem.byId(DataCoreItem.getMob(work).orElseThrow()));
             case BOSS_CORE -> new ItemStack(Registration.CARDS.get(UpgradeType.BOSS_CORE).get());
-            case SOULBOUND -> {
-                ItemStack copy = work.copyWithCount(1);
-                copy.set(Registration.SOULBOUND.get(), Unit.INSTANCE);
-                yield copy;
-            }
+            case SOULBOUND -> soulboundCopy(work);
         };
     }
 }

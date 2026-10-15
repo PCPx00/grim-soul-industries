@@ -1,5 +1,6 @@
 package com.xtri6.grimsoul.client;
 
+import com.xtri6.grimsoul.Config;
 import com.xtri6.grimsoul.blockentity.SoulForgeBlockEntity;
 import com.xtri6.grimsoul.menu.SoulForgeMenu;
 
@@ -69,7 +70,7 @@ public class SoulForgeScreen extends AbstractContainerScreen<SoulForgeMenu> {
         int y1 = topPos + POWER_Y1, y2 = topPos + POWER_Y2;
         if (mouseX >= x1 && mouseX <= x2 && mouseY >= y1 && mouseY <= y2) {
             g.renderTooltip(font, Component.translatable("gui.grimsoul.soul_forge.energy",
-                    GuiStyle.compact(energy()), GuiStyle.compact(SoulForgeBlockEntity.ENERGY_CAPACITY)), mouseX, mouseY);
+                    GuiStyle.compact(energy()), GuiStyle.compact(Config.FORGE_ENERGY_CAPACITY.get())), mouseX, mouseY);
         }
         renderTooltip(g, mouseX, mouseY);
     }
@@ -79,7 +80,7 @@ public class SoulForgeScreen extends AbstractContainerScreen<SoulForgeMenu> {
     }
 
     private float powerFraction() {
-        return Math.min(1.0F, energy() / (float) SoulForgeBlockEntity.ENERGY_CAPACITY);
+        return Math.min(1.0F, energy() / (float) Config.FORGE_ENERGY_CAPACITY.get());
     }
 
     private static String statusKey(int status) {
