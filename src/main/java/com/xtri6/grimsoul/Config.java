@@ -11,10 +11,10 @@ public final class Config {
     // ---- Reaper Block ----
     public static final ModConfigSpec.IntValue REAPER_BASE_INTERVAL = BUILDER
             .comment("Ticks between Reaper Block attack cycles with no Speed cards (20 ticks = 1 second).")
-            .defineInRange("reaper.baseInterval", 20, 2, 200);
+            .defineInRange("reaper.baseInterval", 30, 2, 200);
     public static final ModConfigSpec.IntValue REAPER_MIN_INTERVAL = BUILDER
             .comment("Fastest attack interval in ticks, reached with a full stack of Speed cards.")
-            .defineInRange("reaper.minInterval", 4, 1, 200);
+            .defineInRange("reaper.minInterval", 12, 1, 200);
     public static final ModConfigSpec.DoubleValue REAPER_BASE_DAMAGE = BUILDER
             .comment("Damage per hit with no Damage cards.")
             .defineInRange("reaper.baseDamage", 4.0, 0.0, 10000.0);
@@ -59,10 +59,10 @@ public final class Config {
     // ---- Essence Spawner ----
     public static final ModConfigSpec.IntValue SPAWNER_BASE_INTERVAL = BUILDER
             .comment("Ticks between Essence Spawner spawns with no Speed cards (20 ticks = 1 second).")
-            .defineInRange("spawner.baseInterval", 200, 10, 6000);
+            .defineInRange("spawner.baseInterval", 300, 10, 6000);
     public static final ModConfigSpec.IntValue SPAWNER_MIN_INTERVAL = BUILDER
             .comment("Fastest spawn interval in ticks, reached with a full stack of Speed cards.")
-            .defineInRange("spawner.minInterval", 10, 1, 6000);
+            .defineInRange("spawner.minInterval", 40, 1, 6000);
     public static final ModConfigSpec.IntValue SPAWNER_BASE_RADIUS = BUILDER
             .comment("How far from the Essence Spawner mobs can appear (horizontal radius), with no Range cards.")
             .defineInRange("spawner.baseRadius", 4, 1, 32);
@@ -121,19 +121,19 @@ public final class Config {
             .defineInRange("simulation.energyCapacity", 1_000_000, 1000, Integer.MAX_VALUE);
     public static final ModConfigSpec.IntValue SIM_BASE_INTERVAL = BUILDER
             .comment("Ticks per simulation with no Speed cards.")
-            .defineInRange("simulation.baseInterval", 200, 1, 72000);
+            .defineInRange("simulation.baseInterval", 120, 1, 72000);
     public static final ModConfigSpec.IntValue SIM_MIN_INTERVAL = BUILDER
             .comment("Ticks per simulation with a full stack of Speed cards.")
-            .defineInRange("simulation.minInterval", 20, 1, 72000);
+            .defineInRange("simulation.minInterval", 6, 1, 72000);
     public static final ModConfigSpec.IntValue SIM_BASE_COST = BUILDER
             .comment("FE per simulation for a mob with 20 health. Tougher mobs cost more (scaled by max health).")
-            .defineInRange("simulation.baseCost", 16_000, 0, Integer.MAX_VALUE);
+            .defineInRange("simulation.baseCost", 10_000, 0, Integer.MAX_VALUE);
     public static final ModConfigSpec.DoubleValue SIM_MAX_EFFICIENCY = BUILDER
             .comment("How much of the power cost a full set of Efficiency cards removes (0.75 = 75% cheaper).")
             .defineInRange("simulation.maxEfficiency", 0.75, 0.0, 1.0);
     public static final ModConfigSpec.IntValue SIM_DATA_PER_RUN = BUILDER
             .comment("Data a core gains from each successful simulation (0 = cores only level from real kills).")
-            .defineInRange("simulation.dataPerRun", 1, 0, 1000);
+            .defineInRange("simulation.dataPerRun", 2, 0, 1000);
 
     public static final ModConfigSpec.BooleanValue GIVE_GUIDE_ON_JOIN = BUILDER
             .comment("If true, every player gets a Grim Soul Codex (the in-game guide book) the first time they join a world.")

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.10 — Balance: Reaper vs Virtualization Chamber
+
+- **Reaper Block slowed:** base attack interval 20 → 30 ticks, fastest 4 → 12 ticks. Damage per card is unchanged.
+- **Essence Spawner slowed:** base spawn interval 200 → 300 ticks, fastest 10 → 40 ticks.
+- **Reaper Virtualization Chamber upgraded:** base simulation interval 200 → 120 ticks, fastest 20 → 6 ticks, run cost 16,000 → 10,000 FE, and each successful run gives 2 Data Core points (was 1).
+- Changed defaults only apply to new config files. Existing `grimsoul-common.toml` keeps its values, so edit those lines to get the new balance.
+
 ## 2.1.9 — Per-item config
 
 - **Stack size per item:** every mod item (cards, Soul Steel, Data Core, Reaper's Lantern, Guide Book and the block items) has `items.<name>.maxStackSize` in `grimsoul-common.toml`. 0 keeps the mod's default.
