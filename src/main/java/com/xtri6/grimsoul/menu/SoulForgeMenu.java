@@ -22,9 +22,9 @@ import net.neoforged.neoforge.items.SlotItemHandler;
  * Slots 3-38: player inventory and hotbar.
  */
 public class SoulForgeMenu extends AbstractContainerMenu {
-    public static final int WIDTH = 176, HEIGHT = 166;
-    public static final int WORK_X = 44, WORK_Y = 36, STEEL_X = 44, STEEL_Y = 56, OUTPUT_X = 116, OUTPUT_Y = 46;
-    public static final int INV_X = 8, INV_Y = 84, HOTBAR_Y = 142;
+    public static final int WIDTH = 200, HEIGHT = 180;
+    public static final int WORK_X = 52, WORK_Y = 42, STEEL_X = 52, STEEL_Y = 62, OUTPUT_X = 128, OUTPUT_Y = 52;
+    public static final int INV_X = 19, INV_Y = 96, HOTBAR_Y = 154;
     public static final int PLAYER_START = 3, PLAYER_END = PLAYER_START + 36;
 
     private final ContainerLevelAccess access;

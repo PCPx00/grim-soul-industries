@@ -5,12 +5,17 @@ import javax.annotation.Nullable;
 import com.xtri6.grimsoul.Config;
 import com.xtri6.grimsoul.Registration;
 import com.xtri6.grimsoul.block.MachineBlock;
+import com.xtri6.grimsoul.block.SoulForgeCasingBlock;
 import com.xtri6.grimsoul.menu.SoulForgeMenu;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,6 +24,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.EnergyStorage;
@@ -27,8 +33,9 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 /**
- * Soul Forge controller. It only works when the multiblock is built: a 3x3x3 cube of Soul Forge Casing
- * with this block at the bottom centre and the middle of the layer above it left empty.
+ * Soul Forge controller. It only works when the multiblock is built: a flat 3x3 ring. The forge sits in the
+ * middle and Soul Forge Casing fills the other eight spots. When the ring is complete the casings join up
+ * into one machine, with a sound, particles and a message for nearby players.
  */
 public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     public static final int SLOT_WORK = 0, SLOT_STEEL = 1, SLOT_OUTPUT = 2;
@@ -36,7 +43,10 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
             STATUS_NO_POWER = 4, STATUS_OUTPUT_FULL = 5, STATUS_NO_RECIPE = 6, STATUS_IDLE = 7;
     public static final int DATA_FORMED = 0, DATA_MISSING = 1, DATA_PROGRESS = 2, DATA_MAX = 3, DATA_STATUS = 4,
             DATA_ENERGY_LO = 5, DATA_ENERGY_HI = 6, DATA_COUNT = 7;
-    private static final int CHECK_INTERVAL = 20;
+    /** Casing spots around the controller in the 3x3 ring. */
+    public static final int CASING_COUNT = 8;
+    /** How close a player must be to hear the assembly message. */
+    private static final double MESSAGE_RANGE_SQR = 24.0 * 24.0;
 
     private final ItemStackHandler items = new ItemStackHandler(3) {
         @Override
@@ -56,7 +66,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     };
     private final ForgeEnergy energy = new ForgeEnergy();
     private boolean formed;
-    private int missing;
+    private int missing = CASING_COUNT;
     private int progress;
     private int maxProgress;
     private int status = STATUS_IDLE;
@@ -91,7 +101,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SoulForgeBlockEntity be) {
-        // Check every tick: 27 block lookups, so a broken casing stops a craft at once.
+        // Check every tick: a broken casing stops a craft at once.
         be.checkStructure(level, pos);
         ItemStack work = be.items.getStackInSlot(SLOT_WORK);
         ItemStack steel = be.items.getStackInSlot(SLOT_STEEL);
@@ -121,7 +131,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
                 be.finish(recipe);
                 be.progress = 0;
             }
-            if (be.progress % CHECK_INTERVAL == 0) {
+            if (be.progress % 20 == 0) {
                 be.setChanged();
             }
         } else if (be.status != STATUS_NO_POWER) {
@@ -132,26 +142,84 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
         MachineBlock.setActive(level, pos, state, crafting);
     }
 
-    /** Looks at the 3x3x3 cube around the controller. Every casing spot must be casing; the middle of the layer above must be empty. */
+    /**
+     * Looks at the eight spots around the controller in its layer. Each must hold Soul Forge Casing.
+     * When the ring completes or breaks, the casings join or split and the players nearby are told.
+     */
     private void checkStructure(Level level, BlockPos pos) {
         int bad = 0;
-        for (int dy = 0; dy <= 2; dy++) {
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dz = -1; dz <= 1; dz++) {
-                    if (dx == 0 && dy == 0 && dz == 0) {
-                        continue; // this controller
-                    }
-                    BlockState here = level.getBlockState(pos.offset(dx, dy, dz));
-                    boolean open = dx == 0 && dy == 1 && dz == 0;
-                    boolean ok = open ? here.isAir() : here.is(Registration.SOUL_FORGE_CASING.get());
-                    if (!ok) {
-                        bad++;
-                    }
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                if (dx == 0 && dz == 0) {
+                    continue; // this controller
+                }
+                if (!level.getBlockState(pos.offset(dx, 0, dz)).is(Registration.SOUL_FORGE_CASING.get())) {
+                    bad++;
                 }
             }
         }
         missing = bad;
-        formed = bad == 0;
+        boolean nowFormed = bad == 0;
+        if (nowFormed != formed) {
+            formed = nowFormed;
+            setChanged();
+            announce(level, pos);
+        }
+        syncCasings(level, pos, formed);
+    }
+
+    /** Sets every casing spot's FORMED state to match, so casings placed later join up too. */
+    private static void syncCasings(Level level, BlockPos pos, boolean joined) {
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                if (dx == 0 && dz == 0) {
+                    continue;
+                }
+                BlockPos spot = pos.offset(dx, 0, dz);
+                BlockState here = level.getBlockState(spot);
+                if (here.is(Registration.SOUL_FORGE_CASING.get())
+                        && here.getValue(SoulForgeCasingBlock.FORMED) != joined) {
+                    level.setBlock(spot, here.setValue(SoulForgeCasingBlock.FORMED, joined), Block.UPDATE_ALL);
+                }
+            }
+        }
+    }
+
+    /** Called when the controller is broken: the casings stop looking joined. */
+    public void dismantle(Level level, BlockPos pos) {
+        formed = false;
+        syncCasings(level, pos, false);
+    }
+
+    /** Sound, particles and a message when the ring is completed or broken. */
+    private void announce(Level level, BlockPos pos) {
+        boolean joined = formed;
+        level.playSound(null, pos, joined ? SoundEvents.BEACON_ACTIVATE : SoundEvents.BEACON_DEACTIVATE,
+                SoundSource.BLOCKS, 1.0F, joined ? 1.0F : 0.7F);
+        if (level instanceof ServerLevel server) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (dx == 0 && dz == 0) {
+                        continue;
+                    }
+                    // Particles rise from each casing spot, so the eight pieces seem to come together.
+                    server.sendParticles(joined ? ParticleTypes.PORTAL : ParticleTypes.SMOKE,
+                            pos.getX() + dx + 0.5, pos.getY() + 0.5, pos.getZ() + dz + 0.5,
+                            joined ? 18 : 6, 0.25, 0.4, 0.25, joined ? 0.25 : 0.02);
+                }
+            }
+            if (joined) {
+                server.sendParticles(ParticleTypes.END_ROD, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
+                        40, 1.4, 0.6, 1.4, 0.05);
+            }
+        }
+        Component message = Component.translatable(joined
+                ? "message.grimsoul.soul_forge.formed" : "message.grimsoul.soul_forge.broken");
+        for (Player player : level.players()) {
+            if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < MESSAGE_RANGE_SQR) {
+                player.displayClientMessage(message, true);
+            }
+        }
     }
 
     private boolean outputAccepts(ItemStack result) {
@@ -197,6 +265,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
         tag.put("Items", items.serializeNBT(registries));
         tag.putInt("Energy", energy.getEnergyStored());
         tag.putInt("Progress", progress);
+        tag.putBoolean("Formed", formed);
     }
 
     @Override
@@ -205,6 +274,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
         items.deserializeNBT(registries, tag.getCompound("Items"));
         energy.setStored(tag.getInt("Energy"));
         progress = tag.getInt("Progress");
+        // Restored so a forge that was already assembled doesn't announce itself again after a restart.
+        formed = tag.getBoolean("Formed");
     }
 
     @Override

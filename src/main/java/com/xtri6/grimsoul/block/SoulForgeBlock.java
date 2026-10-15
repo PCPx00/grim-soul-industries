@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
-/** Soul Forge controller: right-click to open it. Build the Soul Forge Casing cube around it first. */
+/** Soul Forge controller: right-click to open it. Build the 3x3 ring of Soul Forge Casing around it first. */
 public class SoulForgeBlock extends MachineBlock {
     public static final MapCodec<SoulForgeBlock> CODEC = simpleCodec(SoulForgeBlock::new);
 
@@ -55,6 +55,7 @@ public class SoulForgeBlock extends MachineBlock {
     @Override
     protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof SoulForgeBlockEntity forge) {
+            forge.dismantle(level, pos);
             forge.dropContents(level, pos);
         }
         super.onRemove(state, level, pos, newState, movedByPiston);

@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
+    "formed=false": {
       "model": "grimsoul:block/soul_forge_casing"
+    },
+    "formed=true": {
+      "model": "grimsoul:block/soul_forge_casing_formed"
     }
   }
 }

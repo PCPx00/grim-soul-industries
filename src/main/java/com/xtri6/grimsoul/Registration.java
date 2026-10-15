@@ -158,8 +158,8 @@ public final class Registration {
     public static final DeferredItem<BlockItem> ENERGY_CELL_ITEM = ITEMS.registerSimpleBlockItem(ENERGY_CELL);
     public static final DeferredBlock<com.xtri6.grimsoul.block.SoulForgeBlock> SOUL_FORGE = BLOCKS.register("soul_forge",
             () -> new com.xtri6.grimsoul.block.SoulForgeBlock(machineProps()));
-    public static final DeferredBlock<net.minecraft.world.level.block.Block> SOUL_FORGE_CASING = BLOCKS.register("soul_forge_casing",
-            () -> new net.minecraft.world.level.block.Block(machineProps()));
+    public static final DeferredBlock<com.xtri6.grimsoul.block.SoulForgeCasingBlock> SOUL_FORGE_CASING = BLOCKS.register("soul_forge_casing",
+            () -> new com.xtri6.grimsoul.block.SoulForgeCasingBlock(machineProps()));
     public static final DeferredItem<BlockItem> SOUL_FORGE_ITEM = ITEMS.registerSimpleBlockItem(SOUL_FORGE);
     public static final DeferredItem<BlockItem> SOUL_FORGE_CASING_ITEM = ITEMS.registerSimpleBlockItem(SOUL_FORGE_CASING);
 

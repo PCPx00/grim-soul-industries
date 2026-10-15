@@ -333,12 +333,12 @@
           "pages": [
             {
               "recipe": "grimsoul:soul_forge",
-              "text": "The Soul Forge is a multiblock. Build a 3x3x3 cube of Soul Forge Casing. Put the Soul Forge at the bottom centre and leave the middle of the layer above it empty. It needs power, from a Reaper Generator or any FE source. Right-click it to open the GUI."
+              "text": "The Soul Forge is a multiblock. Build it as a flat 3x3 ring:\n\n§l1.§r Pick a flat layer, such as a floor.\n§l2.§r Put the Soul Forge in the middle.\n§l3.§r Fill the other 8 spots around it with Soul Forge Casing.\n§l4.§r Power it from a Reaper Generator or any FE cable.\n§l5.§r Right-click it to open the GUI.\n\nWhen all 8 casings are in place, the ring assembles: the casings join into one machine, with a sound, particles and a message. Break any casing and it comes apart again. Hover the top line of the GUI to see these steps."
             },
             "Work slot: an item to forge. Soul Steel slot: one Soul Steel per craft. The result appears on the right.\n\n§5Soulforged Data Core§r of a mob with a spawn egg: makes that spawn egg (10 seconds).\n\n§5Soulforged Data Core§r of a boss: makes a Boss Core card (60 seconds, the most power).\n\nAny single item: makes a soulbound copy, kept in your inventory when you die (5 seconds).",
             {
               "recipe": "grimsoul:soul_forge_casing",
-              "text": "Soul Forge Casing. Each craft makes 4. Build 25 of them for the cube around the forge."
+              "text": "Soul Forge Casing. Each craft makes 4. A forge needs 8 of them around it, so 2 crafts make enough for one forge."
             }
           ]
         },

@@ -5,11 +5,12 @@
 - **Beheading card:** Reaper Block cards (up to 10). Each card adds a chance to drop the head of a zombie, skeleton, creeper or piglin when the Reaper kills it.
 - **Harvest card:** a Reaper Block card (1 max) that takes wool from adult sheep, milk from adult cows and eggs from adult chickens without hurting them. Cows and chickens are ready again after 2 minutes. Harvested animals are not attacked, even in Hostile mode.
 - **Settings Card:** right-click a machine to copy its settings (work area, whitelist, filter, auto-eject, magnet, redstone mode and on/off). Right-click another machine of the same kind to paste them. Sneak-right-click to clear the card. Items, upgrades and power are never copied.
-- **Soul Steel and Soul Forge:** Soul Steel is made from Netherite and a Nether Star. The Soul Forge is a 3x3x3 multiblock of Soul Forge Casing (4 per Soul Steel), with the forge at the bottom centre and the middle of the layer above left empty. Open its GUI, put an item in the work slot and Soul Steel in the next slot, and it forges (using FE):
+- **Soul Steel and Soul Forge:** Soul Steel is made from Netherite and a Nether Star. The Soul Forge is a flat 3x3 multiblock: the forge in the middle with 8 Soul Forge Casing around it (4 per Soul Steel). When the ring is complete the casings join into one machine, with a sound, particles and a message. Open its GUI, put an item in the work slot and Soul Steel in the next slot, and it forges (using FE):
   - a Soulforged Data Core of a mob with a spawn egg makes that spawn egg;
   - a Soulforged Data Core of a boss makes a **Boss Core card**;
   - any single item makes a **soulbound** copy, kept in your inventory when you die.
 - **Soul Forge in JEI and EMI:** the forge's spawn egg, Boss Core and soulbound crafts have their own pages, with their time and power cost.
+- **Soul Forge GUI:** the window is larger, the text is shorter and no longer runs under the power bar. Hover the top line for the build steps.
 - **Soul Forge settings:** the forge's power capacity, its max FE input per tick, each craft's time and power cost, and an on/off switch for each craft are in the config (`soulForge.*` in `grimsoul-common.toml`).
 - **Boss Core card:** a fifth Virtualization Chamber card. It halves the power cost of running a boss (Wither, Ender Dragon, c:bosses). Max 1.
 - **JEI, EMI and Jade support (optional):** the Reaper Generator's fuel values show in JEI and EMI, and Jade shows each machine's status (power, XP, mob, energy).
