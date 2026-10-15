@@ -1,10 +1,22 @@
 {
   "variants": {
-    "formed=false": {
+    "formed=false,part=0": {
       "model": "grimsoul:block/soul_forge_casing"
     },
-    "formed=true": {
-      "model": "grimsoul:block/soul_forge_casing_formed"
+    "formed=false,part=1": {
+      "model": "grimsoul:block/soul_forge_casing"
+    },
+    "formed=false,part=2": {
+      "model": "grimsoul:block/soul_forge_casing"
+    },
+    "formed=true,part=0": {
+      "model": "grimsoul:block/soul_forge_casing_face"
+    },
+    "formed=true,part=1": {
+      "model": "grimsoul:block/soul_forge_casing_edge"
+    },
+    "formed=true,part=2": {
+      "model": "grimsoul:block/soul_forge_casing_corner"
     }
   }
 }

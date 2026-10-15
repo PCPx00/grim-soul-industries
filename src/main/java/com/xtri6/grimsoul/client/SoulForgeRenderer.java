@@ -16,15 +16,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 /**
- * The assembled Soul Forge's core: a skull floats in the shaft above the forge, with two totems and two chains
- * circling it. Everything turns and bobs, and it all moves faster while the forge is working.
+ * The assembled Soul Forge's core: once the cube is complete it becomes a cage, and a large skull floats in its
+ * middle with two totems and two chains circling it. Everything turns and bobs, and it all moves faster while the
+ * forge is working.
  */
 public class SoulForgeRenderer implements BlockEntityRenderer<SoulForgeBlockEntity> {
     private static final ItemStack SKULL = new ItemStack(Items.SKELETON_SKULL);
     private static final ItemStack TOTEM = new ItemStack(Items.TOTEM_OF_UNDYING);
     private static final ItemStack CHAIN = new ItemStack(Items.CHAIN);
-    /** Height of the skull's centre, in the shaft above the forge. */
-    private static final double CORE_Y = 1.6;
+    /** Height of the skull's centre: the middle of the cube. */
+    private static final double CORE_Y = 1.5;
 
     private final ItemRenderer items;
 
@@ -47,19 +48,19 @@ public class SoulForgeRenderer implements BlockEntityRenderer<SoulForgeBlockEnti
         poseStack.pushPose();
         poseStack.translate(0.5, CORE_Y + 0.08 * Math.sin(t * 0.07F * speed), 0.5);
         poseStack.mulPose(Axis.YP.rotationDegrees(t * 2.0F * speed));
-        poseStack.scale(0.6F, 0.6F, 0.6F);
+        poseStack.scale(1.2F, 1.2F, 1.2F);
         items.renderStatic(SKULL, ItemDisplayContext.FIXED, bright, packedOverlay, poseStack, buffers, level, 0);
         poseStack.popPose();
 
         // Two totems circle the skull, clockwise.
         for (int k = 0; k < 2; k++) {
             float angle = t * 0.05F * speed + k * (float) Math.PI;
-            orbit(poseStack, buffers, level, TOTEM, angle, 0.34, 0.35F, bright, packedOverlay, t, k, 0.06F);
+            orbit(poseStack, buffers, level, TOTEM, angle, 0.95, 0.5F, bright, packedOverlay, t, k, 0.06F);
         }
         // Two chains circle the other way, a little lower and tighter.
         for (int k = 0; k < 2; k++) {
             float angle = -t * 0.035F * speed + k * (float) Math.PI + 0.5F;
-            orbit(poseStack, buffers, level, CHAIN, angle, 0.22, 0.42F, bright, packedOverlay, t, k, -0.1F);
+            orbit(poseStack, buffers, level, CHAIN, angle, 0.7, 0.5F, bright, packedOverlay, t, k, -0.1F);
         }
     }
 

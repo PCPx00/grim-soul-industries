@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.6 — The Soul Forge becomes a cage
+
+- **Textures by position:** the casings in the cube each look different. Corners show bone with glowing runes, edges show chain links that scroll along, and faces are plain.
+- **Transforms when complete:** once the cube is assembled, the faces vanish, leaving a cage of bone corners and chain edges around a much bigger floating skull. Totems and chains orbit inside the cage.
+
 ## 2.1.5 — The Soul Forge core
 
 - **Floating skull:** an assembled Soul Forge has a skull floating in its shaft, bobbing and turning slowly.

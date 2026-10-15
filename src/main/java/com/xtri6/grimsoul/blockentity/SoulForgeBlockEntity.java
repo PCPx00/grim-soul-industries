@@ -180,6 +180,15 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
         syncCasings(level, pos, formed);
     }
 
+    /**
+     * Where a casing sits in the cube: 2 for a corner (on the outside on three sides), 1 for an edge (two sides),
+     * 0 for a face (one side). The cube's faces are the ones that vanish when it is assembled.
+     */
+    private static int partOf(int dx, int dy, int dz) {
+        int sides = (Math.abs(dx) == 1 ? 1 : 0) + (Math.abs(dz) == 1 ? 1 : 0) + (dy == 0 || dy == 2 ? 1 : 0);
+        return sides >= 3 ? 2 : sides == 2 ? 1 : 0;
+    }
+
     private static boolean isForge(int dx, int dy, int dz) {
         return dx == 0 && dy == 0 && dz == 0;
     }
@@ -199,9 +208,12 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
                     }
                     BlockPos spot = pos.offset(dx, dy, dz);
                     BlockState here = level.getBlockState(spot);
+                    int part = partOf(dx, dy, dz);
                     if (here.is(Registration.SOUL_FORGE_CASING.get())
-                            && here.getValue(SoulForgeCasingBlock.FORMED) != joined) {
-                        level.setBlock(spot, here.setValue(SoulForgeCasingBlock.FORMED, joined), Block.UPDATE_ALL);
+                            && (here.getValue(SoulForgeCasingBlock.FORMED) != joined
+                                || here.getValue(SoulForgeCasingBlock.PART) != part)) {
+                        level.setBlock(spot, here.setValue(SoulForgeCasingBlock.FORMED, joined)
+                                .setValue(SoulForgeCasingBlock.PART, part), Block.UPDATE_ALL);
                     }
                 }
             }
