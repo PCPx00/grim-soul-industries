@@ -36,7 +36,6 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
             STATUS_NO_POWER = 4, STATUS_OUTPUT_FULL = 5, STATUS_NO_RECIPE = 6, STATUS_IDLE = 7;
     public static final int DATA_FORMED = 0, DATA_MISSING = 1, DATA_PROGRESS = 2, DATA_MAX = 3, DATA_STATUS = 4,
             DATA_ENERGY_LO = 5, DATA_ENERGY_HI = 6, DATA_COUNT = 7;
-    private static final int ENERGY_INPUT = 10_000;
     private static final int CHECK_INTERVAL = 20;
 
     private final ItemStackHandler items = new ItemStackHandler(3) {
@@ -222,7 +221,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     /** Power in from generators or cables; nothing comes back out. */
     private static class ForgeEnergy extends EnergyStorage {
         ForgeEnergy() {
-            super(Config.FORGE_ENERGY_CAPACITY.get(), ENERGY_INPUT, 0);
+            super(Config.FORGE_ENERGY_CAPACITY.get(), Config.FORGE_MAX_INPUT.get(), 0);
         }
 
         void setStored(int value) {

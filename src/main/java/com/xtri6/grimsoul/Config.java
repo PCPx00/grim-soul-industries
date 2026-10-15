@@ -168,6 +168,19 @@ public final class Config {
             .comment("Total FE for a soulbound item craft.")
             .defineInRange("soulForge.soulboundEnergy", 20_000, 0, Integer.MAX_VALUE);
 
+    public static final ModConfigSpec.IntValue FORGE_MAX_INPUT = BUILDER
+            .comment("Most FE per tick the Soul Forge accepts from cables and generators.")
+            .defineInRange("soulForge.maxInputPerTick", 10_000, 1, Integer.MAX_VALUE);
+    public static final ModConfigSpec.BooleanValue FORGE_EGG_ENABLED = BUILDER
+            .comment("If false, the Soul Forge won't make spawn eggs from Soulforged cores.")
+            .define("soulForge.eggEnabled", true);
+    public static final ModConfigSpec.BooleanValue FORGE_BOSS_ENABLED = BUILDER
+            .comment("If false, the Soul Forge won't make Boss Core cards.")
+            .define("soulForge.bossEnabled", true);
+    public static final ModConfigSpec.BooleanValue FORGE_SOULBOUND_ENABLED = BUILDER
+            .comment("If false, the Soul Forge won't make soulbound items.")
+            .define("soulForge.soulboundEnabled", true);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
     private Config() {}

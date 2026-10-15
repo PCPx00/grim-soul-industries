@@ -47,7 +47,7 @@ public record SoulForgeRecipe(Kind kind, int time, int totalEnergy) {
     public static java.util.List<Example> examples() {
         java.util.List<Example> list = new java.util.ArrayList<>();
         for (var holder : net.minecraft.core.registries.BuiltInRegistries.ITEM.holders().toList()) {
-            if (holder.value() instanceof SpawnEggItem egg) {
+            if (holder.value() instanceof SpawnEggItem egg && Config.FORGE_EGG_ENABLED.get()) {
                 EntityType<?> mob = egg.getType(new ItemStack(egg));
                 ItemStack core = new ItemStack(Registration.DATA_CORE.get());
                 core.set(Registration.DATA_CORE_MOB.get(), net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(mob));
@@ -55,14 +55,17 @@ public record SoulForgeRecipe(Kind kind, int time, int totalEnergy) {
                 list.add(new Example(core, new ItemStack(egg), egg()));
             }
         }
-        for (EntityType<?> boss : java.util.List.of(EntityType.WITHER, EntityType.ENDER_DRAGON)) {
+        for (EntityType<?> boss : Config.FORGE_BOSS_ENABLED.get()
+                ? java.util.List.of(EntityType.WITHER, EntityType.ENDER_DRAGON) : java.util.List.<EntityType<?>>of()) {
             ItemStack core = new ItemStack(Registration.DATA_CORE.get());
             core.set(Registration.DATA_CORE_MOB.get(), net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(boss));
             core.set(Registration.DATA_CORE_DATA.get(), DataCoreItem.threshold(DataCoreItem.MAX_TIER));
             list.add(new Example(core, new ItemStack(Registration.CARDS.get(UpgradeType.BOSS_CORE).get()), boss()));
         }
-        list.add(new Example(new ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD),
-                soulboundCopy(new ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD)), soulbound()));
+        if (Config.FORGE_SOULBOUND_ENABLED.get()) {
+            list.add(new Example(new ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD),
+                    soulboundCopy(new ItemStack(net.minecraft.world.item.Items.DIAMOND_SWORD)), soulbound()));
+        }
         return list;
     }
 
@@ -91,13 +94,16 @@ public record SoulForgeRecipe(Kind kind, int time, int totalEnergy) {
                 return null;
             }
             if (DataCoreItem.isBoss(mob)) {
-                return boss();
+                return Config.FORGE_BOSS_ENABLED.get() ? boss() : null;
             }
-            return SpawnEggItem.byId(mob) == null ? null : egg();
+            if (SpawnEggItem.byId(mob) == null || !Config.FORGE_EGG_ENABLED.get()) {
+                return null;
+            }
+            return egg();
         }
         boolean cannotBind = work.getCount() != 1 || work.getItem() instanceof UpgradeCardItem
                 || work.getItem() instanceof SettingsCardItem || work.has(Registration.SOULBOUND.get());
-        return cannotBind ? null : soulbound();
+        return cannotBind || !Config.FORGE_SOULBOUND_ENABLED.get() ? null : soulbound();
     }
 
     /** What this craft produces from the work item. Only call it when {@link #find} returned this recipe. */
