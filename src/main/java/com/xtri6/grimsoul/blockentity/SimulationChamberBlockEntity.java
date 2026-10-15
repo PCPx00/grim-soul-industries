@@ -278,6 +278,10 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
             be.pushXpToTanks(serverLevel);
         }
 
+        // The loot dossier follows the bound mob and the cards: re-sample whenever that changes (checked once a second).
+        if (level.getGameTime() % 20 == 0 && !be.dossierKey().equals(be.dossier.getString("Key"))) {
+            be.sampleDossier(serverLevel);
+        }
         ItemStack coreStack = be.core.getStackInSlot(0);
         Optional<EntityType<?>> mob = be.getCoreMob();
         int newStatus;
@@ -463,8 +467,23 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
         return dossier;
     }
 
+    /** What the dossier was sampled for: the mob, its success chance, and the Looting and Player Kill cards. */
+    private String dossierKey() {
+        String mob = getCoreMob().map(type -> BuiltInRegistries.ENTITY_TYPE.getKey(type).toString()).orElse("");
+        return mob + "|" + DataCoreItem.chance(DataCoreItem.getTier(core.getStackInSlot(0)))
+                + "|" + cards.count(UpgradeType.LOOTING) + "|" + (cards.count(UpgradeType.PLAYER_KILL) > 0);
+    }
+
     private void sampleDossier(ServerLevel level) {
-        dossier = getCoreMob().map(type -> buildDossier(level, type)).orElseGet(CompoundTag::new);
+        CompoundTag fresh;
+        try {
+            fresh = getCoreMob().map(type -> buildDossier(level, type)).orElseGet(CompoundTag::new);
+        } catch (RuntimeException e) {
+            com.xtri6.grimsoul.GrimSoul.LOGGER.error("Loot dossier failed for the Reaper Virtualization Chamber at {}", worldPosition, e);
+            fresh = new CompoundTag();
+        }
+        fresh.putString("Key", dossierKey());
+        dossier = fresh;
         setChanged();
         level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
     }

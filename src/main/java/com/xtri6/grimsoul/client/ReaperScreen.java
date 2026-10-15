@@ -185,7 +185,7 @@ public class ReaperScreen extends AbstractContainerScreen<ReaperMenu> {
         try {
             renderBg(graphics, partialTick, mouseX, mouseY);
         } finally {
-            GuiStyle.setOpacity(1.0F);
+            GuiStyle.setOpacity(GuiStyle.DEFAULT_OPACITY);
         }
     }
 

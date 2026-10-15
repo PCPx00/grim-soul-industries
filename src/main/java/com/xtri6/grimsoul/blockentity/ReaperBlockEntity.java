@@ -79,6 +79,8 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
     public static final int SLOTS_PER_STORAGE_CARD = 9;
     public static final int UPGRADE_SLOTS = 10;
     public static final int FILTER_SLOTS = 9;
+    /** The Reaper and Essence Spawner areas never go past this many blocks in any direction. */
+    public static final int MAX_RANGE = 20;
     public static final int BASE_MAX_SIZE = 3;
     public static final int BASE_MAX_OFFSET = 3;
     public static final int LIMIT_PER_RANGE_CARD = 2;
@@ -656,11 +658,11 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
     // ------------------------------------------------------------------------------------------
 
     public int getMaxSize() {
-        return BASE_MAX_SIZE + upgrades.count(UpgradeType.RANGE) * LIMIT_PER_RANGE_CARD;
+        return Math.min(MAX_RANGE, BASE_MAX_SIZE + upgrades.count(UpgradeType.RANGE) * LIMIT_PER_RANGE_CARD);
     }
 
     public int getMaxOffset() {
-        return BASE_MAX_OFFSET + upgrades.count(UpgradeType.RANGE) * LIMIT_PER_RANGE_CARD;
+        return Math.min(MAX_RANGE, BASE_MAX_OFFSET + upgrades.count(UpgradeType.RANGE) * LIMIT_PER_RANGE_CARD);
     }
 
     /** Auto work-area height: 3, 5, 7... blocks (always odd so the area stays centered). */

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.14 — Dossier, layout and range fixes
+
+- **Loot Dossier updates itself:** the preview is sampled automatically when the Soul Card, the core, or the Looting and Player Kill cards change. Re-sample still works.
+- **Chamber layout:** the card row is tighter, so the Boss Core card no longer overlaps the "FE" and "Run" labels.
+- **Range limit 20:** the Reaper Block and Essence Spawner areas (size and offset) and the Spawner's radius stop at 20 blocks, so spawns stay inside the Reaper's reach.
+- **Slightly see-through GUIs:** every machine screen is drawn a little transparent (93% opacity).
+
 ## 2.1.13 — Reaper rate line
 
 - **Reaper screen:** the info list shows the attacks per minute (for example "Attacks 60.0 per minute"), so the rate no longer needs a hover.

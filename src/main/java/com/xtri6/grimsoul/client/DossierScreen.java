@@ -78,8 +78,7 @@ public class DossierScreen extends Screen {
                 .map(type -> BuiltInRegistries.ENTITY_TYPE.getKey(type).toString()).orElse("");
         if (dossier.isEmpty() || !current.equals(dossier.getString("Mob"))) {
             Component message = current.isEmpty() ? Component.translatable("gui.grimsoul.dossier.empty")
-                    : dossier.isEmpty() ? Component.translatable("gui.grimsoul.dossier.empty")
-                    : Component.translatable("gui.grimsoul.dossier.stale");
+                    : Component.translatable("gui.grimsoul.dossier.sampling");
             graphics.drawWordWrap(font, message, x + 12, y + 40, W - 24, GuiStyle.TEXT_DIM);
             return;
         }

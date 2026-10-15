@@ -65,7 +65,7 @@ public final class Config {
             .defineInRange("spawner.minInterval", 40, 1, 6000);
     public static final ModConfigSpec.IntValue SPAWNER_BASE_RADIUS = BUILDER
             .comment("How far from the Essence Spawner mobs can appear (horizontal radius), with no Range cards.")
-            .defineInRange("spawner.baseRadius", 4, 1, 32);
+            .defineInRange("spawner.baseRadius", 4, 1, 20);
     public static final ModConfigSpec.IntValue SPAWNER_ENTITY_CAP = BUILDER
             .comment("The spawner pauses while this many of its mob are already around it (keeps TPS healthy).")
             .defineInRange("spawner.entityCap", 30, 1, 1000);

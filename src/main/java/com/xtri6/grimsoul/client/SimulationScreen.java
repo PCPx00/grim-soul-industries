@@ -201,8 +201,8 @@ public class SimulationScreen extends AbstractContainerScreen<SimulationMenu> {
         graphics.drawString(font, Component.translatable("gui.grimsoul.sim.status." + status), 12, 82, color, false);
 
         graphics.drawString(font, Component.translatable("gui.grimsoul.upgrades"), 12, 45, GuiStyle.TEXT_ACCENT, false);
-        graphics.drawString(font, "FE", 106, ENERGY_Y - 1, GuiStyle.TEXT_ENERGY, false);
-        graphics.drawString(font, Component.translatable("gui.grimsoul.sim.run"), 106, PROGRESS_Y - 1, GuiStyle.TEXT_DIM, false);
+        graphics.drawString(font, "FE", 112, ENERGY_Y - 1, GuiStyle.TEXT_ENERGY, false);
+        graphics.drawString(font, Component.translatable("gui.grimsoul.sim.run"), 112, PROGRESS_Y - 1, GuiStyle.TEXT_DIM, false);
 
         int interval = menu.getData(SimulationChamberBlockEntity.DATA_INTERVAL);
         graphics.drawString(font, Component.translatable("gui.grimsoul.sim.info",

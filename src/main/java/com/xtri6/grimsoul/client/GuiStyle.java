@@ -23,8 +23,9 @@ public final class GuiStyle {
     public static int TEXT, TEXT_ACCENT, TEXT_DIM, TEXT_OK, TEXT_WARN, TEXT_ENERGY, TEXT_IN, TEXT_OUT;
     public static int BAR_BG, BAR_FILL, BAR_FILL_LIGHT;
     private static Theme theme = Theme.REAPER;
-    /** 1 = solid. Screens that should show the world behind them (the Reaper Block) lower it while drawing. */
-    private static float opacity = 1.0F;
+    /** Every GUI is drawn very slightly see-through. The Reaper Block lowers it further while drawing its view. */
+    public static final float DEFAULT_OPACITY = 0.93F;
+    private static float opacity = DEFAULT_OPACITY;
 
     /** Sets how solid panels and slots are drawn (1 = solid, 0.3 = mostly see-through). */
     public static void setOpacity(float value) {

@@ -26,7 +26,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 public class SimulationMenu extends AbstractContainerMenu {
     public static final int WIDTH = 260;
     public static final int CORE_X = 12, CORE_Y = 22;
-    public static final int CARDS_X = 12, CARDS_Y = 56, CARD_SPACING = 22;
+    public static final int CARDS_X = 12, CARDS_Y = 56, CARD_SPACING = 18;
     public static final int OUTPUT_X = (WIDTH - 162) / 2, OUTPUT_Y = 114;
     public static final int INV_Y = 198;
     private static final int INV_X = (WIDTH - 162) / 2;

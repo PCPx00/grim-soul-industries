@@ -177,17 +177,17 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
     }
 
     public int getRadius() {
-        return Config.SPAWNER_BASE_RADIUS.get() + cards.count(UpgradeType.RANGE);
+        return Math.min(ReaperBlockEntity.MAX_RANGE, Config.SPAWNER_BASE_RADIUS.get() + cards.count(UpgradeType.RANGE));
     }
 
     /** Largest the spawn area can be on any axis: the full width the radius allows. */
     public int getMaxSize() {
-        return getRadius() * 2 + 1;
+        return Math.min(ReaperBlockEntity.MAX_RANGE, getRadius() * 2 + 1);
     }
 
     /** How far the center of the spawn area can be moved from the spawner. */
     public int getMaxOffset() {
-        return getRadius();
+        return Math.min(ReaperBlockEntity.MAX_RANGE, getRadius());
     }
 
     private int areaSizeX() {
