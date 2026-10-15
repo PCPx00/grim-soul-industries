@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.1 — Soul Forge rework
+
+- **Soul Forge is a flat 3x3 ring:** the forge in the middle with 8 Soul Forge Casing around it (it was a 3x3x3 cube).
+- **Assembly effect:** when the ring is complete the casings join into one machine, with a sound, particles and a message to nearby players. Breaking a casing or the forge splits it again.
+- **Soul Forge GUI:** a larger window, shorter status text, and hovering the top line shows the build steps.
+- **Animated textures:** the Soul Forge (idle and active), the Soul Forge Casing and the formed casing are animated, in the same steel and purple style as the other machines.
+- **Soul Forge config:** the max FE input per tick is now `soulForge.maxInputPerTick`. Each craft has an on/off switch: `soulForge.eggEnabled`, `soulForge.bossEnabled` and `soulForge.soulboundEnabled`.
+- **Guide and quests:** the Soul Forge page and quest describe the 3x3 build.
+
 ## 2.1.0 — Farming cards, Soul Forge and quality of life
 
 - **Beheading card:** Reaper Block cards (up to 10). Each card adds a chance to drop the head of a zombie, skeleton, creeper or piglin when the Reaper kills it.
