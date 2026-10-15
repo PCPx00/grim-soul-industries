@@ -10,7 +10,7 @@
   - a Soulforged Data Core of a boss makes a **Boss Core card**;
   - any single item makes a **soulbound** copy, kept in your inventory when you die.
 - **Boss Core card:** a fifth Virtualization Chamber card. It halves the power cost of running a boss (Wither, Ender Dragon, c:bosses). Max 1.
-- **JEI and Jade support (optional):** the Reaper Generator's fuel values show in JEI, and Jade shows each machine's status (power, XP, mob, energy).
+- **JEI, EMI and Jade support (optional):** the Reaper Generator's fuel values show in JEI and EMI, and Jade shows each machine's status (power, XP, mob, energy).
 - **Smite and Bane of Arthropods cards removed:** they weren't needed. Any of these cards you had are gone when you load 2.1.0.
 - **Guide:** a new Endgame & Utilities section covers the Settings Card, Soul Steel, Soul Forge and Boss Core card.
 - **FTB Quests chapter:** `ftbquests/grimsoul.snbt` in the repo is a starter chapter that walks through the machines. Copy it into your pack's `config/ftbquests/quests/chapters/` folder.
