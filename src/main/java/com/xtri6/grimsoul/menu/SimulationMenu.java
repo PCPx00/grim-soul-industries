@@ -37,6 +37,10 @@ public class SimulationMenu extends AbstractContainerMenu {
 
     private final ContainerLevelAccess access;
     private final BlockPos pos;
+
+    public BlockPos getPos() {
+        return pos;
+    }
     private final ContainerData data;
 
     public SimulationMenu(int id, Inventory inv, RegistryFriendlyByteBuf buf) {

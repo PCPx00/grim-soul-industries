@@ -77,7 +77,8 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
     public static final int STATUS_RUNNING = 0, STATUS_NO_CORE = 1, STATUS_UNBOUND = 2, STATUS_NO_POWER = 3,
             STATUS_FULL = 4, STATUS_OFF = 5, STATUS_BLOCKED = 6;
 
-    public static final int BTN_POWER = 0, BTN_REDSTONE = 1, BTN_EJECT = 2, BTN_TAKE_XP = 3;
+    public static final int BTN_POWER = 0, BTN_REDSTONE = 1, BTN_EJECT = 2, BTN_TAKE_XP = 3, BTN_DOSSIER = 4;
+    public static final int DOSSIER_SAMPLES = 200;
     public static final int DATA_STATUS = 0, DATA_PROGRESS = 1, DATA_INTERVAL = 2, DATA_ENERGY_LO = 3, DATA_ENERGY_HI = 4,
             DATA_CAPACITY_LO = 5, DATA_CAPACITY_HI = 6, DATA_COST_LO = 7, DATA_COST_HI = 8, DATA_CHANCE = 9,
             DATA_XP_LO = 10, DATA_XP_HI = 11, DATA_ENABLED = 12, DATA_REDSTONE = 13, DATA_EJECT = 14,
@@ -116,6 +117,8 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
     private int storedXp = 0;
     private int status = STATUS_NO_CORE;
     private int runs = 0;
+    /** Loot estimate for the bound mob: see buildDossier. Synced to the client with the block. */
+    private CompoundTag dossier = new CompoundTag();
     private int pushTimer = 0;
     private boolean overfillChecked = false;
 
@@ -443,11 +446,109 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
                     storedXp = 0;
                 }
             }
+            case BTN_DOSSIER -> {
+                if (level instanceof ServerLevel serverLevel) {
+                    sampleDossier(serverLevel);
+                }
+                return;
+            }
             default -> {
                 return;
             }
         }
         setChanged();
+    }
+
+    public CompoundTag getDossier() {
+        return dossier;
+    }
+
+    private void sampleDossier(ServerLevel level) {
+        dossier = getCoreMob().map(type -> buildDossier(level, type)).orElseGet(CompoundTag::new);
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+    }
+
+    /**
+     * Runs the bound mob's real death code DOSSIER_SAMPLES times with this chamber's Looting and
+     * Player Kill cards, then averages the drops per run with the success chance applied.
+     */
+    private CompoundTag buildDossier(ServerLevel level, EntityType<?> type) {
+        CompoundTag result = new CompoundTag();
+        LivingEntity probe = getSimEntity(level, type);
+        if (probe == null) {
+            return result;
+        }
+        int chance = DataCoreItem.chance(DataCoreItem.getTier(core.getStackInSlot(0)));
+        int looting = cards.count(UpgradeType.LOOTING);
+        boolean playerKill = cards.count(UpgradeType.PLAYER_KILL) > 0;
+        Vec3 center = Vec3.atCenterOf(worldPosition);
+        FakePlayer player = FakePlayerFactory.get(level, ReaperBlockEntity.FAKE_PLAYER_PROFILE);
+        player.setPos(center.x, center.y, center.z);
+        ItemStack weapon = new ItemStack(Items.NETHERITE_SWORD);
+        if (looting > 0) {
+            weapon.enchant(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.LOOTING), looting);
+        }
+        player.setItemInHand(InteractionHand.MAIN_HAND, weapon);
+        DamageSource source = level.damageSources().playerAttack(player);
+
+        java.util.Map<ResourceLocation, Long> totals = new java.util.HashMap<>();
+        long xpTotal = 0;
+        int samples = 0;
+        int xpEach = playerKill ? (probe instanceof net.minecraft.world.entity.boss.enderdragon.EnderDragon ? 500
+                : probe.getExperienceReward(level, player)) : 0;
+        for (int i = 0; i < DOSSIER_SAMPLES; i++) {
+            Entity created = type.create(level);
+            if (created instanceof LivingEntity victim) {
+                samples++;
+                victim.setPos(center.x, center.y + 1.0, center.z);
+                victim.lastHurtByPlayer = playerKill ? player : null;
+                victim.lastHurtByPlayerTime = playerKill ? 100 : 0;
+                victim.skipDropExperience();
+                List<ItemStack> drops = new java.util.ArrayList<>(
+                        SimDrops.capture(victim, () -> SimDrops.dropAllDeathLoot(victim, level, source)));
+                if (playerKill) {
+                    ItemStack gear = com.xtri6.grimsoul.compat.ApothCompat.rollPlayerKillGear(level, victim, worldPosition, player);
+                    if (!gear.isEmpty()) {
+                        drops.add(gear);
+                    }
+                    xpTotal += xpEach;
+                }
+                for (ItemStack stack : drops) {
+                    if (!stack.isEmpty()) {
+                        totals.merge(BuiltInRegistries.ITEM.getKey(stack.getItem()), (long) stack.getCount(), Long::sum);
+                    }
+                }
+                victim.discard();
+            } else if (created != null) {
+                created.discard();
+                break;
+            }
+        }
+        player.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        if (samples == 0) {
+            return result;
+        }
+
+        double scale = chance / 100.0 / samples;
+        result.putString("Mob", BuiltInRegistries.ENTITY_TYPE.getKey(type).toString());
+        result.putInt("Samples", samples);
+        result.putInt("Chance", chance);
+        result.putInt("Looting", looting);
+        result.putBoolean("PlayerKill", playerKill);
+        result.putInt("Xp", (int) Math.round(xpTotal * scale));
+        net.minecraft.nbt.ListTag items = new net.minecraft.nbt.ListTag();
+        totals.entrySet().stream()
+                .sorted(java.util.Map.Entry.<ResourceLocation, Long>comparingByValue().reversed())
+                .limit(60)
+                .forEach(entry -> {
+                    CompoundTag item = new CompoundTag();
+                    item.putString("Id", entry.getKey().toString());
+                    item.putDouble("Avg", entry.getValue() * scale);
+                    items.add(item);
+                });
+        result.put("Items", items);
+        return result;
     }
 
     public ItemStackHandler getCore() {
@@ -520,6 +621,7 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
         getCoreMob().ifPresent(type -> tag.putString("Mob", BuiltInRegistries.ENTITY_TYPE.getKey(type).toString()));
+        tag.put("Dossier", dossier);
         return tag;
     }
 
@@ -542,6 +644,7 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
         tag.putInt("Progress", progress);
         tag.putInt("Xp", storedXp);
         tag.putInt("Runs", runs);
+        tag.put("Dossier", dossier);
         tag.putBoolean("AutoEject", autoEject);
         control.save(tag);
     }
@@ -577,6 +680,7 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
         progress = tag.getInt("Progress");
         storedXp = tag.getInt("Xp");
         runs = tag.getInt("Runs");
+        dossier = tag.getCompound("Dossier");
         if (tag.contains("AutoEject")) {
             autoEject = tag.getBoolean("AutoEject");
         }
@@ -586,6 +690,7 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
 
     @Override
     public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
+        dossier = tag.getCompound("Dossier");
         clientMobId = tag.contains("Mob") ? ResourceLocation.tryParse(tag.getString("Mob")) : null;
     }
 

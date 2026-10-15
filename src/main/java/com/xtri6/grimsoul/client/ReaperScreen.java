@@ -1,5 +1,7 @@
 package com.xtri6.grimsoul.client;
 
+import java.util.List;
+import java.util.Locale;
 import com.xtri6.grimsoul.Registration;
 import com.xtri6.grimsoul.blockentity.ReaperBlockEntity;
 import com.xtri6.grimsoul.item.UpgradeType;
@@ -163,6 +165,15 @@ public class ReaperScreen extends AbstractContainerScreen<ReaperMenu> {
                         cardIcon(index - ReaperMenu.UPGRADE_START).getHoverName(), type.maxCards()), mouseX, mouseY);
                 return;
             }
+        }
+        int rx = mouseX - leftPos;
+        int ry = mouseY - topPos;
+        if (rx >= ReaperMenu.SIDE_X && rx < ReaperMenu.SIDE_X + 160 && ry >= INFO_Y - 2 && ry < INFO_Y + 30) {
+            int interval = Math.max(1, menu.getData(ReaperBlockEntity.DATA_ATTACK_INTERVAL));
+            graphics.renderComponentTooltip(font, List.of(Component.translatable("gui.grimsoul.reaper.rate",
+                    String.format(Locale.ROOT, "%.1f", 1200.0 / interval),
+                    String.format(Locale.ROOT, "%.2f", interval / 20.0))), mouseX, mouseY);
+            return;
         }
         renderTooltip(graphics, mouseX, mouseY);
     }

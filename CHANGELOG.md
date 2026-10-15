@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.12 — Loot Dossier and farm rates
+
+- **Loot Dossier:** the Virtualization Chamber has a Dossier button. It runs the bound mob's real death code 200 times with your Looting and Player Kill cards, then shows the average drops per run, the success chance and XP per run. Press Re-sample after changing cards or the core.
+- **Reaper rate:** hover the Reaper's info lines to see how many attacks it makes per minute.
+- **Spawner rate:** hover the spawn line to see spawn attempts and mobs per minute.
+
 ## 2.1.11 — Chamber rate readout
 
 - **Live rate on the Virtualization Chamber:** hover the "FE/run" line to see estimated runs per minute, successful runs per minute and FE per minute, based on the current Speed cards, success chance and run cost.

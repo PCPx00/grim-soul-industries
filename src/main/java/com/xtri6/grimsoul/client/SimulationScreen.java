@@ -49,6 +49,11 @@ public class SimulationScreen extends AbstractContainerScreen<SimulationMenu> {
         ejectButton = button(12, 1, 115, SimulationChamberBlockEntity.BTN_EJECT, "sim_eject");
         Button takeXp = button(133, 1, 115, SimulationChamberBlockEntity.BTN_TAKE_XP, "sim_take_xp");
         takeXp.setMessage(Component.translatable("gui.grimsoul.take_xp"));
+        addRenderableWidget(Button.builder(Component.translatable("gui.grimsoul.dossier.open"),
+                        b -> minecraft.setScreen(new DossierScreen(this, menu.getPos())))
+                .bounds(leftPos + 186, topPos + 5, 46, 14)
+                .tooltip(Tooltip.create(Component.translatable("gui.grimsoul.dossier.open.tooltip")))
+                .build());
         updateLabels();
     }
 
@@ -59,7 +64,7 @@ public class SimulationScreen extends AbstractContainerScreen<SimulationMenu> {
                 .build());
     }
 
-    private void press(int id) {
+    public void press(int id) {
         if (minecraft != null && minecraft.gameMode != null) {
             minecraft.gameMode.handleInventoryButtonClick(menu.containerId, id);
         }

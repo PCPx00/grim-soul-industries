@@ -137,7 +137,8 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
     public static final int DATA_XP_LOW = 11, DATA_XP_HIGH = 12;
     public static final int DATA_ACTIVE_SLOTS = 13, DATA_MAX_SIZE = 14, DATA_MAX_OFFSET = 15, DATA_HAS_VOID_CARD = 16;
     public static final int DATA_AUTO_AREA = 17, DATA_ENABLED = 18, DATA_REDSTONE = 19, DATA_TARGET = 20, DATA_MAGNET = 21;
-    public static final int DATA_COUNT = 22;
+    public static final int DATA_ATTACK_INTERVAL = 22;
+    public static final int DATA_COUNT = 23;
 
     private final ItemStackHandler storage = new ItemStackHandler(MAX_SLOTS) {
         @Override
@@ -229,6 +230,7 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
                 case DATA_REDSTONE -> control.getRedstoneMode().ordinal();
                 case DATA_TARGET -> targetMode.ordinal();
                 case DATA_MAGNET -> magnet ? 1 : 0;
+                case DATA_ATTACK_INTERVAL -> getAttackInterval();
                 default -> 0;
             };
         }

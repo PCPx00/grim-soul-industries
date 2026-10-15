@@ -1,5 +1,6 @@
 package com.xtri6.grimsoul.client;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -129,6 +130,18 @@ public class SpawnerScreen extends AbstractContainerScreen<SpawnerMenu> {
                 graphics.renderTooltip(font, Component.translatable("gui.grimsoul.lantern_slot"), mouseX, mouseY);
                 return;
             }
+        }
+        int sx = mouseX - leftPos;
+        int sy = mouseY - topPos;
+        if (sx >= 12 && sx < 170 && sy >= 78 && sy < 89) {
+            int interval = Math.max(1, menu.getData(EssenceSpawnerBlockEntity.DATA_INTERVAL));
+            double spawnsPerMinute = 1200.0 / interval;
+            int perSpawn = menu.getData(EssenceSpawnerBlockEntity.DATA_PER_SPAWN);
+            graphics.renderComponentTooltip(font, List.of(
+                    Component.translatable("gui.grimsoul.spawner.rate.tip", String.format(Locale.ROOT, "%.1f", spawnsPerMinute)),
+                    Component.translatable("gui.grimsoul.spawner.rate.mobs", String.format(Locale.ROOT, "%.1f", spawnsPerMinute * perSpawn))),
+                    mouseX, mouseY);
+            return;
         }
         renderTooltip(graphics, mouseX, mouseY);
     }
