@@ -222,5 +222,12 @@
   "guide.grimsoul.entries": "Entries",
   "guide.grimsoul.back": "Back",
   "guide.grimsoul.no_recipe": "This recipe isn't in this game (a modpack may have changed or removed it).",
-  "gui.grimsoul.spawner.limits_hint2": "raise both"
+  "gui.grimsoul.spawner.limits_hint2": "raise both",
+  "jei.grimsoul.generator_fuel": "Reaper Generator Fuel",
+  "jei.grimsoul.fuel_rate": "%s FE per tick",
+  "jei.grimsoul.fuel_total": "%s s, %s FE total",
+  "jade.grimsoul.power": "Power: %s",
+  "jade.grimsoul.xp": "Stored XP: %s",
+  "jade.grimsoul.mob": "Mob: %s",
+  "jade.grimsoul.energy": "Energy: %s / %s FE"
 }
