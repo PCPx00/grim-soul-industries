@@ -1,0 +1,185 @@
+{
+	filename: "grimsoul"
+	group: ""
+	order_index: 0
+	default_quest_shape: ""
+	title: "Grim Soul Industries"
+	icon: "grimsoul:reaper_block"
+	quests: [
+		{
+			id: "EAF60592BD92C8DC"
+			x: 0.0d
+			y: 0.0d
+			title: "Start the Reaper"
+			icon: "grimsoul:reaper_block"
+			description: ["Build a Reaper Block. Its lasers kill mobs in the area you set."]
+			tasks: [
+				{
+					id: "AA0959A37BB3B87F"
+					type: "item"
+					items: [{ id: "grimsoul:reaper_block", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "3D3D5F71F6DDAA4B"
+			x: 2.0d
+			y: 0.0d
+			title: "Carry a Soul"
+			icon: "grimsoul:reapers_lantern"
+			description: ["The Reaper's Lantern captures a mob you point it at."]
+			dependencies: ["EAF60592BD92C8DC"]
+			tasks: [
+				{
+					id: "C9130EE79349F1E8"
+					type: "item"
+					items: [{ id: "grimsoul:reapers_lantern", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "82414EF7B6A87449"
+			x: 4.0d
+			y: 0.0d
+			title: "Push the Crowd"
+			icon: "grimsoul:mob_fan"
+			description: ["The Reaper Fan pushes mobs where you want them."]
+			dependencies: ["EAF60592BD92C8DC"]
+			tasks: [
+				{
+					id: "026899C6BC8F898D"
+					type: "item"
+					items: [{ id: "grimsoul:mob_fan", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "D153BB6A5812F2D1"
+			x: 6.0d
+			y: 0.0d
+			title: "Spawn on Demand"
+			icon: "grimsoul:essence_spawner"
+			description: ["The Reaper Spawner spawns any mob, with the cards you give it."]
+			dependencies: ["EAF60592BD92C8DC"]
+			tasks: [
+				{
+					id: "186C5545D212A2D4"
+					type: "item"
+					items: [{ id: "grimsoul:essence_spawner", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "F48456CD4AFE6990"
+			x: 0.0d
+			y: 2.0d
+			title: "Power Up"
+			icon: "grimsoul:reaper_generator"
+			description: ["The Reaper Generator turns mob drops into FE."]
+			dependencies: ["D153BB6A5812F2D1"]
+			tasks: [
+				{
+					id: "2F9EEA38A9F30852"
+					type: "item"
+					items: [{ id: "grimsoul:reaper_generator", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "8C6BF165CB3CA3BC"
+			x: 2.0d
+			y: 2.0d
+			title: "Bind a Soul"
+			icon: "grimsoul:data_core"
+			description: ["A Data Core holds one mob's soul. Bind it by right-clicking the mob."]
+			dependencies: ["3D3D5F71F6DDAA4B"]
+			tasks: [
+				{
+					id: "3EB32E2E598D94F7"
+					type: "item"
+					items: [{ id: "grimsoul:data_core", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "2E25B86D3EDAD664"
+			x: 4.0d
+			y: 2.0d
+			title: "Virtualize"
+			icon: "grimsoul:simulation_chamber"
+			description: ["The Virtualization Chamber farms a bound mob with no mob in the world."]
+			dependencies: ["8C6BF165CB3CA3BC", "F48456CD4AFE6990"]
+			tasks: [
+				{
+					id: "3F0F6E5A04B01374"
+					type: "item"
+					items: [{ id: "grimsoul:simulation_chamber", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "9497011E790D86AF"
+			x: 6.0d
+			y: 2.0d
+			title: "Copy the Setup"
+			icon: "grimsoul:settings_card"
+			description: ["Right-click a machine to copy its settings. Right-click another machine to paste them."]
+			dependencies: ["2E25B86D3EDAD664"]
+			tasks: [
+				{
+					id: "5A98898AA8B3A04F"
+					type: "item"
+					items: [{ id: "grimsoul:settings_card", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "AFD9553066022A21"
+			x: 0.0d
+			y: 4.0d
+			title: "Forge Soul Steel"
+			icon: "grimsoul:soul_steel"
+			description: ["Netherite and a Nether Star make Soul Steel, the metal of the endgame."]
+			dependencies: ["2E25B86D3EDAD664"]
+			tasks: [
+				{
+					id: "A6BEED415F5A737E"
+					type: "item"
+					items: [{ id: "grimsoul:soul_steel", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "07C0C42A1CF3D6F2"
+			x: 2.0d
+			y: 4.0d
+			title: "Build a Soul Forge"
+			icon: "grimsoul:soul_forge"
+			description: ["Hold an item in your main hand and Soul Steel in your off hand, then right-click the forge."]
+			dependencies: ["AFD9553066022A21"]
+			tasks: [
+				{
+					id: "9997177EC677D758"
+					type: "item"
+					items: [{ id: "grimsoul:soul_forge", count: 1 }]
+				}
+			]
+		}
+		{
+			id: "E8DD8FA010B56C43"
+			x: 4.0d
+			y: 4.0d
+			title: "Forge a Boss Core"
+			icon: "grimsoul:boss_core_card"
+			description: ["A Soulforged boss Data Core, forged with Soul Steel, makes a Boss Core card for the Chamber."]
+			dependencies: ["07C0C42A1CF3D6F2"]
+			tasks: [
+				{
+					id: "47A9AD30CBCA0DD9"
+					type: "item"
+					items: [{ id: "grimsoul:boss_core_card", count: 1 }]
+				}
+			]
+		}
+	]
+}

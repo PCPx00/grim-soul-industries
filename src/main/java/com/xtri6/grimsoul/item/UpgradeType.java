@@ -13,8 +13,8 @@ public enum UpgradeType {
     STORAGE("storage", 5),
     VOID("void", 1),
     FIRE_ASPECT("fire_aspect", 10),
-    SMITE("smite", 10),
-    BANE_OF_ARTHROPODS("bane_of_arthropods", 10),
+    BEHEADING("beheading", 10),
+    HARVEST("harvest", 1),
     // Essence Spawner cards
     COUNT("count", 19),
     NO_PLAYER_NEEDED("no_player_needed", 1),
@@ -22,7 +22,8 @@ public enum UpgradeType {
     IGNORE_SPAWN_CONDITIONS("ignore_spawn_conditions", 1),
     NO_AI("no_ai", 1),
     // Simulation Chamber card
-    EFFICIENCY("efficiency", 20);
+    EFFICIENCY("efficiency", 20),
+    BOSS_CORE("boss_core", 1);
 
     private final String id;
     private final int maxCards;

@@ -30,6 +30,7 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
 @Mod(GrimSoul.MODID)
 public class GrimSoul {
+    private static final String SOULBOUND_STASH = "grimsoul_soulbound";
     public static final String MODID = "grimsoul";
     public static final Logger LOGGER = LogUtils.getLogger();
 
@@ -40,6 +41,10 @@ public class GrimSoul {
         NeoForge.EVENT_BUS.addListener(this::onEntityInteract);
         NeoForge.EVENT_BUS.addListener(this::onLivingDeath);
         NeoForge.EVENT_BUS.addListener(this::onPlayerLogin);
+        NeoForge.EVENT_BUS.addListener(this::onRightClickMachine);
+        NeoForge.EVENT_BUS.addListener(this::onSoulboundDrops);
+        NeoForge.EVENT_BUS.addListener(this::onSoulboundRespawn);
+        NeoForge.EVENT_BUS.addListener(this::onItemTooltip);
         com.xtri6.grimsoul.machine.NoAiMobs.register();
         com.xtri6.grimsoul.blockentity.SimDrops.register();
         container.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -111,6 +116,68 @@ public class GrimSoul {
     }
 
     /** A real player's kill adds one data to every Data Core in their inventory bound to that mob. */
+    /** Settings Card: right-click a machine to copy or paste its settings. The machine's menu never opens. */
+    private void onRightClickMachine(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock event) {
+        ItemStack stack = event.getItemStack();
+        if (stack.getItem() instanceof com.xtri6.grimsoul.item.SettingsCardItem card) {
+            event.setCanceled(true);
+            event.setCancellationResult(card.useOnMachine(event.getLevel(), event.getEntity(), event.getHand(), stack, event.getPos()));
+        }
+    }
+
+    /** Soulbound items (made at the Soul Forge) skip the death drops and are kept on the player's data. */
+    private void onSoulboundDrops(net.neoforged.neoforge.event.entity.living.LivingDropsEvent event) {
+        if (!(event.getEntity() instanceof net.minecraft.server.level.ServerPlayer player)) {
+            return;
+        }
+        java.util.List<net.minecraft.world.entity.item.ItemEntity> kept = event.getDrops().stream()
+                .filter(drop -> drop.getItem().has(Registration.SOULBOUND.get())).toList();
+        if (kept.isEmpty()) {
+            return;
+        }
+        net.minecraft.nbt.CompoundTag persisted = player.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+        net.minecraft.nbt.ListTag stash = persisted.getList(SOULBOUND_STASH, net.minecraft.nbt.Tag.TAG_COMPOUND);
+        for (net.minecraft.world.entity.item.ItemEntity drop : kept) {
+            stash.add(drop.getItem().save(player.registryAccess()));
+        }
+        persisted.put(SOULBOUND_STASH, stash);
+        player.getPersistentData().put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG, persisted);
+        event.getDrops().removeAll(kept);
+    }
+
+    /** Extra tooltip lines for the Soul Forge items. */
+    private void onItemTooltip(net.neoforged.neoforge.event.entity.player.ItemTooltipEvent event) {
+        ItemStack stack = event.getItemStack();
+        if (stack.has(Registration.SOULBOUND.get())) {
+            event.getToolTip().add(net.minecraft.network.chat.Component.translatable("tooltip.grimsoul.soulbound")
+                    .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+        }
+        if (stack.is(Registration.SOUL_STEEL.get())) {
+            event.getToolTip().add(net.minecraft.network.chat.Component.translatable("tooltip.grimsoul.soul_steel")
+                    .withStyle(net.minecraft.ChatFormatting.GRAY));
+        }
+    }
+
+    /** Gives a player their soulbound items back when they respawn. */
+    private void onSoulboundRespawn(net.neoforged.neoforge.event.entity.player.PlayerEvent.Clone event) {
+        if (!event.isWasDeath() || !(event.getEntity() instanceof net.minecraft.server.level.ServerPlayer player)) {
+            return;
+        }
+        net.minecraft.nbt.CompoundTag oldPersisted = event.getOriginal().getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+        net.minecraft.nbt.ListTag stash = oldPersisted.getList(SOULBOUND_STASH, net.minecraft.nbt.Tag.TAG_COMPOUND);
+        for (net.minecraft.nbt.Tag tag : stash) {
+            ItemStack.parse(player.registryAccess(), tag).ifPresent(item -> {
+                if (!player.getInventory().add(item)) {
+                    player.drop(item, false);
+                }
+            });
+        }
+        // Clear the copy on the new player too, so it isn't given out again on the next death.
+        net.minecraft.nbt.CompoundTag newPersisted = player.getPersistentData().getCompound(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG);
+        newPersisted.remove(SOULBOUND_STASH);
+        player.getPersistentData().put(net.minecraft.world.entity.player.Player.PERSISTED_NBT_TAG, newPersisted);
+    }
+
     /** Hands every player a Grim Soul Codex the first time they join (once per player, per world). */
     private void onPlayerLogin(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) {
         if (!Config.GIVE_GUIDE_ON_JOIN.get() || !(event.getEntity() instanceof net.minecraft.server.level.ServerPlayer player)) {

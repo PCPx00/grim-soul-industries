@@ -14,14 +14,14 @@
       "item": "minecraft:amethyst_shard"
     },
     "X": {
-      "item": "minecraft:bone"
+      "item": "minecraft:iron_sword"
     },
     "Y": {
-      "item": "minecraft:bone_block"
+      "item": "minecraft:skeleton_skull"
     }
   },
   "result": {
-    "id": "grimsoul:smite_card",
+    "id": "grimsoul:beheading_card",
     "count": 1
   }
 }

@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.1.0 — Farming cards, Soul Forge and quality of life
+
+- **Beheading card:** Reaper Block cards (up to 10). Each card adds a chance to drop the head of a zombie, skeleton, creeper or piglin when the Reaper kills it.
+- **Harvest card:** a Reaper Block card (1 max) that takes wool from adult sheep, milk from adult cows and eggs from adult chickens without hurting them. Cows and chickens are ready again after 2 minutes. Harvested animals are not attacked, even in Hostile mode.
+- **Settings Card:** right-click a machine to copy its settings (work area, whitelist, filter, auto-eject, magnet, redstone mode and on/off). Right-click another machine of the same kind to paste them. Sneak-right-click to clear the card. Items, upgrades and power are never copied.
+- **Soul Steel and Soul Forge:** Soul Steel is made from Netherite and a Nether Star. Hold an item in your main hand and Soul Steel in your off hand, then right-click a Soul Forge:
+  - a Soulforged Data Core of a mob with a spawn egg makes that spawn egg;
+  - a Soulforged Data Core of a boss makes a **Boss Core card**;
+  - any single item makes a **soulbound** copy, kept in your inventory when you die.
+- **Boss Core card:** a fifth Virtualization Chamber card. It halves the power cost of running a boss (Wither, Ender Dragon, c:bosses). Max 1.
+- **JEI and Jade support (optional):** the Reaper Generator's fuel values show in JEI, and Jade shows each machine's status (power, XP, mob, energy).
+- **Smite and Bane of Arthropods cards removed:** they weren't needed. Any of these cards you had are gone when you load 2.1.0.
+- **Guide:** a new Endgame & Utilities section covers the Settings Card, Soul Steel, Soul Forge and Boss Core card.
+- **FTB Quests chapter:** `ftbquests/grimsoul.snbt` in the repo is a starter chapter that walks through the machines. Copy it into your pack's `config/ftbquests/quests/chapters/` folder.
+
 ## 2.0.0 — Apotheosis support, boss Soul Cards and smoother visuals
 
 - **Apotheosis support:** with a **Player Kill** card, hostile mobs killed by the Reaper Block or simulated in the Virtualization Chamber can drop Apotheosis affix weapons, tools and armor. Rarity follows the nearest player's World Tier and luck. The chance is 5% per kill by default and can be changed with `compat.apotheosisGearChance` in the config. Apotheosis is optional.

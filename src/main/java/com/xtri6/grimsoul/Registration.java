@@ -104,6 +104,18 @@ public final class Registration {
                     .persistent(net.minecraft.util.ExtraCodecs.NON_NEGATIVE_INT)
                     .networkSynchronized(net.minecraft.network.codec.ByteBufCodecs.VAR_INT));
 
+    /** Settings Card: which machine it was copied from, and that machine's settings. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.nbt.CompoundTag>> SETTINGS_DATA =
+            COMPONENTS.registerComponentType("settings_data", builder -> builder
+                    .persistent(net.minecraft.nbt.CompoundTag.CODEC)
+                    .networkSynchronized(net.minecraft.network.codec.ByteBufCodecs.COMPOUND_TAG));
+
+    /** Soulbound item: kept in your inventory when you die (made at the Soul Forge). */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.util.Unit>> SOULBOUND =
+            COMPONENTS.registerComponentType("soulbound", builder -> builder
+                    .persistent(com.mojang.serialization.Codec.unit(net.minecraft.util.Unit.INSTANCE))
+                    .networkSynchronized(net.minecraft.network.codec.StreamCodec.unit(net.minecraft.util.Unit.INSTANCE)));
+
     /** FE kept on an Energy Cell item after it's broken. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> STORED_ENERGY =
             COMPONENTS.registerComponentType("stored_energy", builder -> builder
@@ -144,8 +156,18 @@ public final class Registration {
     public static final DeferredItem<BlockItem> SIMULATION_CHAMBER_ITEM = ITEMS.registerSimpleBlockItem(SIMULATION_CHAMBER);
     public static final DeferredItem<BlockItem> OUTPUT_CRATE_ITEM = ITEMS.registerSimpleBlockItem(OUTPUT_CRATE);
     public static final DeferredItem<BlockItem> ENERGY_CELL_ITEM = ITEMS.registerSimpleBlockItem(ENERGY_CELL);
+    public static final DeferredBlock<com.xtri6.grimsoul.block.SoulForgeBlock> SOUL_FORGE = BLOCKS.register("soul_forge",
+            () -> new com.xtri6.grimsoul.block.SoulForgeBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK).strength(5.0F, 1200.0F).requiresCorrectToolForDrops()
+                    .sound(net.minecraft.world.level.block.SoundType.ANVIL)));
+    public static final DeferredItem<BlockItem> SOUL_FORGE_ITEM = ITEMS.registerSimpleBlockItem(SOUL_FORGE);
 
     // ---- Items ----
+    public static final DeferredItem<com.xtri6.grimsoul.item.SettingsCardItem> SETTINGS_CARD = ITEMS.register("settings_card",
+            () -> new com.xtri6.grimsoul.item.SettingsCardItem(new Item.Properties()));
+
+    public static final DeferredItem<Item> SOUL_STEEL = ITEMS.register("soul_steel", () -> new Item(new Item.Properties()));
+
     public static final DeferredItem<ReapersLanternItem> REAPERS_LANTERN = ITEMS.register("reapers_lantern",
             () -> new ReapersLanternItem(new Item.Properties().stacksTo(1)));
 
@@ -229,6 +251,9 @@ public final class Registration {
                 output.accept(OUTPUT_CRATE_ITEM.get());
                 output.accept(DATA_CORE.get());
                 output.accept(REAPERS_LANTERN.get());
+                output.accept(SOUL_FORGE_ITEM.get());
+                output.accept(SOUL_STEEL.get());
+                output.accept(SETTINGS_CARD.get());
                 for (UpgradeType type : UpgradeType.values()) {
                     output.accept(CARDS.get(type).get());
                 }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SOS",
+    "ONO",
+    "SOS"
+  ],
+  "key": {
+    "S": {
+      "item": "grimsoul:soul_steel"
+    },
+    "O": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "result": {
+    "id": "grimsoul:soul_forge",
+    "count": 1
+  }
+}

@@ -94,6 +94,11 @@ public class DataCoreItem extends Item {
         return Component.translatable("tier.grimsoul." + TIER_NAMES[t]).withStyle(TIER_COLORS[t]);
     }
 
+    /** The Ender Dragon, the Wither and anything in c:bosses. */
+    public static boolean isBoss(EntityType<?> type) {
+        return type == EntityType.ENDER_DRAGON || type == EntityType.WITHER || type.is(Tags.EntityTypes.BOSSES);
+    }
+
     /** Mobs a core may be bound to: no bosses (unless the config allows them) and nothing on the blacklist tag. */
     public static boolean canBind(EntityType<?> type) {
         if (type.is(Registration.SIMULATION_BLACKLIST)) {

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "grimsoul:item/smite_card"
+    "layer0": "grimsoul:item/beheading_card"
   }
 }

@@ -39,6 +39,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -47,6 +48,7 @@ import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
@@ -88,7 +90,7 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
     /** The Reaper Block's card slots, in GUI order. */
     public static final UpgradeType[] CARD_SLOTS = {
             UpgradeType.SPEED, UpgradeType.RANGE, UpgradeType.DAMAGE, UpgradeType.LOOTING, UpgradeType.PLAYER_KILL,
-            UpgradeType.STORAGE, UpgradeType.VOID, UpgradeType.FIRE_ASPECT, UpgradeType.SMITE, UpgradeType.BANE_OF_ARTHROPODS};
+            UpgradeType.STORAGE, UpgradeType.VOID, UpgradeType.FIRE_ASPECT, UpgradeType.BEHEADING, UpgradeType.HARVEST};
     public static final EnumSet<UpgradeType> ACCEPTED_CARDS = EnumSet.copyOf(java.util.Arrays.asList(CARD_SLOTS));
 
     /** One slot per card type, in UpgradeType order. Shared by the block and the client menu. */
@@ -106,7 +108,12 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
     /** Client only: the smooth animation clock (set by the client setup), used to time beams. */
     public static java.util.function.LongSupplier clientClock = () -> 0L;
     private static final int MAX_BEAMS_PER_CYCLE = 8;
-    private static final float SMITE_BANE_DAMAGE_PER_LEVEL = 2.5F;
+    /** Harvest card: ticks a farm animal must wait before it can be harvested again. */
+    private static final int HARVEST_COOLDOWN = 2400;
+    /** Beheading card: chance of a head per card, when a mob is killed. */
+    private static final double BEHEADING_CHANCE_PER_CARD = 0.04;
+    /** Harvest card: game time each animal can be harvested again (entity UUID -> time). Not saved. */
+    private final java.util.Map<java.util.UUID, Long> harvestReady = new java.util.HashMap<>();
 
     // ---- Button ids sent from the GUI (see ReaperMenu#clickMenuButton) ----
     public static final int BTN_OFFSET_BASE = 0;   // 0..5: offset X-,X+,Y-,Y+,Z-,Z+
@@ -290,27 +297,27 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
         if (magnet && !hasRoom() && !(voidWhenFull && hasVoidCard())) {
             return;
         }
-        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, getCollectionArea(), this::canAttack);
+        boolean harvest = upgrades.count(UpgradeType.HARVEST) > 0;
+        List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, getCollectionArea(),
+                e -> canAttack(e) || (harvest && isHarvestable(e)));
         if (targets.isEmpty()) {
             return; // Sleep when idle: nothing else to do this cycle.
         }
         float baseDamage = (float) (Config.REAPER_BASE_DAMAGE.get()
                 + upgrades.count(UpgradeType.DAMAGE) * Config.REAPER_DAMAGE_PER_CARD.get());
-        int smite = upgrades.count(UpgradeType.SMITE);
-        int bane = upgrades.count(UpgradeType.BANE_OF_ARTHROPODS);
         int fireAspect = upgrades.count(UpgradeType.FIRE_ASPECT);
+        int beheading = upgrades.count(UpgradeType.BEHEADING);
         DamageSource mobSource = createDamageSource(level);
         DamageSource playerSource = level.damageSources().generic();
+        long now = level.getGameTime();
         int beams = 0;
         for (LivingEntity mob : targets) {
+            if (harvest && isHarvestable(mob)) {
+                harvestAnimal(level, mob, now);
+                continue; // Farm animals are harvested, not hurt.
+            }
             float damage = baseDamage;
-            if (smite > 0 && mob.getType().is(EntityTypeTags.SENSITIVE_TO_SMITE)) {
-                damage += smite * SMITE_BANE_DAMAGE_PER_LEVEL;
-            }
-            if (bane > 0 && mob.getType().is(EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS)) {
-                damage += bane * SMITE_BANE_DAMAGE_PER_LEVEL;
-            }
-            // Fire Aspect: 4 seconds of fire per level, like the enchantment. Burning mobs drop cooked meat.
+            // Fire Aspect: 4 seconds of fire per level, like the enchantment.
             if (fireAspect > 0) {
                 mob.igniteForSeconds(4.0F * fireAspect);
             }
@@ -318,6 +325,9 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
             mob.hurt(mob instanceof Player ? playerSource : mobSource, damage);
             if (mob.isDeadOrDying()) {
                 creditCore(mob.getType());
+                if (beheading > 0) {
+                    dropHead(level, mob, beheading);
+                }
                 // Player Kill card + Apotheosis: a chance at affix gear, dropped where the mob died for the magnet.
                 if (!(mob instanceof Player) && mobSource.getEntity() instanceof Player killer) {
                     ItemStack gear = com.xtri6.grimsoul.compat.ApothCompat.rollPlayerKillGear(level, mob, worldPosition, killer);
@@ -332,6 +342,79 @@ public class ReaperBlockEntity extends BlockEntity implements MenuProvider {
             }
         }
         level.playSound(null, worldPosition, SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.BLOCKS, 0.35F, 1.8F);
+    }
+
+    /** Farm animals the Harvest card can collect from: adult sheep with wool, cows and chickens. */
+    private boolean isHarvestable(LivingEntity entity) {
+        if (!entity.isAlive() || entity.isBaby()) {
+            return false;
+        }
+        if (entity instanceof net.minecraft.world.entity.animal.Sheep sheep) {
+            return !sheep.isSheared();
+        }
+        if (entity instanceof net.minecraft.world.entity.animal.Cow || entity instanceof net.minecraft.world.entity.animal.Chicken) {
+            return harvestReady.getOrDefault(entity.getUUID(), 0L) <= getLevel().getGameTime();
+        }
+        return false;
+    }
+
+    /** Takes wool, milk or an egg from a farm animal without hurting it. Drops appear at the animal. */
+    private void harvestAnimal(ServerLevel level, LivingEntity animal, long now) {
+        ItemStack drop;
+        if (animal instanceof net.minecraft.world.entity.animal.Sheep sheep) {
+            drop = new ItemStack(woolFor(sheep.getColor()), 1 + level.random.nextInt(3));
+            sheep.setSheared(true); // Vanilla grows the wool back as the sheep eats grass.
+        } else if (animal instanceof net.minecraft.world.entity.animal.Cow) {
+            drop = new ItemStack(Items.MILK_BUCKET);
+            harvestReady.put(animal.getUUID(), now + HARVEST_COOLDOWN);
+        } else {
+            drop = new ItemStack(Items.EGG);
+            harvestReady.put(animal.getUUID(), now + HARVEST_COOLDOWN);
+        }
+        animal.spawnAtLocation(drop);
+        if (harvestReady.size() > 512) {
+            harvestReady.values().removeIf(t -> t <= now);
+        }
+    }
+
+    private static net.minecraft.world.item.Item woolFor(net.minecraft.world.item.DyeColor color) {
+        return switch (color) {
+            case ORANGE -> Items.ORANGE_WOOL;
+            case MAGENTA -> Items.MAGENTA_WOOL;
+            case LIGHT_BLUE -> Items.LIGHT_BLUE_WOOL;
+            case YELLOW -> Items.YELLOW_WOOL;
+            case LIME -> Items.LIME_WOOL;
+            case PINK -> Items.PINK_WOOL;
+            case GRAY -> Items.GRAY_WOOL;
+            case LIGHT_GRAY -> Items.LIGHT_GRAY_WOOL;
+            case CYAN -> Items.CYAN_WOOL;
+            case PURPLE -> Items.PURPLE_WOOL;
+            case BLUE -> Items.BLUE_WOOL;
+            case BROWN -> Items.BROWN_WOOL;
+            case GREEN -> Items.GREEN_WOOL;
+            case RED -> Items.RED_WOOL;
+            case BLACK -> Items.BLACK_WOOL;
+            default -> Items.WHITE_WOOL;
+        };
+    }
+
+    /** Beheading card: each card adds a chance of a head from zombies, skeletons, creepers and piglins. */
+    private void dropHead(ServerLevel level, LivingEntity mob, int cards) {
+        net.minecraft.world.item.Item head;
+        if (mob.getType() == EntityType.ZOMBIE) {
+            head = Items.ZOMBIE_HEAD;
+        } else if (mob.getType() == EntityType.SKELETON) {
+            head = Items.SKELETON_SKULL;
+        } else if (mob.getType() == EntityType.CREEPER) {
+            head = Items.CREEPER_HEAD;
+        } else if (mob.getType() == EntityType.PIGLIN) {
+            head = Items.PIGLIN_HEAD;
+        } else {
+            return;
+        }
+        if (level.random.nextDouble() < Math.min(1.0, cards * BEHEADING_CHANCE_PER_CARD)) {
+            mob.spawnAtLocation(new ItemStack(head));
+        }
     }
 
     /** Adds one kill of data to the Data Core in this block, if it's bound to that mob. */

@@ -14,14 +14,14 @@
       "item": "minecraft:amethyst_shard"
     },
     "X": {
-      "item": "minecraft:spider_eye"
+      "item": "minecraft:wheat"
     },
     "Y": {
-      "item": "minecraft:fermented_spider_eye"
+      "item": "minecraft:bucket"
     }
   },
   "result": {
-    "id": "grimsoul:bane_of_arthropods_card",
+    "id": "grimsoul:harvest_card",
     "count": 1
   }
 }

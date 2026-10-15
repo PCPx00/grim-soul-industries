@@ -69,7 +69,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
  * AE2). XP goes to an adjacent Reaper XP Tank or can be taken from the GUI.
  */
 public class SimulationChamberBlockEntity extends BlockEntity implements MenuProvider {
-    public static final UpgradeType[] CARD_SLOTS = {UpgradeType.SPEED, UpgradeType.LOOTING, UpgradeType.EFFICIENCY, UpgradeType.PLAYER_KILL};
+    public static final UpgradeType[] CARD_SLOTS = {UpgradeType.SPEED, UpgradeType.LOOTING, UpgradeType.EFFICIENCY, UpgradeType.PLAYER_KILL, UpgradeType.BOSS_CORE};
     public static final int CARD_COUNT = CARD_SLOTS.length;
     public static final int OUTPUT_SLOTS = 18;
     private static final int PUSH_INTERVAL = 10;
@@ -234,7 +234,9 @@ public class SimulationChamberBlockEntity extends BlockEntity implements MenuPro
         }
         double factor = Math.max(1.0, health / 20.0);
         double efficiency = Config.SIM_MAX_EFFICIENCY.get() * cards.count(UpgradeType.EFFICIENCY) / UpgradeType.EFFICIENCY.maxCards();
-        return (int) Math.min(Integer.MAX_VALUE, Math.round(Config.SIM_BASE_COST.get() * factor * (1.0 - efficiency)));
+        // A Boss Core card halves the cost of running a boss (Wither, Ender Dragon, c:bosses).
+        double bossDiscount = cards.count(UpgradeType.BOSS_CORE) > 0 && DataCoreItem.isBoss(mob.get()) ? 0.5 : 1.0;
+        return (int) Math.min(Integer.MAX_VALUE, Math.round(Config.SIM_BASE_COST.get() * factor * (1.0 - efficiency) * bossDiscount));
     }
 
     private int costPerTick() {

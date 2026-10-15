@@ -55,7 +55,7 @@ Grim Soul Industries takes everything great about mob-farming mods and puts it i
 
 <p align="center"><img src="docs/gifs/h_cards.gif" alt="16 Upgrade Cards" width="100%"></p>
 
-Speed · Range · Damage · Looting · Player Kill · Storage · Void · Fire Aspect · Smite · Bane of Arthropods · Count · No Player Needed · Ignore Light · Ignore Spawn Conditions · No AI · Efficiency — each with its own art and a per-machine limit.
+Speed · Range · Damage · Looting · Player Kill · Storage · Void · Fire Aspect · Beheading · Harvest · Count · No Player Needed · Ignore Light · Ignore Spawn Conditions · No AI · Efficiency — each with its own art and a per-machine limit.
 
 <p align="center"><img src="docs/gallery/04_card_wall.png" width="85%"></p>
 
