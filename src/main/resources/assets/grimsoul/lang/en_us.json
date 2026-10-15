@@ -250,6 +250,7 @@
   "jei.grimsoul.generator_fuel": "Reaper Generator Fuel",
   "jei.grimsoul.fuel_rate": "%s FE per tick",
   "jei.grimsoul.fuel_total": "%s s, %s FE total",
+  "config.jade.plugin_grimsoul.machine_client": "Grim Soul machine info",
   "jade.grimsoul.power": "Power: %s",
   "jade.grimsoul.xp": "Stored XP: %s",
   "jade.grimsoul.mob": "Mob: %s",

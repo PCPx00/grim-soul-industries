@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.19 — Fixes
+
+- **Jade:** the Grim Soul machine info option has a name in the Jade settings, so it no longer logs a missing translation.
+
 ## 2.1.18 — Soul Forge power and inventory grid
 
 - **Power from any side:** every casing of a formed Soul Forge passes power to the forge. Pipes and generators can connect to any face of the cube, top, bottom or sides.
