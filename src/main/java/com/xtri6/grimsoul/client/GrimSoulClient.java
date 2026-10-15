@@ -79,6 +79,7 @@ public class GrimSoulClient {
         event.register(Registration.GENERATOR_MENU.get(), GeneratorScreen::new);
         event.register(Registration.SIMULATION_MENU.get(), SimulationScreen::new);
         event.register(Registration.CRATE_MENU.get(), CrateScreen::new);
+        event.register(Registration.SOUL_FORGE_MENU.get(), SoulForgeScreen::new);
         event.register(Registration.CELL_MENU.get(), CellScreen::new);
     }
 

@@ -63,6 +63,9 @@ public class GrimSoul {
         // Simulation Chamber: FE in from any side, drops out to pipes. Output Crate: items in and out.
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, Registration.SIMULATION_CHAMBER_ENTITY.get(),
                 (be, side) -> be.getEnergyHandler());
+        // Soul Forge: power in from generators or cables.
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, Registration.SOUL_FORGE_ENTITY.get(),
+                (be, side) -> be.getEnergyHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.SIMULATION_CHAMBER_ENTITY.get(),
                 (be, side) -> be.getOutputHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.OUTPUT_CRATE_ENTITY.get(),

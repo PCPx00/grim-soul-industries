@@ -1,7 +1,28 @@
 {
   "variants": {
-    "": {
+    "active=true,facing=north": {
       "model": "grimsoul:block/soul_forge"
+    },
+    "active=true,facing=east": {
+      "model": "grimsoul:block/soul_forge"
+    },
+    "active=true,facing=south": {
+      "model": "grimsoul:block/soul_forge"
+    },
+    "active=true,facing=west": {
+      "model": "grimsoul:block/soul_forge"
+    },
+    "active=false,facing=north": {
+      "model": "grimsoul:block/soul_forge_off"
+    },
+    "active=false,facing=east": {
+      "model": "grimsoul:block/soul_forge_off"
+    },
+    "active=false,facing=south": {
+      "model": "grimsoul:block/soul_forge_off"
+    },
+    "active=false,facing=west": {
+      "model": "grimsoul:block/soul_forge_off"
     }
   }
 }

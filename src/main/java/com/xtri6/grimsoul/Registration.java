@@ -157,10 +157,11 @@ public final class Registration {
     public static final DeferredItem<BlockItem> OUTPUT_CRATE_ITEM = ITEMS.registerSimpleBlockItem(OUTPUT_CRATE);
     public static final DeferredItem<BlockItem> ENERGY_CELL_ITEM = ITEMS.registerSimpleBlockItem(ENERGY_CELL);
     public static final DeferredBlock<com.xtri6.grimsoul.block.SoulForgeBlock> SOUL_FORGE = BLOCKS.register("soul_forge",
-            () -> new com.xtri6.grimsoul.block.SoulForgeBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_BLACK).strength(5.0F, 1200.0F).requiresCorrectToolForDrops()
-                    .sound(net.minecraft.world.level.block.SoundType.ANVIL)));
+            () -> new com.xtri6.grimsoul.block.SoulForgeBlock(machineProps()));
+    public static final DeferredBlock<net.minecraft.world.level.block.Block> SOUL_FORGE_CASING = BLOCKS.register("soul_forge_casing",
+            () -> new net.minecraft.world.level.block.Block(machineProps()));
     public static final DeferredItem<BlockItem> SOUL_FORGE_ITEM = ITEMS.registerSimpleBlockItem(SOUL_FORGE);
+    public static final DeferredItem<BlockItem> SOUL_FORGE_CASING_ITEM = ITEMS.registerSimpleBlockItem(SOUL_FORGE_CASING);
 
     // ---- Items ----
     public static final DeferredItem<com.xtri6.grimsoul.item.SettingsCardItem> SETTINGS_CARD = ITEMS.register("settings_card",
@@ -199,6 +200,9 @@ public final class Registration {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EssenceSpawnerBlockEntity>> ESSENCE_SPAWNER_ENTITY =
             BLOCK_ENTITIES.register("essence_spawner", () -> BlockEntityType.Builder.of(EssenceSpawnerBlockEntity::new, ESSENCE_SPAWNER.get()).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.xtri6.grimsoul.blockentity.SoulForgeBlockEntity>> SOUL_FORGE_ENTITY =
+            BLOCK_ENTITIES.register("soul_forge", () -> BlockEntityType.Builder.of(com.xtri6.grimsoul.blockentity.SoulForgeBlockEntity::new, SOUL_FORGE.get()).build(null));
+
     @SuppressWarnings("DataFlowIssue")
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReaperGeneratorBlockEntity>> REAPER_GENERATOR_ENTITY =
             BLOCK_ENTITIES.register("reaper_generator", () -> BlockEntityType.Builder.of(ReaperGeneratorBlockEntity::new, REAPER_GENERATOR.get()).build(null));
@@ -234,6 +238,8 @@ public final class Registration {
 
     public static final DeferredHolder<MenuType<?>, MenuType<CellMenu>> CELL_MENU =
             MENUS.register("energy_cell", () -> IMenuTypeExtension.create(CellMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<com.xtri6.grimsoul.menu.SoulForgeMenu>> SOUL_FORGE_MENU =
+            MENUS.register("soul_forge", () -> IMenuTypeExtension.create(com.xtri6.grimsoul.menu.SoulForgeMenu::new));
 
     // ---- Creative tab ----
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = TABS.register("main", () -> CreativeModeTab.builder()
@@ -252,6 +258,7 @@ public final class Registration {
                 output.accept(DATA_CORE.get());
                 output.accept(REAPERS_LANTERN.get());
                 output.accept(SOUL_FORGE_ITEM.get());
+                output.accept(SOUL_FORGE_CASING_ITEM.get());
                 output.accept(SOUL_STEEL.get());
                 output.accept(SETTINGS_CARD.get());
                 for (UpgradeType type : UpgradeType.values()) {

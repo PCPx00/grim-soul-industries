@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BOB",
+    "OSO",
+    "BOB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:blackstone"
+    },
+    "O": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "S": {
+      "item": "grimsoul:soul_steel"
+    }
+  },
+  "result": {
+    "id": "grimsoul:soul_forge_casing",
+    "count": 4
+  }
+}

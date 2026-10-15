@@ -242,9 +242,18 @@
   "message.grimsoul.settings.cleared": "Settings card cleared",
   "message.grimsoul.settings.none": "This machine has no settings to copy",
   "message.grimsoul.settings.wrong_machine": "This card holds settings for a different machine: %s",
-  "message.grimsoul.forge.needs_soulforged": "The Data Core must be Soulforged",
-  "message.grimsoul.forge.no_mob": "This Data Core isn't bound to a mob",
-  "message.grimsoul.forge.no_egg": "This mob has no spawn egg",
   "tooltip.grimsoul.soulbound": "Soulbound: kept in your inventory when you die",
-  "tooltip.grimsoul.soul_steel": "Forge ingot. Hold an item and Soul Steel in your off hand, then right-click a Soul Forge."
+  "tooltip.grimsoul.soul_steel": "Builds the Soul Forge casing and powers its crafts.",
+  "block.grimsoul.soul_forge_casing": "Soul Forge Casing",
+  "gui.grimsoul.soul_forge.structure_formed": "Multiblock: formed",
+  "gui.grimsoul.soul_forge.structure_missing": "Multiblock: %s blocks missing or wrong",
+  "gui.grimsoul.soul_forge.energy": "%s / %s FE",
+  "gui.grimsoul.soul_forge.status.crafting": "Forging",
+  "gui.grimsoul.soul_forge.status.incomplete": "Build the casing cube around it first",
+  "gui.grimsoul.soul_forge.status.no_work": "Put an item in the top slot",
+  "gui.grimsoul.soul_forge.status.no_steel": "Add Soul Steel to the lower slot",
+  "gui.grimsoul.soul_forge.status.no_power": "Waiting for power",
+  "gui.grimsoul.soul_forge.status.output_full": "Output is full",
+  "gui.grimsoul.soul_forge.status.no_recipe": "This item can't be forged",
+  "gui.grimsoul.soul_forge.status.idle": "Idle"
 }

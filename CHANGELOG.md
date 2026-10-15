@@ -5,7 +5,7 @@
 - **Beheading card:** Reaper Block cards (up to 10). Each card adds a chance to drop the head of a zombie, skeleton, creeper or piglin when the Reaper kills it.
 - **Harvest card:** a Reaper Block card (1 max) that takes wool from adult sheep, milk from adult cows and eggs from adult chickens without hurting them. Cows and chickens are ready again after 2 minutes. Harvested animals are not attacked, even in Hostile mode.
 - **Settings Card:** right-click a machine to copy its settings (work area, whitelist, filter, auto-eject, magnet, redstone mode and on/off). Right-click another machine of the same kind to paste them. Sneak-right-click to clear the card. Items, upgrades and power are never copied.
-- **Soul Steel and Soul Forge:** Soul Steel is made from Netherite and a Nether Star. Hold an item in your main hand and Soul Steel in your off hand, then right-click a Soul Forge:
+- **Soul Steel and Soul Forge:** Soul Steel is made from Netherite and a Nether Star. The Soul Forge is a 3x3x3 multiblock of Soul Forge Casing (4 per Soul Steel), with the forge at the bottom centre and the middle of the layer above left empty. Open its GUI, put an item in the work slot and Soul Steel in the next slot, and it forges (using FE):
   - a Soulforged Data Core of a mob with a spawn egg makes that spawn egg;
   - a Soulforged Data Core of a boss makes a **Boss Core card**;
   - any single item makes a **soulbound** copy, kept in your inventory when you die.

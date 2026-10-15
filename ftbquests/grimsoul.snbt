@@ -155,7 +155,7 @@
 			y: 4.0d
 			title: "Build a Soul Forge"
 			icon: "grimsoul:soul_forge"
-			description: ["Hold an item in your main hand and Soul Steel in your off hand, then right-click the forge."]
+			description: ["Build the Soul Forge multiblock: a 3x3x3 cube of Soul Forge Casing with the forge at the bottom centre. Right-click it to forge items with Soul Steel."]
 			dependencies: ["AFD9553066022A21"]
 			tasks: [
 				{

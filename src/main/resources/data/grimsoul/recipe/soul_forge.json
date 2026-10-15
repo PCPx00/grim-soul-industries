@@ -2,16 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "SOS",
-    "ONO",
-    "SOS"
+    "CCC",
+    "CNC",
+    "CCC"
   ],
   "key": {
-    "S": {
-      "item": "grimsoul:soul_steel"
-    },
-    "O": {
-      "item": "minecraft:crying_obsidian"
+    "C": {
+      "item": "grimsoul:soul_forge_casing"
     },
     "N": {
       "item": "minecraft:nether_star"
