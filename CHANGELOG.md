@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.15 — Spawn rules and spawner rate
+
+- **Solid ground only:** an Essence Spawner mob only appears standing on a solid block. It never spawns over air, water or lava, in any mode.
+- **Card overrides:** the default spawn rules (light level and the usual vanilla checks) still apply with no cards. The No Light and Ignore Spawn Conditions cards still skip those rules, as before.
+- **Spawner rate line:** the Spawner screen shows mobs per minute under its nearby count.
+- **Pipes:** the XP Tank drains as liquid XP and the Reaper's items can be extracted by pipes, as before.
+
 ## 2.1.14 — Dossier, layout and range fixes
 
 - **Loot Dossier updates itself:** the preview is sampled automatically when the Soul Card, the core, or the Looting and Player Kill cards change. Re-sample still works.

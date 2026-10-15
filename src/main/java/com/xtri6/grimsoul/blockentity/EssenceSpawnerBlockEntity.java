@@ -399,10 +399,21 @@ public class EssenceSpawnerBlockEntity extends BlockEntity implements MenuProvid
         }
     }
 
+    /** True when the block under the spawn spot is a full, solid block (not air, water or lava). */
+    private static boolean hasSolidGround(ServerLevel level, BlockPos at) {
+        BlockPos below = at.below();
+        BlockState state = level.getBlockState(below);
+        return !state.isAir() && state.getFluidState().isEmpty() && state.isFaceSturdy(level, below, Direction.UP);
+    }
+
     private boolean spawnOne(ServerLevel level, EntityType<?> type, double x, double y, double z, boolean ignoreRules, boolean ignoreLight,
             boolean noAi) {
         BlockPos at = BlockPos.containing(x, y, z);
         if (!level.noCollision(type.getSpawnAABB(x, y, z))) {
+            return false;
+        }
+        // Every mode, cards included: a mob only appears standing on a solid block, never over air or fluid.
+        if (!hasSolidGround(level, at)) {
             return false;
         }
         Entity entity = type.create(level);

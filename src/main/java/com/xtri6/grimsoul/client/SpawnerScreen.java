@@ -211,6 +211,10 @@ public class SpawnerScreen extends AbstractContainerScreen<SpawnerMenu> {
                 menu.getData(EssenceSpawnerBlockEntity.DATA_PER_SPAWN), seconds), 12, 80, GuiStyle.TEXT, false);
         graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.nearby",
                 menu.getData(EssenceSpawnerBlockEntity.DATA_NEARBY), menu.getData(EssenceSpawnerBlockEntity.DATA_CAP)), 12, 90, GuiStyle.TEXT_DIM, false);
+        int spawnInterval = Math.max(1, menu.getData(EssenceSpawnerBlockEntity.DATA_INTERVAL));
+        graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.mobs_per_min",
+                String.format(Locale.ROOT, "%.1f", 1200.0 / spawnInterval * menu.getData(EssenceSpawnerBlockEntity.DATA_PER_SPAWN))),
+                12, 100, GuiStyle.TEXT_OK, false);
 
         // Spawn area grid
         graphics.drawString(font, Component.translatable("gui.grimsoul.spawner.area"), 12, AREA_TITLE_Y, GuiStyle.TEXT_ACCENT, false);
