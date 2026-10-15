@@ -50,7 +50,7 @@ public class SimulationScreen extends AbstractContainerScreen<SimulationMenu> {
         Button takeXp = button(133, 1, 115, SimulationChamberBlockEntity.BTN_TAKE_XP, "sim_take_xp");
         takeXp.setMessage(Component.translatable("gui.grimsoul.take_xp"));
         addRenderableWidget(Button.builder(Component.translatable("gui.grimsoul.dossier.open"),
-                        b -> minecraft.setScreen(new DossierScreen(this, menu.getPos())))
+                        b -> minecraft.setScreen(new DossierScreen(this, menu.getPos(), menu)))
                 .bounds(leftPos + 186, topPos + 5, 46, 14)
                 .tooltip(Tooltip.create(Component.translatable("gui.grimsoul.dossier.open.tooltip")))
                 .build());

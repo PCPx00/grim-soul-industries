@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.16 — Dossier fix
+
+- **Loot Dossier shows loot:** the dossier read the bound mob from a copy of the core that the client never receives, so it always said "Bind a Soul Card". It now reads the core from the synced menu slot.
+
 ## 2.1.15 — Spawn rules and spawner rate
 
 - **Solid ground only:** an Essence Spawner mob only appears standing on a solid block. It never spawns over air, water or lava, in any mode.

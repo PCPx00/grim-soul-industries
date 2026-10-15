@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import com.xtri6.grimsoul.blockentity.SimulationChamberBlockEntity;
 import com.xtri6.grimsoul.item.DataCoreItem;
+import com.xtri6.grimsoul.menu.SimulationMenu;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -27,11 +28,14 @@ public class DossierScreen extends Screen {
 
     private final SimulationScreen parent;
     private final BlockPos pos;
+    /** The menu's core slot is synced to the client; the block entity's core copy is not. */
+    private final SimulationMenu menu;
 
-    public DossierScreen(SimulationScreen parent, BlockPos pos) {
+    public DossierScreen(SimulationScreen parent, BlockPos pos, SimulationMenu menu) {
         super(Component.translatable("gui.grimsoul.dossier.title"));
         this.parent = parent;
         this.pos = pos;
+        this.menu = menu;
     }
 
     @Override
@@ -74,7 +78,7 @@ public class DossierScreen extends Screen {
             return;
         }
         CompoundTag dossier = be.getDossier();
-        String current = DataCoreItem.getMob(be.getCore().getStackInSlot(0))
+        String current = DataCoreItem.getMob(menu.slots.get(0).getItem())
                 .map(type -> BuiltInRegistries.ENTITY_TYPE.getKey(type).toString()).orElse("");
         if (dossier.isEmpty() || !current.equals(dossier.getString("Mob"))) {
             Component message = current.isEmpty() ? Component.translatable("gui.grimsoul.dossier.empty")
