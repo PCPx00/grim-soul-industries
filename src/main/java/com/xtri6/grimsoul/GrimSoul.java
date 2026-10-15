@@ -38,6 +38,7 @@ public class GrimSoul {
         Registration.register(modBus);
         modBus.addListener(this::registerCapabilities);
         modBus.addListener(this::registerDataMaps);
+        modBus.addListener(com.xtri6.grimsoul.item.ItemTuning::apply);
         NeoForge.EVENT_BUS.addListener(this::onEntityInteract);
         NeoForge.EVENT_BUS.addListener(this::onLivingDeath);
         NeoForge.EVENT_BUS.addListener(this::onPlayerLogin);

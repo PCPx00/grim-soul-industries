@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.9 — Per-item config
+
+- **Stack size per item:** every mod item (cards, Soul Steel, Data Core, Reaper's Lantern, Guide Book and the block items) has `items.<name>.maxStackSize` in `grimsoul-common.toml`. 0 keeps the mod's default.
+
 ## 2.1.8 — Per-block config
 
 - **Block tuning:** every mod block has its own `blocks.<name>.hardness` and `blocks.<name>.blastResistance` settings in `grimsoul-common.toml`, for all ten blocks. Harder blocks take longer to break, and blast resistance controls how they survive explosions.

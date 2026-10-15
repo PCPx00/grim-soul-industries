@@ -203,6 +203,27 @@ public final class Config {
         BUILDER.pop();
     }
 
+    // ---- Per-item tuning: each mod item's stack size. 0 keeps the mod's default. ----
+    /** Every item this mod registers (block items included), by its registry path. */
+    public static final java.util.List<String> ITEM_NAMES = java.util.stream.Stream.concat(
+            java.util.stream.Stream.concat(
+                    java.util.stream.Stream.of("settings_card", "soul_steel", "reapers_lantern", "data_core", "guide_book"),
+                    java.util.Arrays.stream(com.xtri6.grimsoul.item.UpgradeType.values())
+                            .map(com.xtri6.grimsoul.item.UpgradeType::itemName)),
+            BLOCK_NAMES.stream()).toList();
+    public static final java.util.Map<String, ModConfigSpec.IntValue> ITEM_MAX_STACK = new java.util.LinkedHashMap<>();
+    static {
+        BUILDER.push("items");
+        for (String name : ITEM_NAMES) {
+            BUILDER.push(name);
+            ITEM_MAX_STACK.put(name, BUILDER
+                    .comment("Most of this item that fit in one slot. 0 keeps the mod's default. Up to 64.")
+                    .defineInRange("maxStackSize", 0, 0, 64));
+            BUILDER.pop();
+        }
+        BUILDER.pop();
+    }
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
     private Config() {}
