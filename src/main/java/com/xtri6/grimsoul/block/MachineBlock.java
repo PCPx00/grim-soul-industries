@@ -1,6 +1,8 @@
 package com.xtri6.grimsoul.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -58,5 +60,19 @@ public abstract class MachineBlock extends BaseEntityBlock {
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
+    }
+
+    /** Blast resistance from the config (blocks.&lt;name&gt;.blastResistance). */
+    @Override
+    public float getExplosionResistance() {
+        return BlockTuning.blastResistance(this);
+    }
+
+    /** Break speed from the config (blocks.&lt;name&gt;.hardness): harder blocks take longer. */
+    @Override
+    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+        float vanilla = super.getDestroyProgress(state, player, level, pos);
+        float hardness = BlockTuning.hardness(this);
+        return hardness <= 0.0F ? vanilla * 1000.0F : vanilla * (BlockTuning.DEFAULT_HARDNESS / hardness);
     }
 }

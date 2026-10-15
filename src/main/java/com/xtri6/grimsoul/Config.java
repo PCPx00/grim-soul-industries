@@ -181,6 +181,28 @@ public final class Config {
             .comment("If false, the Soul Forge won't make soulbound items.")
             .define("soulForge.soulboundEnabled", true);
 
+    // ---- Per-block tuning: every mod block gets its own hardness and blast resistance ----
+    /** Every block this mod registers, by its registry path. */
+    public static final java.util.List<String> BLOCK_NAMES = java.util.List.of(
+            "reaper_block", "mob_fan", "xp_tank", "essence_spawner", "reaper_generator", "simulation_chamber",
+            "output_crate", "energy_cell", "soul_forge", "soul_forge_casing");
+    public static final java.util.Map<String, ModConfigSpec.DoubleValue> BLOCK_HARDNESS = new java.util.LinkedHashMap<>();
+    public static final java.util.Map<String, ModConfigSpec.DoubleValue> BLOCK_BLAST_RESISTANCE = new java.util.LinkedHashMap<>();
+    static {
+        BUILDER.push("blocks");
+        for (String name : BLOCK_NAMES) {
+            BUILDER.push(name);
+            BLOCK_HARDNESS.put(name, BUILDER
+                    .comment("How long this block takes to break. Vanilla stone is 1.5, iron block 5.0, obsidian 50.")
+                    .defineInRange("hardness", 3.5, 0.0, 1000.0));
+            BLOCK_BLAST_RESISTANCE.put(name, BUILDER
+                    .comment("How well this block survives explosions. Vanilla stone is 6.0, obsidian 1200.")
+                    .defineInRange("blastResistance", 6.0, 0.0, 10000.0));
+            BUILDER.pop();
+        }
+        BUILDER.pop();
+    }
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
     private Config() {}

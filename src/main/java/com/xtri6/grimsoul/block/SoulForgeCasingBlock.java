@@ -1,9 +1,11 @@
 package com.xtri6.grimsoul.block;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import com.xtri6.grimsoul.Registration;
 import com.xtri6.grimsoul.blockentity.SoulForgeBlockEntity;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -71,5 +73,19 @@ public class SoulForgeCasingBlock extends Block {
             }
         }
         return null;
+    }
+
+    /** Blast resistance from the config (blocks.&lt;name&gt;.blastResistance). */
+    @Override
+    public float getExplosionResistance() {
+        return BlockTuning.blastResistance(this);
+    }
+
+    /** Break speed from the config (blocks.&lt;name&gt;.hardness): harder blocks take longer. */
+    @Override
+    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+        float vanilla = super.getDestroyProgress(state, player, level, pos);
+        float hardness = BlockTuning.hardness(this);
+        return hardness <= 0.0F ? vanilla * 1000.0F : vanilla * (BlockTuning.DEFAULT_HARDNESS / hardness);
     }
 }

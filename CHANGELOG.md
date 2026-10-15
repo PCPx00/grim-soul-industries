@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.8 — Per-block config
+
+- **Block tuning:** every mod block has its own `blocks.<name>.hardness` and `blocks.<name>.blastResistance` settings in `grimsoul-common.toml`, for all ten blocks. Harder blocks take longer to break, and blast resistance controls how they survive explosions.
+
 ## 2.1.7 — Clickable cage
 
 - **Whole cube opens the forge:** right-click any casing of a completed Soul Forge to open its GUI. Sneak to place blocks against a casing instead.
