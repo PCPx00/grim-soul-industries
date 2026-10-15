@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-/** Soul Forge controller: right-click to open it. Build the 3x3 ring of Soul Forge Casing around it first. */
+/** Soul Forge controller: right-click to open it. Build the 3x3x3 cube of Soul Forge Casing around it first. */
 public class SoulForgeBlock extends MachineBlock {
     public static final MapCodec<SoulForgeBlock> CODEC = simpleCodec(SoulForgeBlock::new);
     /** True while the 3x3 ring is assembled. The forge then wakes up: its eye opens and the ring breathes. */
@@ -42,7 +42,7 @@ public class SoulForgeBlock extends MachineBlock {
         builder.add(FORMED);
     }
 
-    /** Soul motes rising off the assembled ring, and a heartbeat now and then. Faster while it is forging. */
+    /** Soul motes rising off the assembled cube, and a heartbeat now and then. Faster while it is forging. */
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         if (!state.getValue(FORMED)) {
@@ -52,7 +52,7 @@ public class SoulForgeBlock extends MachineBlock {
         if (random.nextInt(forging ? 2 : 5) == 0) {
             double x = pos.getX() - 1 + random.nextDouble() * 3.0;
             double z = pos.getZ() - 1 + random.nextDouble() * 3.0;
-            double y = pos.getY() + 1.0 + random.nextDouble() * 0.2;
+            double y = pos.getY() + 1.0 + random.nextDouble() * 2.0;
             level.addParticle(forging ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.SOUL, x, y, z, 0.0, 0.03, 0.0);
         }
         if (random.nextInt(forging ? 30 : 110) == 0) {

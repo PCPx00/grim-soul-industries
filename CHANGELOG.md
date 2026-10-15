@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.3 — Soul Forge is a 3x3x3 cube
+
+- **3D multiblock:** the Soul Forge is now a 3x3x3 cube, not a flat ring. The forge sits in the bottom middle and 25 Soul Forge Casing fill the other spots. The spot right above the forge stays empty, so you can still reach it. A cube needs 7 Soul Forge Casing crafts (4 per craft).
+- **Assembly, alive look and GUI** work the same across the whole cube.
+
 ## 2.1.2 — The Soul Forge wakes up
 
 - **Alive when assembled:** a completed ring wakes the forge. Its eye opens and blinks, and the casings grow veins that crawl across the ring.

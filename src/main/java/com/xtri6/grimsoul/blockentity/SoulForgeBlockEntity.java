@@ -34,9 +34,10 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 /**
- * Soul Forge controller. It only works when the multiblock is built: a flat 3x3 ring. The forge sits in the
- * middle and Soul Forge Casing fills the other eight spots. When the ring is complete the casings join up
- * into one machine, with a sound, particles and a message for nearby players.
+ * Soul Forge controller. It only works when the multiblock is built: a 3x3x3 cube with the forge at the bottom
+ * centre. Soul Forge Casing fills every other spot except the one directly above the forge, which stays empty
+ * so the forge can still be reached. When the cube is complete the casings join up into one machine, with a
+ * sound, particles and a message for nearby players.
  */
 public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     public static final int SLOT_WORK = 0, SLOT_STEEL = 1, SLOT_OUTPUT = 2;
@@ -44,8 +45,8 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
             STATUS_NO_POWER = 4, STATUS_OUTPUT_FULL = 5, STATUS_NO_RECIPE = 6, STATUS_IDLE = 7;
     public static final int DATA_FORMED = 0, DATA_MISSING = 1, DATA_PROGRESS = 2, DATA_MAX = 3, DATA_STATUS = 4,
             DATA_ENERGY_LO = 5, DATA_ENERGY_HI = 6, DATA_COUNT = 7;
-    /** Casing spots around the controller in the 3x3 ring. */
-    public static final int CASING_COUNT = 8;
+    /** Every spot in the 3x3x3 cube except the forge: 25 casings and the empty spot above the forge. */
+    public static final int CUBE_SPOTS = 26;
     /** How close a player must be to hear the assembly message. */
     private static final double MESSAGE_RANGE_SQR = 24.0 * 24.0;
 
@@ -67,7 +68,7 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     };
     private final ForgeEnergy energy = new ForgeEnergy();
     private boolean formed;
-    private int missing = CASING_COUNT;
+    private int missing = CUBE_SPOTS;
     private int progress;
     private int maxProgress;
     private int status = STATUS_IDLE;
@@ -145,18 +146,23 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     /**
-     * Looks at the eight spots around the controller in its layer. Each must hold Soul Forge Casing.
-     * When the ring completes or breaks, the casings join or split and the players nearby are told.
+     * Looks at the 3x3x3 cube around the controller. Every spot must hold Soul Forge Casing, except the spot
+     * directly above the forge, which must be empty. When the cube completes or breaks, the casings join or
+     * split and the players nearby are told.
      */
     private void checkStructure(Level level, BlockPos pos) {
         int bad = 0;
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dz = -1; dz <= 1; dz++) {
-                if (dx == 0 && dz == 0) {
-                    continue; // this controller
-                }
-                if (!level.getBlockState(pos.offset(dx, 0, dz)).is(Registration.SOUL_FORGE_CASING.get())) {
-                    bad++;
+        for (int dy = 0; dy <= 2; dy++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (isForge(dx, dy, dz)) {
+                        continue;
+                    }
+                    BlockState here = level.getBlockState(pos.offset(dx, dy, dz));
+                    boolean ok = isAccessSpot(dx, dy, dz) ? here.isAir() : here.is(Registration.SOUL_FORGE_CASING.get());
+                    if (!ok) {
+                        bad++;
+                    }
                 }
             }
         }
@@ -174,18 +180,29 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
         syncCasings(level, pos, formed);
     }
 
+    private static boolean isForge(int dx, int dy, int dz) {
+        return dx == 0 && dy == 0 && dz == 0;
+    }
+
+    /** The spot directly above the forge: kept empty so the GUI can be reached from above. */
+    private static boolean isAccessSpot(int dx, int dy, int dz) {
+        return dx == 0 && dy == 1 && dz == 0;
+    }
+
     /** Sets every casing spot's FORMED state to match, so casings placed later join up too. */
     private static void syncCasings(Level level, BlockPos pos, boolean joined) {
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dz = -1; dz <= 1; dz++) {
-                if (dx == 0 && dz == 0) {
-                    continue;
-                }
-                BlockPos spot = pos.offset(dx, 0, dz);
-                BlockState here = level.getBlockState(spot);
-                if (here.is(Registration.SOUL_FORGE_CASING.get())
-                        && here.getValue(SoulForgeCasingBlock.FORMED) != joined) {
-                    level.setBlock(spot, here.setValue(SoulForgeCasingBlock.FORMED, joined), Block.UPDATE_ALL);
+        for (int dy = 0; dy <= 2; dy++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (isForge(dx, dy, dz) || isAccessSpot(dx, dy, dz)) {
+                        continue;
+                    }
+                    BlockPos spot = pos.offset(dx, dy, dz);
+                    BlockState here = level.getBlockState(spot);
+                    if (here.is(Registration.SOUL_FORGE_CASING.get())
+                            && here.getValue(SoulForgeCasingBlock.FORMED) != joined) {
+                        level.setBlock(spot, here.setValue(SoulForgeCasingBlock.FORMED, joined), Block.UPDATE_ALL);
+                    }
                 }
             }
         }
@@ -197,32 +214,34 @@ public class SoulForgeBlockEntity extends BlockEntity implements MenuProvider {
         syncCasings(level, pos, false);
     }
 
-    /** Sound, particles and a message when the ring is completed or broken. */
+    /** Sound, particles and a message when the cube is completed or broken. */
     private void announce(Level level, BlockPos pos) {
         boolean joined = formed;
         level.playSound(null, pos, joined ? SoundEvents.BEACON_ACTIVATE : SoundEvents.BEACON_DEACTIVATE,
                 SoundSource.BLOCKS, 1.0F, joined ? 1.0F : 0.7F);
         if (level instanceof ServerLevel server) {
-            for (int dx = -1; dx <= 1; dx++) {
-                for (int dz = -1; dz <= 1; dz++) {
-                    if (dx == 0 && dz == 0) {
-                        continue;
+            for (int dy = 0; dy <= 2; dy++) {
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dz = -1; dz <= 1; dz++) {
+                        if (isForge(dx, dy, dz) || isAccessSpot(dx, dy, dz)) {
+                            continue;
+                        }
+                        // Particles rise from each casing, so the pieces seem to come together.
+                        server.sendParticles(joined ? ParticleTypes.PORTAL : ParticleTypes.SMOKE,
+                                pos.getX() + dx + 0.5, pos.getY() + dy + 0.5, pos.getZ() + dz + 0.5,
+                                joined ? 8 : 4, 0.25, 0.4, 0.25, joined ? 0.25 : 0.02);
                     }
-                    // Particles rise from each casing spot, so the eight pieces seem to come together.
-                    server.sendParticles(joined ? ParticleTypes.PORTAL : ParticleTypes.SMOKE,
-                            pos.getX() + dx + 0.5, pos.getY() + 0.5, pos.getZ() + dz + 0.5,
-                            joined ? 18 : 6, 0.25, 0.4, 0.25, joined ? 0.25 : 0.02);
                 }
             }
             if (joined) {
-                server.sendParticles(ParticleTypes.END_ROD, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
-                        40, 1.4, 0.6, 1.4, 0.05);
+                server.sendParticles(ParticleTypes.END_ROD, pos.getX() + 0.5, pos.getY() + 2.5, pos.getZ() + 0.5,
+                        50, 1.4, 1.0, 1.4, 0.05);
             }
         }
         Component message = Component.translatable(joined
                 ? "message.grimsoul.soul_forge.formed" : "message.grimsoul.soul_forge.broken");
         for (Player player : level.players()) {
-            if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < MESSAGE_RANGE_SQR) {
+            if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5) < MESSAGE_RANGE_SQR) {
                 player.displayClientMessage(message, true);
             }
         }
