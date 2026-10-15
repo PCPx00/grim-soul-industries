@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.7 — Clickable cage
+
+- **Whole cube opens the forge:** right-click any casing of a completed Soul Forge to open its GUI. Sneak to place blocks against a casing instead.
+- **Visible cage:** the open faces of the cage show a faint purple lattice that pulses. A completed cage also gives off light.
+
 ## 2.1.6 — The Soul Forge becomes a cage
 
 - **Textures by position:** the casings in the cube each look different. Corners show bone with glowing runes, edges show chain links that scroll along, and faces are plain.

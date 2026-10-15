@@ -1,4 +1,6 @@
 {
-  "ambientocclusion": false,
-  "elements": []
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "grimsoul:block/soul_forge_casing_face"
+  }
 }

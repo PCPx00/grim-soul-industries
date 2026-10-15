@@ -69,6 +69,9 @@ public class GrimSoulClient {
         event.enqueueWork(() -> ItemProperties.register(Registration.DATA_CORE.get(),
                 ResourceLocation.fromNamespaceAndPath(GrimSoul.MODID, "tier"),
                 (stack, level, entity, seed) -> DataCoreItem.getMob(stack).isEmpty() ? 0.0F : (DataCoreItem.getTier(stack) + 1) / 5.0F));
+        // The lattice on the completed cage is see-through, so the casing needs the cutout layer.
+        event.enqueueWork(() -> net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+                Registration.SOUL_FORGE_CASING.get(), net.minecraft.client.renderer.RenderType.cutout()));
     }
 
     private static void registerScreens(RegisterMenuScreensEvent event) {
