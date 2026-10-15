@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.13 — Reaper rate line
+
+- **Reaper screen:** the info list shows the attacks per minute (for example "Attacks 60.0 per minute"), so the rate no longer needs a hover.
+
 ## 2.1.12 — Loot Dossier and farm rates
 
 - **Loot Dossier:** the Virtualization Chamber has a Dossier button. It runs the bound mob's real death code 200 times with your Looting and Player Kill cards, then shows the average drops per run, the success chance and XP per run. Press Re-sample after changing cards or the core.

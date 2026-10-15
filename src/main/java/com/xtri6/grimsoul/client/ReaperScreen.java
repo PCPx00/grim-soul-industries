@@ -27,7 +27,7 @@ public class ReaperScreen extends AbstractContainerScreen<ReaperMenu> {
     private static final int MAIN_H = 222;
     private static final int SIDE_LEFT = 180;
     private static final int TOTAL_W = 360;
-    private static final int TOTAL_H = 282;
+    private static final int TOTAL_H = 296;
 
     private static final int AREA_HEADER_Y = 128;
     private static final int[] AREA_ROW_Y = {138, 152, 166};
@@ -254,5 +254,8 @@ public class ReaperScreen extends AbstractContainerScreen<ReaperMenu> {
         graphics.drawString(font, Component.translatable("gui.grimsoul.limits",
                 menu.getData(ReaperBlockEntity.DATA_MAX_SIZE), menu.getData(ReaperBlockEntity.DATA_MAX_OFFSET)), side, INFO_Y + 10, GuiStyle.TEXT, true);
         graphics.drawString(font, Component.translatable("gui.grimsoul.slots", menu.getActiveSlots(), ReaperBlockEntity.MAX_SLOTS), side, INFO_Y + 20, GuiStyle.TEXT, true);
+        int interval = Math.max(1, menu.getData(ReaperBlockEntity.DATA_ATTACK_INTERVAL));
+        graphics.drawString(font, Component.translatable("gui.grimsoul.reaper.rate_line",
+                String.format(Locale.ROOT, "%.1f", 1200.0 / interval)), side, INFO_Y + 30, GuiStyle.TEXT_OK, true);
     }
 }

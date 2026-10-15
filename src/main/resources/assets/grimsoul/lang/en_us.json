@@ -202,6 +202,7 @@
   "gui.grimsoul.dossier.per_run": "%s per run",
   "gui.grimsoul.dossier.more": "+%s more items",
   "gui.grimsoul.reaper.rate": "Attacks %s times per minute (one every %s s)",
+  "gui.grimsoul.reaper.rate_line": "Attacks %s per minute",
   "gui.grimsoul.spawner.rate.tip": "Spawn attempts per minute: %s",
   "gui.grimsoul.spawner.rate.mobs": "Mobs per minute: %s",
   "gui.grimsoul.sim.energy_use": "Uses %s FE per run, spread across the run. Power it with a Reaper Generator, a cable, or any FE mod.",
