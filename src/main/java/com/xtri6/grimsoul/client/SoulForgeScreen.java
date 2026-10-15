@@ -41,6 +41,11 @@ public class SoulForgeScreen extends AbstractContainerScreen<SoulForgeMenu> {
         GuiStyle.slot(g, leftPos + SoulForgeMenu.WORK_X, topPos + SoulForgeMenu.WORK_Y, GuiStyle.SLOT_BG);
         GuiStyle.slot(g, leftPos + SoulForgeMenu.STEEL_X, topPos + SoulForgeMenu.STEEL_Y, GuiStyle.SLOT_BG);
         GuiStyle.slot(g, leftPos + SoulForgeMenu.OUTPUT_X, topPos + SoulForgeMenu.OUTPUT_Y, GuiStyle.SLOT_BG);
+        // Player inventory and hotbar (slots 3 and up).
+        for (int i = 3; i < menu.slots.size(); i++) {
+            net.minecraft.world.inventory.Slot slot = menu.slots.get(i);
+            GuiStyle.slot(g, leftPos + slot.x, topPos + slot.y, GuiStyle.SLOT_BG);
+        }
 
         int max = menu.getData(SoulForgeBlockEntity.DATA_MAX);
         int progress = menu.getData(SoulForgeBlockEntity.DATA_PROGRESS);

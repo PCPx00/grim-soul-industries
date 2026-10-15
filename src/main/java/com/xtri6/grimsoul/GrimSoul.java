@@ -7,6 +7,7 @@ import com.xtri6.grimsoul.generator.GeneratorFuel;
 import com.xtri6.grimsoul.item.DataCoreItem;
 import com.xtri6.grimsoul.item.ReapersLanternItem;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -67,6 +68,13 @@ public class GrimSoul {
         // Soul Forge: power in from generators or cables.
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, Registration.SOUL_FORGE_ENTITY.get(),
                 (be, side) -> be.getEnergyHandler());
+        // Every casing of a formed Soul Forge passes power to the controller, so pipes and generators can
+        // touch the cube on any face, top, bottom or side.
+        event.registerBlock(Capabilities.EnergyStorage.BLOCK, (level, pos, state, be, side) -> {
+            BlockPos forge = com.xtri6.grimsoul.block.SoulForgeCasingBlock.findFormedForge(level, pos);
+            return forge != null && level.getBlockEntity(forge) instanceof com.xtri6.grimsoul.blockentity.SoulForgeBlockEntity forgeBe
+                    ? forgeBe.getEnergyHandler() : null;
+        }, Registration.SOUL_FORGE_CASING.get());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.SIMULATION_CHAMBER_ENTITY.get(),
                 (be, side) -> be.getOutputHandler());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.OUTPUT_CRATE_ENTITY.get(),

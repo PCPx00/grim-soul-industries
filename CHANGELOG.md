@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.18 — Soul Forge power and inventory grid
+
+- **Power from any side:** every casing of a formed Soul Forge passes power to the forge. Pipes and generators can connect to any face of the cube, top, bottom or sides.
+- **Inventory grid:** the Soul Forge GUI now draws the background for the player inventory and hotbar slots.
+
 ## 2.1.17 — Layout fixes
 
 - **Spawner:** the "Mobs/min" line moved up beside the spawn rate, so it no longer sits on the power and redstone buttons.

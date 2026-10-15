@@ -60,7 +60,7 @@ public class SoulForgeCasingBlock extends Block {
     }
 
     /** The completed forge whose cube holds this casing, or null. */
-    private static BlockPos findFormedForge(Level level, BlockPos casing) {
+    public static BlockPos findFormedForge(Level level, BlockPos casing) {
         for (int dy = 0; dy <= 2; dy++) {
             for (int dx = -1; dx <= 1; dx++) {
                 for (int dz = -1; dz <= 1; dz++) {
